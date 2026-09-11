@@ -1,0 +1,219 @@
+<section id="contact" class="contact reveal">
+  <div class="container">
+
+    <div class="contact-left">
+      <div class="section-index">
+        <span>05</span>
+        <span class="line"></span>
+        <p>Contact</p>
+      </div>
+
+      <h2>
+        Une idée ?<br />
+        Parlons-en.
+      </h2>
+    </div>
+
+    <div class="contact-right">
+      <p class="lead">
+        Je suis ouverte aux collaborations, projets freelance,
+        opportunités et nouvelles idées.
+      </p>
+      <a href="mailto:bendidikaoutar05@gmail.com" class="email-link">
+        bendidikaoutar05@gmail.com
+        <span>↗</span>
+      </a>
+
+      <div class="socials">
+        <a
+          href="https://linkedin.com/in/bendidi-kaoutar-87b866317"
+          target="_blank"
+        >
+          LinkedIn ↗
+        </a>
+
+        <a
+          href="https://github.com/bendidikaoutar"
+          target="_blank"
+        >
+          GitHub ↗
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding: 130px 0;
+    background: var(--sage);
+  }
+
+  .container {
+    width: min(1120px, 90%);
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 90px;
+
+    align-items: end;
+  }
+
+  .section-index {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 28px;
+  }
+
+  .section-index span:first-child {
+    font-family: Georgia, serif;
+    color: var(--mauve-dark);
+  }
+
+  .line {
+    width: 42px;
+    height: 1px;
+    background: var(--mauve-dark);
+  }
+
+  .section-index p {
+    margin: 0;
+
+    text-transform: uppercase;
+    letter-spacing: 3px;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    color: var(--mauve-dark);
+  }
+
+  h2 {
+    margin: 0;
+
+    font-family: Georgia, serif;
+
+    font-size: clamp(3.5rem, 7vw, 6rem);
+
+    line-height: 0.9;
+    letter-spacing: -3px;
+
+    color: var(--mauve-dark);
+  }
+
+  .contact-right {
+    padding-bottom: 8px;
+  }
+
+  .lead {
+    max-width: 520px;
+
+    font-family: Georgia, serif;
+
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+
+    line-height: 1.4;
+
+    color: var(--mauve-dark);
+
+    margin: 0 0 45px;
+  }
+
+  .email-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+
+    text-decoration: none;
+
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+
+    color: var(--mauve-dark);
+
+    border-bottom: 2px solid var(--mauve-dark);
+
+    padding-bottom: 8px;
+
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  .email-link:hover {
+    transform: translateX(5px);
+    opacity: 0.8;
+  }
+
+  .email-link span {
+    font-size: 1rem;
+  }
+
+  .socials {
+    display: flex;
+    gap: 28px;
+
+    margin-top: 45px;
+  }
+
+  .socials a {
+    text-decoration: none;
+
+    color: var(--mauve-dark);
+
+    font-size: 0.9rem;
+
+    border-bottom: 1px solid
+      color-mix(
+        in srgb,
+        var(--mauve-dark) 40%,
+        transparent
+      );
+
+    padding-bottom: 4px;
+  }
+
+  @media (max-width: 850px) {
+    .contact {
+      padding: 90px 0;
+    }
+
+    .container {
+      grid-template-columns: 1fr;
+
+      gap: 50px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .container {
+      width: min(94%, 1120px);
+    }
+
+    .contact {
+      padding: 75px 0;
+    }
+
+    h2 {
+      font-size: clamp(3rem, 15vw, 4.5rem);
+    }
+
+    .email-link {
+      font-size: 1.15rem;
+      word-break: break-word;
+    }
+
+    .lead {
+      font-size: 1.35rem;
+    }
+
+    .socials {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+</style>

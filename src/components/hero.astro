@@ -1,0 +1,655 @@
+<section id="home" class="hero">
+  <div class="hero-container">
+
+    <div class="hero-content">
+
+      <div class="hero-top hero-animate delay-1">
+        <span class="index">01</span>
+        <span class="line"></span>
+        <p>Bonjour, je suis Kaoutar</p>
+      </div>
+
+      <h1 class="hero-animate delay-2">
+        Full Stack
+        <span>Developer</span>
+      </h1>
+
+      <div class="hero-bottom">
+
+        <p class="description hero-animate delay-3">
+          Je conçois et développe des expériences web modernes,
+          intuitives et pensées jusque dans les détails.
+        </p>
+
+        <div class="buttons hero-animate delay-4">
+          <a href="#projects" class="primary">
+            Voir mes projets
+            <span>↗</span>
+          </a>
+
+          <a href="#contact" class="secondary">
+            Me contacter
+          </a>
+          <a href="/cv-kaoutar-bendidi.pdf" class="secondary" download>
+            Télécharger mon CV
+          </a>
+        </div>
+
+      </div>
+
+      <div class="stack hero-animate delay-5">
+        <span>React</span>
+        <span>Node.js</span>
+        <span>PostgreSQL</span>
+        <span>TypeScript</span>
+      </div>
+
+    </div>
+
+
+    <div class="visual hero-card-animate">
+
+      <span class="availability">
+        <i></i>
+        Disponible pour de nouveaux projets
+      </span>
+
+      <div class="circle circle-sage"></div>
+      <div class="circle circle-outline"></div>
+
+      <div class="floating-square"></div>
+
+      <div class="visual-text">
+        <span>IDEAS</span>
+        <span>CODE</span>
+        <span>PEOPLE</span>
+        <span>IMPACT</span>
+      </div>
+
+      <p class="statement">
+        Build.<br />
+        Learn.<br />
+        Refine.<br />
+        Repeat.
+      </p>
+
+      <span class="year">PORTFOLIO / 2026</span>
+
+    </div>
+
+  </div>
+
+  <div class="ticker">
+    <div class="ticker-content">
+      <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+      <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: calc(100vh - 72px);
+    padding-top: 70px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-container {
+    width: min(1120px, 90%);
+    margin: 0 auto;
+    flex: 1;
+
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 70px;
+
+    align-items: center;
+    align-content: center;
+  }
+
+  /* TOP LABEL */
+
+  .hero-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 22px;
+  }
+
+  .hero-top p {
+    margin: 0;
+
+    text-transform: uppercase;
+    letter-spacing: 3px;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    color: var(--mauve);
+  }
+
+  .index {
+    font-family: Georgia, serif;
+    color: var(--sage-dark);
+  }
+
+  .line {
+    display: block;
+    width: 40px;
+    height: 1px;
+
+    background: var(--sage);
+  }
+
+  /* BIG TITLE */
+
+  h1 {
+    font-family: Georgia, serif;
+
+    font-size: clamp(4rem, 7vw, 7rem);
+    line-height: 0.88;
+
+    letter-spacing: -4px;
+
+    margin: 0 0 38px;
+
+    color: var(--mauve-dark);
+  }
+
+  h1 span {
+    display: block;
+    color: var(--mauve);
+  }
+
+  /* DESCRIPTION */
+
+  .description {
+    max-width: 520px;
+
+    font-size: 1.05rem;
+    line-height: 1.8;
+
+    color: var(--text-soft);
+  }
+
+  /* BUTTONS */
+
+  .buttons {
+    display: flex;
+    gap: 14px;
+
+    margin-top: 28px;
+
+    flex-wrap: wrap;
+  }
+
+  .buttons a {
+    padding: 14px 22px;
+
+    border-radius: 100px;
+
+    text-decoration: none;
+    font-weight: 600;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 12px;
+  }
+
+  .primary {
+    background: var(--mauve-dark);
+    color: var(--bg);
+
+    border: 1px solid var(--mauve-dark);
+  }
+
+  .primary span {
+    transition: transform 0.25s ease;
+  }
+
+  .primary:hover {
+    background: var(--mauve);
+    border-color: var(--mauve);
+
+    transform: translateY(-3px);
+  }
+
+  .primary:hover span {
+    transform: translate(3px, -3px);
+  }
+
+  .secondary {
+    color: var(--mauve-dark);
+
+    border: 1px solid var(--mauve-dark);
+  }
+
+  .secondary:hover {
+    background: var(--sage);
+    color: var(--mauve-dark);
+
+    border-color: var(--sage);
+
+    transform: translateY(-3px);
+  }
+
+  /* STACK */
+
+  .stack {
+    display: flex;
+
+    gap: 9px;
+
+    flex-wrap: wrap;
+
+    margin-top: 42px;
+  }
+
+  .stack span {
+    padding: 7px 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 100px;
+
+    color: var(--text-soft);
+
+    font-size: 0.75rem;
+  }
+
+  /* RIGHT VISUAL */
+
+  .visual {
+    width: 100%;
+    min-height: 475px;
+
+    background: var(--mauve-dark);
+
+    border-radius: 32px;
+
+    position: relative;
+    isolation: isolate;
+
+    overflow: hidden;
+
+    padding: 35px;
+
+    box-shadow:
+      0 30px 70px color-mix(
+        in srgb,
+        var(--mauve-dark) 22%,
+        transparent
+      );
+  }
+
+  .availability {
+    position: absolute;
+
+    top: 28px;
+    left: 30px;
+
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--bg);
+
+    font-size: 0.66rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.3px;
+  }
+
+  .availability i {
+    display: block;
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--sage);
+
+    box-shadow:
+      0 0 0 5px
+      color-mix(in srgb, var(--sage) 18%, transparent);
+
+    animation: pulse 2s infinite;
+  }
+
+  /* ABSTRACT SHAPES */
+
+  .circle {
+    position: absolute;
+
+    border-radius: 50%;
+  }
+
+  .circle-sage {
+    z-index: 1;
+    width: 270px;
+    height: 270px;
+
+    top: -90px;
+    right: -50px;
+
+    background: var(--sage);
+
+    animation: floating 7s ease-in-out infinite;
+  }
+
+  .circle-outline {
+    z-index: 2;
+    width: 180px;
+    height: 180px;
+
+    top: 80px;
+    right: 45px;
+
+    border: 1px solid
+      color-mix(in srgb, white 25%, transparent);
+  }
+
+  .floating-square {
+    position: absolute;
+    z-index: 3;
+
+    width: 75px;
+    height: 75px;
+
+    top: 80px;
+    left: 40px;
+
+    border-radius: 18px;
+
+    background: var(--mauve);
+
+    transform: rotate(14deg);
+
+    animation: squareFloat 5s ease-in-out infinite;
+  }
+
+  /* SIDE WORDS */
+
+  .visual-text {
+    position: absolute;
+    z-index: 4;
+
+    top: 180px;
+    right: 30px;
+
+    display: flex;
+    flex-direction: column;
+
+    color: color-mix(
+      in srgb,
+      var(--bg) 75%,
+      transparent
+    );
+
+    font-size: 0.62rem;
+
+    letter-spacing: 4px;
+
+    line-height: 1.8;
+  }
+
+  /* STATEMENT */
+
+  .statement {
+    position: absolute;
+    z-index: 4;
+
+    left: 38px;
+    bottom: 55px;
+
+    margin: 0;
+
+    font-family: Georgia, serif;
+
+    font-size: clamp(2rem, 3vw, 2.7rem);
+
+    line-height: 1.05;
+
+    color: var(--bg);
+  }
+
+  .year {
+    position: absolute;
+    z-index: 4;
+
+    bottom: 22px;
+    right: 28px;
+
+    color:
+      color-mix(
+        in srgb,
+        var(--bg) 55%,
+        transparent
+      );
+
+    font-size: 0.58rem;
+
+    letter-spacing: 2px;
+  }
+
+  /* TICKER */
+
+  .ticker {
+    margin-top: 70px;
+
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+
+    overflow: hidden;
+  }
+
+  .ticker-content {
+    display: flex;
+
+    width: max-content;
+
+    padding: 14px 0;
+
+    animation: ticker 22s linear infinite;
+  }
+
+  .ticker-content span {
+    white-space: nowrap;
+
+    font-size: 0.7rem;
+
+    letter-spacing: 4px;
+
+    color: var(--text-soft);
+
+    padding-right: 50px;
+  }
+
+  /* LOAD ANIMATIONS */
+
+  .hero-animate {
+    opacity: 0;
+
+    transform: translateY(30px);
+
+    animation:
+      heroReveal 0.8s ease forwards;
+  }
+
+  .delay-1 {
+    animation-delay: 0.1s;
+  }
+
+  .delay-2 {
+    animation-delay: 0.25s;
+  }
+
+  .delay-3 {
+    animation-delay: 0.4s;
+  }
+
+  .delay-4 {
+    animation-delay: 0.55s;
+  }
+
+  .delay-5 {
+    animation-delay: 0.7s;
+  }
+
+  .hero-card-animate {
+    opacity: 0;
+
+    transform: translateX(45px);
+
+    animation:
+      cardReveal 1s ease forwards;
+
+    animation-delay: 0.35s;
+  }
+
+  @keyframes heroReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cardReveal {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes floating {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(18px);
+    }
+  }
+
+  @keyframes squareFloat {
+    0%,
+    100% {
+      transform:
+        rotate(14deg)
+        translateY(0);
+    }
+
+    50% {
+      transform:
+        rotate(20deg)
+        translateY(12px);
+    }
+  }
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.45;
+    }
+  }
+
+  @keyframes ticker {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* MOBILE */
+
+  @media (max-width: 850px) {
+    .hero {
+      padding-top: 50px;
+    }
+
+    .hero-container {
+      grid-template-columns: 1fr;
+
+      gap: 50px;
+    }
+
+    h1 {
+      font-size: clamp(3.7rem, 16vw, 6rem);
+
+      letter-spacing: -2px;
+    }
+
+    .visual {
+      min-height: 380px;
+    }
+
+    .ticker {
+      margin-top: 50px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-container {
+      width: min(94%, 1120px);
+    }
+
+    .buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .buttons a {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .stack {
+      gap: 7px;
+    }
+
+    .visual {
+      min-height: 350px;
+      border-radius: 24px;
+    }
+
+    .circle-sage {
+      width: 220px;
+      height: 220px;
+    }
+
+    .statement {
+      font-size: 2rem;
+    }
+
+    .availability {
+      max-width: 170px;
+      line-height: 1.5;
+    }
+
+    .ticker-content span {
+      font-size: 0.62rem;
+      letter-spacing: 2.5px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>

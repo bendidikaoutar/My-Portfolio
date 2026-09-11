@@ -1,17 +1,54 @@
 ---
+import "../styles/global.css";
+
+import Navbar from "../components/navbar.astro";
+import Hero from "../components/hero.astro";
+import About from "../components/about.astro";
+import Skills from "../components/skills.astro";
+import Projects from "../components/projects.astro";
+import Contact from "../components/contact.astro";
+import Footer from "../components/footer.astro";
 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>Kaoutar | Développeuse Full Stack</title>
+		<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const elements = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    },
+    {
+      threshold: 0.01,
+    }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+  });
+</script>
+  </head>
+
+  <body>
+    <Navbar />
+    <Hero />
+    <About />
+    <Skills />
+    <Projects />
+    <Contact />
+    <Footer />
+  </body>
 </html>

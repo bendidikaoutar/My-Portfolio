@@ -1,0 +1,257 @@
+<section id="about" class="about reveal">
+  <div class="container">
+
+    <div class="about-left">
+      <div class="section-index">
+        <span>02</span>
+        <span class="line"></span>
+        <p>À propos</p>
+      </div>
+
+      <h2>
+        Curieuse.<br />
+        Créative.<br />
+        Orientée impact.
+      </h2>
+    </div>
+
+    <div class="about-right">
+
+      <p class="lead">
+        Je suis Kaoutar, développeuse Full Stack passionnée par la création
+        d’expériences digitales utiles, intuitives et bien pensées.
+      </p>
+
+      <p>
+        J’aime comprendre un projet dans sa globalité :
+        l’interface, la logique backend, les APIs, les données
+        et l’expérience utilisateur.
+      </p>
+
+      <div class="about-meta">
+        <div>
+          <span>01</span>
+          <h3>Frontend</h3>
+          <p>Interfaces modernes, responsive et accessibles.</p>
+        </div>
+
+        <div>
+          <span>02</span>
+          <h3>Backend</h3>
+          <p>Logique métier, APIs structurées et données fiables.</p>
+        </div>
+
+        <div>
+          <span>03</span>
+          <h3>Vision produit</h3>
+          <p>Transformer une idée en expérience cohérente et utile.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 130px 0;
+  }
+
+  .container {
+    width: min(1120px, 90%);
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 90px;
+
+    align-items: start;
+  }
+
+  .section-index {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 28px;
+  }
+
+  .section-index span:first-child {
+    font-family: Georgia, serif;
+    color: var(--sage-dark);
+  }
+
+  .line {
+    width: 42px;
+    height: 1px;
+
+    background: var(--sage);
+  }
+
+  .section-index p {
+    margin: 0;
+
+    text-transform: uppercase;
+    letter-spacing: 3px;
+
+    color: var(--mauve);
+
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    margin: 0;
+
+    font-family: Georgia, serif;
+    font-size: clamp(3rem, 6vw, 5.4rem);
+    line-height: 0.95;
+
+    letter-spacing: -2px;
+
+    color: var(--mauve-dark);
+  }
+
+  .about-right {
+    padding-top: 60px;
+  }
+
+  .lead {
+    font-family: Georgia, serif;
+
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    line-height: 1.4;
+
+    color: var(--text);
+
+    margin-top: 0;
+  }
+
+  .about-right {
+  padding-top: 70px;
+}
+
+.lead {
+  font-family: Georgia, serif;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.45;
+  color: var(--text);
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+
+.about-right > p:not(.lead) {
+  max-width: 620px;
+  color: var(--text-soft);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 42px;
+}
+
+.about-meta {
+  border-top: 1px solid var(--border);
+}
+
+.about-meta > div {
+  display: grid;
+  grid-template-columns: 45px 150px 1fr;
+  align-items: start;
+  gap: 22px;
+
+  padding: 22px 0;
+
+  border-bottom: 1px solid var(--border);
+
+  transition:
+    transform 0.25s ease,
+    padding-left 0.25s ease;
+}
+
+.about-meta > div:hover {
+  padding-left: 8px;
+  transform: translateX(4px);
+}
+
+.about-meta span {
+  color: var(--sage-dark);
+  font-size: 0.75rem;
+  padding-top: 3px;
+}
+
+.about-meta h3 {
+  margin: 0;
+
+  font-family: Georgia, serif;
+  font-size: 1.2rem;
+
+  color: var(--mauve-dark);
+}
+
+.about-meta p {
+  margin: 0;
+
+  color: var(--text-soft);
+
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+  @media (max-width: 850px) {
+    .about {
+      padding: 90px 0;
+    }
+
+    .container {
+  width: min(1120px, 90%);
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 90px;
+
+  align-items: start;
+}
+
+    .about-right {
+      padding-top: 0;
+    }
+
+    .about-meta > div {
+      grid-template-columns: 40px 1fr;
+    }
+
+    .about-meta p {
+      grid-column: 2;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .container {
+      width: min(94%, 1120px);
+    }
+
+    .about {
+      padding: 75px 0;
+    }
+
+    h2 {
+      font-size: clamp(2.8rem, 13vw, 4rem);
+    }
+
+    .lead {
+      font-size: 1.45rem;
+    }
+
+    .about-meta > div {
+      padding: 18px 0;
+    }
+
+    .about-meta h3 {
+      font-size: 1.1rem;
+    }
+
+    .about-meta p {
+      font-size: 0.88rem;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+:root {
+  --bg: #EEE9E2;
+  --bg-soft: #DDD7CF;
+
+  --mauve-dark: #2B193D;
+  --mauve: #634184;
+
+  --sage: #879B86;
+  --sage-dark: #647764;
+
+  --text: #1D1A21;
+  --text-soft: #514A55;
+
+  --card: #F7F3EE;
+  --border: #C9C1B8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      color-mix(in srgb, var(--mauve) 7%, transparent),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      color-mix(in srgb, var(--sage) 10%, transparent),
+      transparent 35%
+    ),
+    var(--bg);
+
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+a {
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+::selection {
+  background: var(--mauve);
+  color: white;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 900px) {
+  section {
+    scroll-margin-top: 90px;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 15px;
+  }
+}
