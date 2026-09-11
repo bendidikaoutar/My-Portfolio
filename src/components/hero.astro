@@ -81,8 +81,19 @@
 
   <div class="ticker">
     <div class="ticker-content">
-      <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-      <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+      <div class="ticker-group">
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+      </div>
+
+      <div class="ticker-group" aria-hidden="true">
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
+      </div>
     </div>
   </div>
 </section>
@@ -457,12 +468,18 @@
 
     width: max-content;
 
-    padding: 14px 0;
-
-    animation: ticker 22s linear infinite;
+    animation: ticker 24s linear infinite;
+    will-change: transform;
   }
 
-  .ticker-content span {
+  .ticker-group {
+    display: flex;
+    flex-shrink: 0;
+    min-width: max-content;
+    padding: 14px 0;
+  }
+
+  .ticker-group span {
     white-space: nowrap;
 
     font-size: 0.7rem;
@@ -638,7 +655,7 @@
       line-height: 1.5;
     }
 
-    .ticker-content span {
+    .ticker-group span {
       font-size: 0.62rem;
       letter-spacing: 2.5px;
     }
