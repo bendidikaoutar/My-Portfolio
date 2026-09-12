@@ -1,26 +1,24 @@
 ﻿---
 const projects = [
   {
-    number: "02",
+    number: "",
     title: "Muestra",
     category: "Educational Platform",
     description:
       "Plateforme éducative développée en équipe, avec contribution aux interfaces frontend et à l’intégration du pipeline CI/CD.",
-    technologies: ["Vue.js", "JavaScript", "Git", "GitHub", "CI/CD"],
-    github: "#",
+    technologies: ["Vue.js", "JavaScript", "Git", "CI/CD"],
   },
   {
-    number: "03",
+    number: "",
     title: "Sehati",
     category: "Web Application",
     status: "In Progress",
     description:
       "Application web Full Stack moderne avec développement des fonctionnalités frontend et backend.",
     technologies: ["JavaScript", "Vue.js", "Node.js", "MySQL", "Next.js"],
-    github: "#",
   },
   {
-    number: "04",
+    number: "",
     title: "Dishly",
     category: "Full Stack Application",
     meta: "FULL STACK DEVELOPMENT · 2026",
@@ -28,25 +26,22 @@ const projects = [
     description:
       "Application Full Stack permettant de créer, organiser et gérer des recettes à travers une interface moderne et une API REST.",
     technologies: ["React", "Node.js", "Express", "Prisma", "PostgreSQL"],
-    github: "#",
   },
   {
-    number: "05",
+    number: "",
     title: "Interactive Generative Studio",
     category: "Creative Coding",
     description:
       "Plateforme créative interactive permettant de générer et manipuler des contenus visuels grâce à différents modules de génération, traitement d’images et visualisation de données.",
     technologies: ["Python", "Flask", "Matplotlib", "Pandas", "OpenCV"],
-    github: "#",
   },
   {
-    number: "06",
+    number: "",
     title: "Budget App",
     category: "Python Utility",
     description:
       "Application Python conçue pour gérer les dépenses personnelles, suivre un budget et organiser les données financières.",
     technologies: ["Python"],
-    github: "#",
   },
 ];
 
@@ -69,8 +64,7 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
       </h2>
 
       <p class="intro">
-        Une sélection de projets qui reflètent ma manière de penser,
-        concevoir et développer des expériences digitales.
+        Une sélection de projets personnels et académiques réalisés pour approfondir mes compétences en développement.
       </p>
     </div>
 
@@ -92,20 +86,10 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
           }
         </div>
 
-        <a class="project-link" href={featuredProject.github} target="_blank">
-          GitHub <span>↗</span>
-        </a>
       </div>
 
       <div class="featured-visual" aria-hidden="true">
-        <div class="visual-panel">
-          <span class="visual-label">DISHLY</span>
-          <p class="visual-title">
-            Recipe management<br />
-            made simple.
-          </p>
-          <span class="visual-meta">FULL STACK · IN PROGRESS</span>
-        </div>
+        <img src="/dishly-featured.png" alt="" />
       </div>
     </article>
 
@@ -135,11 +119,6 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
               </div>
             )}
 
-            {project.github && (
-              <a class="project-link" href={project.github} target="_blank">
-                GitHub <span>↗</span>
-              </a>
-            )}
           </article>
         ))
       }
@@ -281,80 +260,17 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
     font-size: 0.75rem;
   }
 
-  .project-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 34px;
-    color: var(--mauve-dark);
-    font-weight: 700;
-    text-decoration: none;
-    border-bottom: 1px solid var(--mauve-dark);
-    padding-bottom: 5px;
-  }
-
-  .project-link span {
-    display: inline-block;
-    transition: transform 0.25s ease;
-  }
-
-  .project-link:hover span {
-    transform: translate(3px, -3px);
-  }
-
   .featured-visual {
-    min-height: 390px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 24px;
-    background: var(--sage);
-    overflow: hidden;
-    position: relative;
+    min-width: 0;
+    align-self: center;
   }
 
-  .featured-visual::before {
-    content: "";
-    position: absolute;
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    background: var(--mauve);
-    opacity: 0.12;
-    right: -80px;
-    top: -90px;
-  }
-
-  .visual-panel {
-    position: relative;
-    z-index: 1;
-    width: min(330px, 82%);
-    aspect-ratio: 4 / 5;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 28px;
-    border-radius: 20px;
-    background: var(--mauve-dark);
-    color: var(--bg);
-  }
-
-  .visual-label,
-  .visual-meta {
-    font-size: 0.68rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--bg) 72%, transparent);
-  }
-
-  .visual-title {
-    margin: auto 0;
-    font-family: Georgia, serif;
-    font-size: clamp(2rem, 3vw, 2.75rem);
-    line-height: 1.02;
-    letter-spacing: -1.3px;
-    font-weight: 500;
-    color: var(--bg);
+  .featured-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
   }
 
   .other-projects {
@@ -428,12 +344,6 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
     padding: 6px 10px;
   }
 
-  .project-card .project-link {
-    margin-top: auto;
-    padding-top: 28px;
-    align-self: flex-start;
-  }
-
   @media (max-width: 850px) {
     .projects {
       padding: 90px 0;
@@ -454,7 +364,8 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
     }
 
     .featured-visual {
-      min-height: 330px;
+      width: min(100%, 520px);
+      justify-self: center;
     }
   }
 
@@ -479,17 +390,6 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
 
     .featured-content h3 {
       font-size: clamp(2.7rem, 14vw, 4rem);
-    }
-
-    .featured-visual {
-      min-height: 280px;
-      border-radius: 20px;
-    }
-
-    .visual-panel {
-      width: min(280px, 88%);
-      padding: 22px;
-      border-radius: 18px;
     }
 
     .project-card {
