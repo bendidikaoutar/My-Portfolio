@@ -21,6 +21,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -60,18 +61,50 @@ a {
   background: var(--mauve);
   color: white;
 }
-.reveal {
+
+.js .reveal {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(35px);
   transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.reveal.visible {
+.js .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
+.js .reveal .reveal-item {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 750ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 750ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js .reveal.visible .reveal-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 {
+  --reveal-delay: 90ms;
+}
+
+.reveal-delay-2 {
+  --reveal-delay: 190ms;
+}
+
+.reveal-delay-3 {
+  --reveal-delay: 290ms;
+}
+
+.reveal-delay-4 {
+  --reveal-delay: 390ms;
+}
+
 img,
 video {
   max-width: 100%;
@@ -90,6 +123,20 @@ body {
 
 @media (max-width: 600px) {
   body {
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js .reveal,
+  .js .reveal .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

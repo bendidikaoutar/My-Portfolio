@@ -1,7 +1,7 @@
 <section id="contact" class="contact reveal">
   <div class="container">
 
-    <div class="contact-left">
+    <div class="contact-left reveal-item reveal-delay-1">
       <div class="section-index">
         <span>05</span>
         <span class="line"></span>
@@ -14,10 +14,9 @@
       </h2>
     </div>
 
-    <div class="contact-right">
+    <div class="contact-right reveal-item reveal-delay-2">
       <p class="lead">
-        Je suis ouverte aux collaborations, projets freelance,
-        opportunités et nouvelles idées.
+        Je suis ouverte aux opportunités de stage, aux collaborations et aux projets qui me permettent d’apprendre et de progresser.
       </p>
       <a href="mailto:bendidikaoutar05@gmail.com" class="email-link">
         bendidikaoutar05@gmail.com
@@ -189,9 +188,10 @@
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 520px) {
     .container {
       width: min(94%, 1120px);
+      gap: 34px;
     }
 
     .contact {
@@ -199,21 +199,27 @@
     }
 
     h2 {
-      font-size: clamp(3rem, 15vw, 4.5rem);
+      width: 90%;
+      font-size: clamp(3rem, 14vw, 4.2rem);
     }
 
     .email-link {
-      font-size: 1.15rem;
+      max-width: 100%;
+      font-size: clamp(1rem, 5vw, 1.15rem);
+      overflow-wrap: anywhere;
       word-break: break-word;
     }
 
     .lead {
-      font-size: 1.35rem;
+      margin-bottom: 34px;
+      font-size: clamp(1.22rem, 5.8vw, 1.35rem);
+      line-height: 1.5;
     }
 
     .socials {
-      flex-direction: column;
-      gap: 16px;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      margin-top: 34px;
     }
   }
 </style>

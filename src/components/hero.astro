@@ -10,9 +10,11 @@
       </div>
 
       <h1 class="hero-animate delay-2">
-        Étudiante ingénieure en 
-        <span>informatique Développement</span>
+        Étudiante ingénieure en
+        <span>informatique</span>
       </h1>
+
+      <p class="hero-role hero-animate delay-3">Développement Full Stack</p>
 
       <div class="hero-bottom">
 
@@ -172,6 +174,28 @@
   h1 span {
     display: block;
     color: var(--mauve);
+  }
+
+  .hero-role {
+    width: fit-content;
+    margin: -18px 0 32px;
+    padding-left: 48px;
+    color: var(--sage-dark);
+    font-family: Georgia, serif;
+    font-size: clamp(1.15rem, 2vw, 1.55rem);
+    font-style: italic;
+    line-height: 1.3;
+    position: relative;
+  }
+
+  .hero-role::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 34px;
+    height: 1px;
+    background: var(--sage);
   }
 
   /* DESCRIPTION */
@@ -466,6 +490,7 @@
     display: flex;
 
     width: max-content;
+    white-space: nowrap;
 
     animation: ticker 24s linear infinite;
     will-change: transform;
@@ -476,6 +501,7 @@
     flex-shrink: 0;
     min-width: max-content;
     padding: 14px 0;
+    white-space: nowrap;
   }
 
   .ticker-group span {
@@ -592,23 +618,24 @@
 
   @media (max-width: 850px) {
     .hero {
-      padding-top: 50px;
+      padding-top: clamp(38px, 8vw, 58px);
     }
 
     .hero-container {
       grid-template-columns: 1fr;
-
-      gap: 50px;
+      gap: 34px;
     }
 
     h1 {
-      font-size: clamp(3.7rem, 16vw, 6rem);
-
+      max-width: 720px;
+      font-size: clamp(3.4rem, 11vw, 5.7rem);
       letter-spacing: -2px;
     }
 
     .visual {
-      min-height: 380px;
+      width: min(88%, 520px);
+      min-height: clamp(340px, 68vw, 430px);
+      justify-self: end;
     }
 
     .ticker {
@@ -616,28 +643,80 @@
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 520px) {
+    .hero {
+      min-height: auto;
+      padding-top: 34px;
+    }
+
     .hero-container {
       width: min(94%, 1120px);
+      gap: 28px;
+    }
+
+    .hero-top {
+      margin-bottom: 18px;
+    }
+
+    .hero-top p {
+      font-size: 0.64rem;
+      letter-spacing: 2.2px;
+    }
+
+    h1 {
+      max-width: 94%;
+      margin-bottom: 28px;
+      font-size: clamp(2.8rem, 13vw, 4.05rem);
+      line-height: 0.94;
+      letter-spacing: -1.5px;
+    }
+
+    .hero-role {
+      margin: -10px 0 26px;
+      padding-left: 38px;
+      font-size: clamp(1rem, 5vw, 1.25rem);
+    }
+
+    .hero-role::before {
+      width: 26px;
+    }
+
+    .description {
+      width: 92%;
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.65;
     }
 
     .buttons {
-      flex-direction: column;
-      align-items: stretch;
+      align-items: center;
+      gap: 9px;
+      margin-top: 22px;
     }
 
     .buttons a {
       justify-content: center;
       text-align: center;
+      padding: 11px 16px;
+      font-size: 0.82rem;
     }
 
     .stack {
       gap: 7px;
+      width: 88%;
+      margin-top: 30px;
+    }
+
+    .stack span {
+      padding: 6px 10px;
+      font-size: 0.68rem;
     }
 
     .visual {
-      min-height: 350px;
+      width: 88%;
+      min-height: clamp(320px, 92vw, 380px);
       border-radius: 24px;
+      padding: 28px;
     }
 
     .circle-sage {
@@ -657,6 +736,11 @@
     .ticker-group span {
       font-size: 0.62rem;
       letter-spacing: 2.5px;
+      padding-right: 36px;
+    }
+
+    .ticker-content {
+      animation-duration: 32s;
     }
   }
 
@@ -666,6 +750,11 @@
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
+    }
+
+    .ticker-content {
+      animation: none !important;
+      transform: none !important;
     }
   }
 </style>

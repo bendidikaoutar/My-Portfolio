@@ -51,7 +51,7 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
 
 <section id="projects" class="projects reveal">
   <div class="container">
-    <div class="projects-header">
+    <div class="projects-header reveal-item reveal-delay-1">
       <div class="section-index">
         <span>04</span>
         <span class="line"></span>
@@ -68,7 +68,7 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
       </p>
     </div>
 
-    <article class="featured-project">
+    <article class="featured-project reveal-item reveal-delay-2">
       <div class="featured-content">
         <span class="featured-label">FEATURED PROJECT</span>
         {featuredProject.status && (
@@ -93,7 +93,7 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
       </div>
     </article>
 
-    <div class="other-projects">
+    <div class="other-projects reveal-item reveal-delay-3">
       {
         otherProjects.map((project) => (
           <article class="project-card">
@@ -369,7 +369,7 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 520px) {
     .container {
       width: min(94%, 1120px);
     }
@@ -380,21 +380,72 @@ const otherProjects = projects.filter((project) => project.title !== "Dishly");
 
     .projects-header {
       margin-bottom: 48px;
+      gap: 26px;
+    }
+
+    .projects-header h2 {
+      font-size: clamp(3.2rem, 16vw, 4.6rem);
+      line-height: 0.9;
+      letter-spacing: -2px;
+    }
+
+    .intro {
+      width: 88%;
+      margin: 0 0 0 auto;
+      font-size: 1rem;
+      line-height: 1.65;
     }
 
     .featured-project {
-      padding: 24px;
+      padding: 22px;
       border-radius: 22px;
-      gap: 30px;
+      gap: 24px;
     }
 
     .featured-content h3 {
-      font-size: clamp(2.7rem, 14vw, 4rem);
+      margin: 16px 0 18px;
+      font-size: clamp(2.8rem, 14vw, 4rem);
+    }
+
+    .featured-content p {
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .featured-visual {
+      width: 92%;
+      justify-self: end;
+    }
+
+    .other-projects {
+      gap: 16px;
+      margin-top: 22px;
     }
 
     .project-card {
-      padding: 22px;
+      width: 94%;
+      min-height: auto;
+      padding: 20px;
       border-radius: 20px;
+    }
+
+    .project-card:nth-child(even) {
+      width: 90%;
+      justify-self: end;
+    }
+
+    .card-top {
+      margin-bottom: 20px;
+    }
+
+    .project-card h3 {
+      margin: 14px 0 16px;
+      font-size: clamp(1.85rem, 9vw, 2.4rem);
+    }
+
+    .project-card p {
+      font-size: 0.94rem;
+      line-height: 1.65;
     }
 
     .tags {

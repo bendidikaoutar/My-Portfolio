@@ -1,7 +1,7 @@
 <section id="skills" class="skills reveal">
   <div class="container">
 
-    <div class="skills-header">
+    <div class="skills-header reveal-item reveal-delay-1">
       <div class="section-index">
         <span>03</span>
         <span class="line"></span>
@@ -15,7 +15,7 @@
       </h2>
     </div>
 
-    <div class="skills-list">
+    <div class="skills-list reveal-item reveal-delay-2">
 
       <div class="skill-row">
         <span class="number">01</span>
@@ -238,7 +238,7 @@
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 520px) {
     .skills {
       padding: 75px 0;
     }
@@ -248,11 +248,15 @@
     }
 
     h2 {
-      font-size: clamp(2.8rem, 13vw, 4rem);
+      max-width: 92%;
+      font-size: clamp(2.7rem, 12vw, 3.8rem);
+      line-height: 0.98;
     }
 
     .skill-row {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 12px;
       padding: 20px 0;
     }
@@ -265,6 +269,26 @@
     .tags span {
       font-size: 0.72rem;
       padding: 6px 10px;
+    }
+  }
+
+  @media (min-width: 370px) and (max-width: 520px) {
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 20px;
+    }
+
+    .skill-row:nth-child(even) {
+      padding-top: 42px;
+    }
+
+    .skill-row h3 {
+      font-size: 1.15rem;
+    }
+
+    .tags {
+      gap: 6px;
     }
   }
 </style>
