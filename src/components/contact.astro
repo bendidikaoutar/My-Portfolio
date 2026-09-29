@@ -1,44 +1,65 @@
+---
+// contact.astro - Section contact élégante et accessible
+---
+
 <section id="contact" class="contact reveal">
   <div class="container">
 
     <div class="contact-left reveal-item reveal-delay-1">
-      <div class="section-index">
-        <span>05</span>
-        <span class="line"></span>
-        <p>Contact</p>
+      <div class="section-tag">
+        <span class="tag-num">05</span>
+        <span class="tag-title">CONTACT & ÉCHANGE</span>
       </div>
 
       <h2>
-        Une idée ?<br />
-        Parlons-en.
+        Une idée ? Un projet ?<br />
+        <span class="gradient-text">Construisons ensemble.</span>
       </h2>
+
+      <p class="contact-sub">
+        Actuellement à la recherche d'opportunités de stage et de collaborations enrichissantes. N'hésitez pas à me contacter pour échanger sur vos projets ou découvrir mon travail.
+      </p>
     </div>
 
     <div class="contact-right reveal-item reveal-delay-2">
-      <p class="lead">
-        Je suis ouverte aux opportunités de stage, aux collaborations et aux projets qui me permettent d’apprendre et de progresser.
-      </p>
-      <a href="mailto:bendidikaoutar05@gmail.com" class="email-link">
-        bendidikaoutar05@gmail.com
-        <span>↗</span>
-      </a>
-
-      <div class="socials">
-        <a
-          href="https://linkedin.com/in/bendidi-kaoutar-87b866317"
-          target="_blank"
-        >
-          LinkedIn ↗
+      <div class="contact-card">
+        <span class="card-label">EMAIL DIRECT</span>
+        <a href="mailto:bendidikaoutar05@gmail.com" class="email-link">
+          <span>bendidikaoutar05@gmail.com</span>
+          <span class="email-arrow">↗</span>
         </a>
 
-        <a
-          href="https://github.com/bendidikaoutar"
-          target="_blank"
-        >
-          GitHub ↗
-        </a>
+        <div class="socials">
+          <a
+            href="https://linkedin.com/in/bendidi-kaoutar-87b866317"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-btn"
+          >
+            <span>LinkedIn</span>
+            <span class="social-arrow">↗</span>
+          </a>
+
+          <a
+            href="https://github.com/bendidikaoutar"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-btn"
+          >
+            <span>GitHub</span>
+            <span class="social-arrow">↗</span>
+          </a>
+
+          <a
+            href="/cv-kaoutar-bendidi.pdf"
+            download
+            class="social-btn cv-btn"
+          >
+            <span>Curriculum Vitae (PDF)</span>
+            <span class="social-arrow">↓</span>
+          </a>
+        </div>
       </div>
-
     </div>
 
   </div>
@@ -46,180 +67,149 @@
 
 <style>
   .contact {
-    padding: 130px 0;
-    background: var(--sage);
+    padding: 110px 0 130px;
+    background: var(--bg-subtle);
+    border-top: 1px solid var(--border);
   }
 
   .container {
-    width: min(1120px, 90%);
+    width: min(1180px, 92%);
     margin: 0 auto;
-
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 90px;
-
-    align-items: end;
-  }
-
-  .section-index {
-    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
     align-items: center;
-    gap: 12px;
-
-    margin-bottom: 28px;
   }
 
-  .section-index span:first-child {
-    font-family: Georgia, serif;
-    color: var(--mauve-dark);
-  }
-
-  .line {
-    width: 42px;
-    height: 1px;
-    background: var(--mauve-dark);
-  }
-
-  .section-index p {
-    margin: 0;
-
-    text-transform: uppercase;
-    letter-spacing: 3px;
-
-    font-size: 0.72rem;
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.76rem;
     font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
 
-    color: var(--mauve-dark);
+  .tag-num {
+    font-family: var(--font-mono);
   }
 
   h2 {
+    margin: 0 0 18px;
+    font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary) 20%, var(--accent-sage) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .contact-sub {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    max-width: 500px;
     margin: 0;
-
-    font-family: Georgia, serif;
-
-    font-size: clamp(3.5rem, 7vw, 6rem);
-
-    line-height: 0.9;
-    letter-spacing: -3px;
-
-    color: var(--mauve-dark);
   }
 
-  .contact-right {
-    padding-bottom: 8px;
+  /* Right Card */
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 38px;
+    box-shadow: var(--shadow-lg);
   }
 
-  .lead {
-    max-width: 520px;
-
-    font-family: Georgia, serif;
-
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-
-    line-height: 1.4;
-
-    color: var(--mauve-dark);
-
-    margin: 0 0 45px;
+  .card-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent-sage);
+    margin-bottom: 12px;
   }
 
   .email-link {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
-
-    text-decoration: none;
-
-    font-size: clamp(1.4rem, 3vw, 2.2rem);
-
-    color: var(--mauve-dark);
-
-    border-bottom: 2px solid var(--mauve-dark);
-
-    padding-bottom: 8px;
-
-    transition:
-      transform 0.25s ease,
-      opacity 0.25s ease;
+    gap: 12px;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+    margin-bottom: 30px;
+    word-break: break-all;
+    transition: color 0.2s ease, transform 0.2s ease;
   }
 
   .email-link:hover {
-    transform: translateX(5px);
-    opacity: 0.8;
+    color: var(--primary);
+    transform: translateX(4px);
   }
 
-  .email-link span {
-    font-size: 1rem;
+  .email-arrow {
+    color: var(--primary);
   }
 
   .socials {
     display: flex;
-    gap: 28px;
-
-    margin-top: 45px;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
   }
 
-  .socials a {
-    text-decoration: none;
-
-    color: var(--mauve-dark);
-
-    font-size: 0.9rem;
-
-    border-bottom: 1px solid
-      color-mix(
-        in srgb,
-        var(--mauve-dark) 40%,
-        transparent
-      );
-
-    padding-bottom: 4px;
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: all 0.2s ease;
   }
 
-  @media (max-width: 850px) {
-    .contact {
-      padding: 90px 0;
-    }
+  .social-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
 
+  .cv-btn {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+
+  .cv-btn:hover {
+    background: var(--primary);
+    color: #FFFFFF;
+  }
+
+  @media (max-width: 900px) {
     .container {
       grid-template-columns: 1fr;
-
-      gap: 50px;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .container {
-      width: min(94%, 1120px);
-      gap: 34px;
+      gap: 40px;
     }
 
-    .contact {
-      padding: 75px 0;
-    }
-
-    h2 {
-      width: 90%;
-      font-size: clamp(3rem, 14vw, 4.2rem);
-    }
-
-    .email-link {
-      max-width: 100%;
-      font-size: clamp(1rem, 5vw, 1.15rem);
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .lead {
-      margin-bottom: 34px;
-      font-size: clamp(1.22rem, 5.8vw, 1.35rem);
-      line-height: 1.5;
-    }
-
-    .socials {
-      flex-wrap: wrap;
-      gap: 16px 24px;
-      margin-top: 34px;
+    .contact-card {
+      padding: 28px 20px;
     }
   }
 </style>
+

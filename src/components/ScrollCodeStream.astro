@@ -1,0 +1,557 @@
+---
+// ScrollCodeStream.astro - Scroll-driven line-by-line code execution engine
+---
+
+<section id="code-stream" class="code-stream-section reveal">
+  <div class="stream-container">
+    
+    <div class="stream-intro reveal-item">
+      <div class="section-tag">
+        <span class="tag-sym">&lt;/&gt;</span>
+        <span class="tag-text">SCROLL-DRIVEN EXECUTION</span>
+      </div>
+      <h2>
+        Architecture logicielle.<br />
+        <span>Ligne par ligne.</span>
+      </h2>
+      <p class="stream-desc">
+        Faites défiler pour exécuter le flux architectural et observer la construction progressive d'un service Full Stack typé.
+      </p>
+    </div>
+
+    <!-- Scroll Track & Sticky Code Editor -->
+    <div class="stream-track" id="scroll-code-track">
+      <div class="stream-editor-sticky">
+        
+        <!-- IDE Topbar -->
+        <div class="editor-topbar">
+          <div class="topbar-dots" aria-hidden="true">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+
+          <div class="file-tab">
+            <span class="tab-lang">TS</span>
+            <span class="tab-name">ArchitecturePipeline.ts</span>
+            <span class="tab-status" id="code-status-pill">Ready</span>
+          </div>
+
+          <div class="progress-indicator">
+            <span class="progress-label">Scroll progress:</span>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" id="code-progress-fill"></div>
+            </div>
+            <span class="progress-pct" id="code-progress-pct">0%</span>
+          </div>
+        </div>
+
+        <!-- Editor Lines Container -->
+        <div class="editor-viewport" id="stream-viewport">
+          <div class="code-gutter" id="code-gutter" aria-hidden="true">
+            <!-- Line numbers injected via JS -->
+          </div>
+
+          <div class="code-lines-area" id="code-lines-area">
+            <!-- Injected via script to avoid JSX parser escaping -->
+          </div>
+        </div>
+
+        <!-- Terminal Console Footer -->
+        <div class="editor-terminal">
+          <div class="terminal-lead">
+            <span class="terminal-tag">CONSOLE</span>
+            <span id="stream-console-status">Faites défiler pour exécuter le script...</span>
+          </div>
+          <div class="terminal-stepper">
+            <button type="button" id="prev-line-btn" class="stepper-btn" aria-label="Ligne précédente">◀</button>
+            <span id="current-line-counter">0 / 22</span>
+            <button type="button" id="next-line-btn" class="stepper-btn" aria-label="Ligne suivante">▶</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const rawCodeLines: string[] = [
+    `// 01: Initialisation de l'architecture et typage strict`,
+    `import { ServiceConfig, DatabasePool } from "@core/types";`,
+    `import { createPipeline } from "@services/pipeline";`,
+    ``,
+    `// 02: Configuration immuable du cluster backend`,
+    `const config: ServiceConfig = Object.freeze({`,
+    `  env: "production",`,
+    `  architect: "Kaoutar Bendidi",`,
+    `  stack: ["TypeScript", "React", "Node.js", "PostgreSQL"],`,
+    `  resilience: { retryLimit: 3, timeoutMs: 2500 }`,
+    `});`,
+    ``,
+    `// 03: Connexion sécurisée au moteur relationnel`,
+    `export async function bootstrapCluster(db: DatabasePool) {`,
+    `  const session = await db.connect();`,
+    `  await session.execute(\`SET TRANSACTION ISOLATION LEVEL READ COMMITTED\`);`,
+    `  console.log("✓ Base PostgreSQL initialisée et saine");`,
+    ``,
+    `// 04: Déploiement des microservices et validation des contrats API`,
+    `  const pipeline = createPipeline({ auth: true, rateLimit: 100 });`,
+    `  return pipeline.listen({ port: 8080, status: "ONLINE" });`,
+    `}`
+  ];
+
+  function highlightSyntax(text: string): string {
+    const escaped = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    if (escaped.trim().startsWith("//")) {
+      return `<span class="tok-comment">${escaped}</span>`;
+    }
+
+    return escaped
+      .replace(/(\/\/.*$)/g, '<span class="tok-comment">$1</span>')
+      .replace(/(".*?"|`.*?`)/g, '<span class="tok-string">$1</span>')
+      .replace(/\b(import|export|const|function|async|await|return|from)\b/g, '<span class="tok-keyword">$1</span>')
+      .replace(/\b(ServiceConfig|DatabasePool|Object)\b/g, '<span class="tok-type">$1</span>')
+      .replace(/\b(freeze|createPipeline|bootstrapCluster|connect|execute|log|listen)\b(?=\()/g, '<span class="tok-func">$1</span>')
+      .replace(/\b(true|false)\b/g, '<span class="tok-keyword">$1</span>')
+      .replace(/\b(\d+)\b/g, '<span class="tok-number">$1</span>');
+  }
+
+  const track = document.getElementById("scroll-code-track");
+  const codeArea = document.getElementById("code-lines-area");
+  const gutter = document.getElementById("code-gutter");
+  const progressFill = document.getElementById("code-progress-fill");
+  const progressPct = document.getElementById("code-progress-pct");
+  const statusPill = document.getElementById("code-status-pill");
+  const consoleStatus = document.getElementById("stream-console-status");
+  const lineCounter = document.getElementById("current-line-counter");
+  const prevBtn = document.getElementById("prev-line-btn");
+  const nextBtn = document.getElementById("next-line-btn");
+
+  const totalLines = rawCodeLines.length;
+
+  // Build DOM nodes
+  if (gutter && codeArea) {
+    gutter.innerHTML = rawCodeLines.map((_, i) => `<span>${i + 1}</span>`).join("");
+    codeArea.innerHTML = rawCodeLines.map((line, i) => {
+      const content = line.trim().length === 0 ? "&nbsp;" : highlightSyntax(line);
+      return `<div class="stream-line" data-line="${i + 1}">${content}</div>`;
+    }).join("");
+  }
+
+  const lines = document.querySelectorAll<HTMLElement>(".stream-line");
+
+  const logsByStage: Record<number, string> = {
+    1: "Parsing module dependencies...",
+    5: "Applying immutable architecture config...",
+    9: "Compiling TypeScript definitions...",
+    13: "Establishing connection to PostgreSQL pool...",
+    17: "PostgreSQL: 200 OK. Connection verified.",
+    19: "Starting API gateway pipeline on port :8080...",
+    22: "🚀 System successfully compiled & running with 0 errors!"
+  };
+
+  let manualIndex = 0;
+
+  function updateCodeVisibility(activeCount: number) {
+    const safeCount = Math.max(0, Math.min(totalLines, activeCount));
+    manualIndex = safeCount;
+
+    lines.forEach((line, idx) => {
+      if (idx < safeCount) {
+        line.classList.add("revealed");
+        if (idx === safeCount - 1) {
+          line.classList.add("current-focus");
+        } else {
+          line.classList.remove("current-focus");
+        }
+      } else {
+        line.classList.remove("revealed");
+        line.classList.remove("current-focus");
+      }
+    });
+
+    if (gutter) {
+      const numbers = gutter.querySelectorAll("span");
+      numbers.forEach((num, idx) => {
+        if (idx < safeCount) num.classList.add("active-num");
+        else num.classList.remove("active-num");
+      });
+    }
+
+    const percentage = Math.round((safeCount / totalLines) * 100);
+    if (progressFill) progressFill.style.width = `${percentage}%`;
+    if (progressPct) progressPct.textContent = `${percentage}%`;
+    if (lineCounter) lineCounter.textContent = `${safeCount} / ${totalLines}`;
+
+    if (safeCount === 0) {
+      if (statusPill) statusPill.textContent = "Standby";
+      if (consoleStatus) consoleStatus.textContent = "Faites défiler pour exécuter le script...";
+    } else if (safeCount === totalLines) {
+      if (statusPill) {
+        statusPill.textContent = "Compiled";
+        statusPill.style.color = "#64dd8b";
+      }
+      if (consoleStatus) consoleStatus.textContent = logsByStage[22];
+    } else {
+      if (statusPill) {
+        statusPill.textContent = `Running L${safeCount}`;
+        statusPill.style.color = "#ffbd2e";
+      }
+      const relevantStages = Object.keys(logsByStage).map(Number).filter(n => n <= safeCount);
+      const lastStage = relevantStages[relevantStages.length - 1] || 1;
+      if (consoleStatus) consoleStatus.textContent = logsByStage[lastStage];
+    }
+  }
+
+  function onScroll() {
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    const startOffset = windowHeight * 0.75;
+    const totalScrollableDistance = rect.height;
+    const currentScrolled = startOffset - rect.top;
+
+    if (currentScrolled <= 0) {
+      updateCodeVisibility(0);
+      return;
+    }
+
+    const progress = Math.min(1, Math.max(0, currentScrolled / totalScrollableDistance));
+    const activeLines = Math.floor(progress * totalLines);
+    updateCodeVisibility(activeLines);
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+
+  prevBtn?.addEventListener("click", () => {
+    manualIndex = Math.max(0, manualIndex - 1);
+    updateCodeVisibility(manualIndex);
+  });
+
+  nextBtn?.addEventListener("click", () => {
+    manualIndex = Math.min(totalLines, manualIndex + 1);
+    updateCodeVisibility(manualIndex);
+  });
+
+  onScroll();
+</script>
+
+<style>
+  .code-stream-section {
+    padding: 100px 0 130px;
+    position: relative;
+  }
+
+  .stream-container {
+    width: min(1120px, 92%);
+    margin: 0 auto;
+  }
+
+  .stream-intro {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 50px;
+  }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(135, 155, 134, 0.16);
+    border: 1px solid rgba(135, 155, 134, 0.35);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--sage-dark);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .stream-intro h2 {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, sans-serif;
+    font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: var(--mauve-dark);
+    margin: 0 0 16px;
+    font-weight: 800;
+  }
+
+  .stream-intro h2 span {
+    color: var(--mauve);
+  }
+
+  .stream-desc {
+    font-size: 1.02rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .stream-track {
+    min-height: 140vh;
+    position: relative;
+  }
+
+  .stream-editor-sticky {
+    position: sticky;
+    top: 90px;
+    width: 100%;
+    background: #181320;
+    border: 1px solid color-mix(in srgb, var(--mauve) 30%, transparent);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 25px 60px -15px rgba(27, 18, 38, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .editor-topbar {
+    background: #120e18;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: ui-monospace, monospace;
+  }
+
+  .topbar-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .dot.red { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green { background: #27c93f; }
+
+  .file-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    color: #ded7e8;
+  }
+
+  .tab-lang {
+    background: #3178c6;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+
+  .tab-status {
+    color: var(--sage);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .progress-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.72rem;
+    color: #8c8297;
+  }
+
+  .progress-bar-wrap {
+    width: 100px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage), #64dd8b);
+    transition: width 0.15s ease-out;
+  }
+
+  .progress-pct {
+    color: #ded7e8;
+    font-weight: 600;
+    min-width: 35px;
+    text-align: right;
+  }
+
+  .editor-viewport {
+    display: flex;
+    padding: 18px 16px;
+    gap: 16px;
+    max-height: 480px;
+    overflow-y: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.86rem;
+    line-height: 1.68;
+    background: radial-gradient(circle at top right, rgba(99, 65, 132, 0.07), transparent 50%), #181320;
+  }
+
+  .code-gutter {
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    color: #4b415a;
+    text-align: right;
+    font-size: 0.8rem;
+    padding-right: 8px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    min-width: 28px;
+  }
+
+  .code-gutter span {
+    transition: color 0.2s ease;
+  }
+
+  :global(.code-gutter span.active-num) {
+    color: var(--sage);
+    font-weight: 700;
+  }
+
+  .code-lines-area {
+    flex: 1;
+  }
+
+  :global(.stream-line) {
+    opacity: 0.18;
+    transform: translateX(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+    padding: 1px 6px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  :global(.stream-line.revealed) {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  :global(.stream-line.current-focus) {
+    background: rgba(135, 155, 134, 0.12);
+    box-shadow: inset 2px 0 0 var(--sage);
+  }
+
+  /* Syntax Highlighting */
+  :global(.tok-comment) { color: #6d627f; font-style: italic; }
+  :global(.tok-keyword) { color: #b789e9; font-weight: 600; }
+  :global(.tok-type) { color: #79c0ff; }
+  :global(.tok-func) { color: #e5bf7e; }
+  :global(.tok-string) { color: #9ecc9b; }
+  :global(.tok-var) { color: #d8d0e3; }
+  :global(.tok-prop) { color: #fca879; }
+  :global(.tok-number) { color: #fca879; }
+
+  .editor-terminal {
+    background: #110d16;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: ui-monospace, monospace;
+    font-size: 0.74rem;
+  }
+
+  .terminal-lead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #a89eb6;
+  }
+
+  .terminal-tag {
+    background: rgba(99, 65, 132, 0.25);
+    border: 1px solid rgba(99, 65, 132, 0.4);
+    color: #c9a7ed;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+
+  .terminal-stepper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8c8297;
+  }
+
+  .stepper-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #d8d0e3;
+    padding: 2px 7px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.65rem;
+    transition: background 0.2s;
+  }
+
+  .stepper-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .code-stream-section {
+      padding: 70px 0 90px;
+    }
+
+    .stream-track {
+      min-height: 110vh;
+    }
+
+    .stream-editor-sticky {
+      top: 75px;
+    }
+
+    .progress-label {
+      display: none;
+    }
+
+    .editor-viewport {
+      max-height: 380px;
+      font-size: 0.78rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stream-track {
+      min-height: auto;
+    }
+    .stream-editor-sticky {
+      position: static;
+    }
+    :global(.stream-line) {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>

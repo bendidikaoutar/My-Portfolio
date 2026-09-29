@@ -1,35 +1,74 @@
+---
+// footer.astro - Pied de page propre et élégant
+---
+
 <footer>
   <div class="container">
-    <p>© 2026 Kaoutar. Tous droits réservés.</p>
+    <div class="footer-content">
+      <p class="copyright">
+        © 2026 Kaoutar Bendidi · Conçu et développé avec passion & code propre.
+      </p>
+      <a href="#home" class="back-to-top" aria-label="Retourner en haut de la page">
+        <span>Haut de page</span>
+        <span class="arrow-up">↑</span>
+      </a>
+    </div>
   </div>
 </footer>
 
 <style>
   footer {
-    padding: 30px 0;
-    background: var(--bg-soft);
+    padding: 32px 0;
+    background: var(--bg);
     border-top: 1px solid var(--border);
+    transition: background-color 0.3s ease;
   }
 
   .container {
-    width: min(1100px, 90%);
+    width: min(1180px, 92%);
     margin: 0 auto;
-    text-align: center;
   }
 
-  p {
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .copyright {
     margin: 0;
     color: var(--text-soft);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+  }
+
+  .back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+  }
+
+  .back-to-top:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
   }
 
   @media (max-width: 520px) {
-    .container {
-      width: min(94%, 1120px);
-    }
-
-    footer {
-      padding: 24px 0;
+    .footer-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 14px;
     }
   }
 </style>
+

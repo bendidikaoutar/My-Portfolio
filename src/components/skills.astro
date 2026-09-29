@@ -1,70 +1,100 @@
-<section id="skills" class="skills reveal">
+---
+import ArchitectureFlow from "./ArchitectureFlow.astro";
+import ScrollTypewriter from "./ScrollTypewriter.astro";
+---
+
+<section id="skills" class="skills">
   <div class="container">
 
-    <div class="skills-header reveal-item reveal-delay-1">
+    <div class="skills-topbar">
       <div class="section-index">
         <span>03</span>
         <span class="line"></span>
-        <p>Stack</p>
+        <p>Stack & Architecture</p>
       </div>
 
-      <h2>
-        Des outils pour<br />
-        construire de<br />
-        bonnes idées.
-      </h2>
+      <div class="skills-header-grid">
+        <h2>
+          <ScrollTypewriter text="Technologies &" mono /><br />
+          <ScrollTypewriter text="Architectures maîtrisées." mono />
+        </h2>
+
+        <p class="skills-lead">
+          De la modélisation relationnelle de données jusqu'à l'orchestration de conteneurs et de pipelines CI/CD, chaque choix technologique répond à des impératifs de scalabilité, de sécurité et d'ergonomie.
+        </p>
+      </div>
     </div>
 
-    <div class="skills-list reveal-item reveal-delay-2">
+    <!-- Live Interactive Full Stack Architecture Pipeline -->
+    <div class="arch-section">
+      <ArchitectureFlow />
+    </div>
+
+    <!-- Categorized Skill Matrix -->
+    <div class="skills-list">
 
       <div class="skill-row">
         <span class="number">01</span>
-
-        <h3>Frontend</h3>
-
+        <div class="skill-meta">
+          <h3>Frontend</h3>
+          <span class="skill-subtitle">Interfaces & UX</span>
+        </div>
         <div class="tags">
-          <span>React</span>
+          <span>React 19</span>
           <span>TypeScript</span>
+          <span>Next.js</span>
           <span>Astro</span>
-          <span>HTML</span>
-          <span>CSS</span>
+          <span>Tailwind CSS</span>
+          <span>HTML5 / Semantic</span>
+          <span>CSS Modulaire</span>
+          <span>State Management</span>
         </div>
       </div>
 
       <div class="skill-row">
         <span class="number">02</span>
-
-        <h3>Backend</h3>
-
+        <div class="skill-meta">
+          <h3>Backend</h3>
+          <span class="skill-subtitle">APIs & Microservices</span>
+        </div>
         <div class="tags">
           <span>Node.js</span>
           <span>Express</span>
-          <span>Prisma</span>
-          <span>REST API</span>
+          <span>Prisma ORM</span>
+          <span>RESTful APIs</span>
+          <span>Auth & JWT</span>
+          <span>Middleware Architecture</span>
         </div>
       </div>
 
       <div class="skill-row">
         <span class="number">03</span>
-
-        <h3>Database</h3>
-
+        <div class="skill-meta">
+          <h3>Database</h3>
+          <span class="skill-subtitle">Persistance & Modélisation</span>
+        </div>
         <div class="tags">
           <span>PostgreSQL</span>
           <span>SQL</span>
+          <span>MySQL</span>
+          <span>Schema Migrations</span>
+          <span>Relations & Indexation</span>
         </div>
       </div>
 
       <div class="skill-row">
         <span class="number">04</span>
-
-        <h3>Tools</h3>
-
+        <div class="skill-meta">
+          <h3>DevOps & QA</h3>
+          <span class="skill-subtitle">Intégration & Déploiement</span>
+        </div>
         <div class="tags">
-          <span>Git</span>
-          <span>GitHub</span>
-          <span>Postman</span>
-          <span>Swagger</span>
+          <span>Git & GitHub Flow</span>
+          <span>GitHub Actions (CI/CD)</span>
+          <span>Docker Basics</span>
+          <span>Postman / Thunder</span>
+          <span>Linux CLI</span>
+          <span>Swagger / OpenAPI</span>
         </div>
       </div>
 
@@ -76,110 +106,117 @@
 <style>
   .skills {
     padding: 130px 0;
-    background: var(--mauve-dark);
-    color: var(--bg);
+    background: var(--bg-subtle);
+    color: var(--text-main);
+    border-block: 1px solid var(--border);
   }
 
   .container {
-    width: min(1120px, 90%);
+    width: min(1140px, 92%);
     margin: 0 auto;
+  }
 
-    display: grid;
-    grid-template-columns: 0.85fr 1.15fr;
-    gap: 90px;
-
-    align-items: start;
+  .skills-topbar {
+    margin-bottom: 50px;
   }
 
   .section-index {
     display: flex;
     align-items: center;
     gap: 12px;
-
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 
   .section-index span:first-child {
     font-family: Georgia, serif;
-    color: var(--sage);
+    color: var(--accent-sage);
   }
 
   .line {
     width: 42px;
     height: 1px;
-    background: var(--sage);
+    background: var(--accent-sage);
   }
 
   .section-index p {
     margin: 0;
-
     text-transform: uppercase;
     letter-spacing: 3px;
-
     font-size: 0.72rem;
     font-weight: 700;
+    color: var(--accent-sage);
+  }
 
-    color: var(--sage);
+  .skills-header-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
   }
 
   h2 {
     margin: 0;
-
     font-family: Georgia, serif;
-    font-size: clamp(3rem, 5vw, 5rem);
+    font-size: clamp(3rem, 5vw, 4.8rem);
     line-height: 0.95;
-
     letter-spacing: -2px;
-
-    color: var(--bg);
+    color: var(--text-main);
   }
 
+  .skills-lead {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 500px;
+  }
+
+  .arch-section {
+    margin-bottom: 40px;
+  }
+
+  /* LIST */
+
   .skills-list {
-    border-top: 1px solid
-      color-mix(in srgb, var(--bg) 25%, transparent);
+    border-top: 1px solid var(--border);
   }
 
   .skill-row {
     display: grid;
-    grid-template-columns: 55px 150px 1fr;
-
-    gap: 22px;
-
-    padding: 26px 0;
-
-    border-bottom: 1px solid
-      color-mix(in srgb, var(--bg) 18%, transparent);
-
-    transition:
-      padding-left 0.25s ease,
-      background 0.25s ease;
+    grid-template-columns: 50px 200px 1fr;
+    gap: 24px;
+    padding: 28px 0;
+    align-items: start;
+    border-bottom: 1px solid var(--border);
+    transition: padding-left 0.25s ease, background 0.25s ease;
   }
 
   .skill-row:hover {
     padding-left: 10px;
-
-    background:
-      color-mix(
-        in srgb,
-        var(--mauve) 18%,
-        transparent
-      );
+    background: var(--card);
   }
 
   .number {
-    color: var(--sage);
-
-    font-size: 0.75rem;
+    color: var(--accent-sage);
+    font-size: 0.78rem;
+    font-weight: 700;
     padding-top: 4px;
+    font-family: Georgia, serif;
   }
 
-  h3 {
-    margin: 0;
-
+  .skill-meta h3 {
+    margin: 0 0 4px;
     font-family: Georgia, serif;
-    font-size: 1.3rem;
+    font-size: 1.35rem;
+    color: var(--text-main);
+  }
 
-    color: var(--bg);
+  .skill-subtitle {
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent-sage);
+    font-weight: 600;
   }
 
   .tags {
@@ -189,52 +226,39 @@
   }
 
   .tags span {
-    border: 1px solid
-      color-mix(in srgb, var(--bg) 22%, transparent);
-
-    padding: 7px 11px;
-
+    border: 1px solid var(--border);
+    padding: 7px 13px;
     border-radius: 100px;
-
     font-size: 0.78rem;
-
-    color:
-      color-mix(
-        in srgb,
-        var(--bg) 82%,
-        transparent
-      );
-
-    transition:
-      background 0.25s ease,
-      color 0.25s ease,
-      transform 0.25s ease;
+    color: var(--text-muted);
+    background: var(--card);
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
   }
 
   .tags span:hover {
-    background: var(--sage);
-    color: var(--mauve-dark);
-
+    background: var(--accent-sage);
+    color: #fff;
+    border-color: var(--accent-sage);
     transform: translateY(-2px);
   }
 
-  @media (max-width: 850px) {
+  @media (max-width: 900px) {
     .skills {
       padding: 90px 0;
     }
 
-    .container {
+    .skills-header-grid {
       grid-template-columns: 1fr;
-      gap: 50px;
+      gap: 20px;
     }
 
     .skill-row {
-      grid-template-columns: 45px 1fr;
+      grid-template-columns: 40px 1fr;
     }
 
     .tags {
       grid-column: 2;
-      margin-top: 4px;
+      margin-top: 8px;
     }
   }
 
@@ -243,52 +267,21 @@
       padding: 75px 0;
     }
 
-    .container {
-      width: min(94%, 1120px);
-    }
-
-    h2 {
-      max-width: 92%;
-      font-size: clamp(2.7rem, 12vw, 3.8rem);
-      line-height: 0.98;
-    }
-
     .skill-row {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
-      padding: 20px 0;
+      padding: 22px 0;
     }
 
-    .number,
-    .tags {
+    .number, .tags {
       grid-column: auto;
     }
 
     .tags span {
       font-size: 0.72rem;
       padding: 6px 10px;
-    }
-  }
-
-  @media (min-width: 370px) and (max-width: 520px) {
-    .skills-list {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0 20px;
-    }
-
-    .skill-row:nth-child(even) {
-      padding-top: 42px;
-    }
-
-    .skill-row h3 {
-      font-size: 1.15rem;
-    }
-
-    .tags {
-      gap: 6px;
     }
   }
 </style>

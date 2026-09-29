@@ -1,0 +1,585 @@
+---
+// TerminalModal.astro - Developer CLI Terminal & Quick Command Launcher
+---
+
+<!-- Floating Terminal Launcher -->
+<div class="terminal-launcher-wrap">
+  <button id="open-terminal-btn" class="terminal-trigger-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Ouvrir le terminal développeur (Touche: ~)">
+    <span class="prompt-sym">&gt;_</span>
+    <span class="terminal-label">Terminal</span>
+    <kbd class="terminal-kbd">~</kbd>
+  </button>
+</div>
+
+<!-- Terminal Modal Overlay -->
+<div id="terminal-modal" class="terminal-modal" role="dialog" aria-modal="true" aria-labelledby="terminal-title" hidden>
+  <div class="terminal-backdrop" id="terminal-backdrop"></div>
+
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <div class="terminal-dots" aria-hidden="true">
+        <button class="dot-btn close" id="close-terminal-dot" title="Fermer"></button>
+        <span class="dot-btn minimize"></span>
+        <span class="dot-btn expand"></span>
+      </div>
+
+      <div class="terminal-title-bar" id="terminal-title">
+        <span class="shell-user">kaoutar@engineer</span>:<span class="shell-path">~/portfolio</span> <span class="shell-branch">(main)</span>
+      </div>
+
+      <button class="terminal-close-btn" id="close-terminal-btn" type="button" aria-label="Fermer le terminal">
+        ✕
+      </button>
+    </div>
+
+    <!-- Quick action chips -->
+    <div class="terminal-quick-chips">
+      <span class="chips-label">Quick:</span>
+      <button type="button" data-cmd="help">help</button>
+      <button type="button" data-cmd="skills">skills</button>
+      <button type="button" data-cmd="projects">projects</button>
+      <button type="button" data-cmd="dishly">dishly</button>
+      <button type="button" data-cmd="cv">cv</button>
+      <button type="button" data-cmd="contact">contact</button>
+      <button type="button" data-cmd="clear">clear</button>
+    </div>
+
+    <!-- Terminal screen output -->
+    <div class="terminal-screen" id="terminal-output">
+      <div class="term-line term-intro">
+        <span class="term-accent">Kaoutar Bendidi CLI</span> — Environment: Production (v1.4.0)
+      </div>
+      <div class="term-line term-muted">
+        Tapez <span class="term-highlight">help</span> pour afficher la liste des commandes ou cliquez sur les suggestions.
+      </div>
+      <div class="term-divider"></div>
+    </div>
+
+    <!-- Terminal input prompt -->
+    <form class="terminal-input-row" id="terminal-form">
+      <label for="cli-input" class="input-prompt">
+        <span class="prompt-user">kaoutar@dev</span>:<span class="prompt-tilde">~</span>$
+      </label>
+      <input
+        type="text"
+        id="cli-input"
+        class="cli-input"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder="Tapez une commande (ex: help, projects)..."
+      />
+    </form>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.getElementById("open-terminal-btn");
+  const modal = document.getElementById("terminal-modal");
+  const backdrop = document.getElementById("terminal-backdrop");
+  const closeBtn = document.getElementById("close-terminal-btn");
+  const closeDot = document.getElementById("close-terminal-dot");
+  const form = document.getElementById("terminal-form");
+  const input = document.getElementById("cli-input") as HTMLInputElement | null;
+  const output = document.getElementById("terminal-output");
+  const quickChips = document.querySelectorAll(".terminal-quick-chips button");
+
+  const history: string[] = [];
+  let historyIndex = -1;
+
+  function openTerminal() {
+    if (!modal) return;
+    modal.removeAttribute("hidden");
+    openBtn?.setAttribute("aria-expanded", "true");
+    setTimeout(() => {
+      input?.focus();
+    }, 50);
+  }
+
+  function closeTerminal() {
+    if (!modal) return;
+    modal.setAttribute("hidden", "true");
+    openBtn?.setAttribute("aria-expanded", "false");
+  }
+
+  openBtn?.addEventListener("click", openTerminal);
+  closeBtn?.addEventListener("click", closeTerminal);
+  closeDot?.addEventListener("click", closeTerminal);
+  backdrop?.addEventListener("click", closeTerminal);
+  window.addEventListener("open-terminal", openTerminal);
+
+  // Keyboard shortcut '~' or 'Escape'
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "~" || e.key === "²") {
+      if (modal?.hasAttribute("hidden")) {
+        openTerminal();
+      } else {
+        closeTerminal();
+      }
+    } else if (e.key === "Escape" && !modal?.hasAttribute("hidden")) {
+      closeTerminal();
+    }
+  });
+
+  function appendLine(html: string) {
+    if (!output) return;
+    const div = document.createElement("div");
+    div.className = "term-line";
+    div.innerHTML = html;
+    output.appendChild(div);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function runCommand(rawCmd: string) {
+    const cmd = rawCmd.trim().toLowerCase();
+    if (!cmd) return;
+
+    history.push(rawCmd);
+    historyIndex = history.length;
+
+    appendLine(`<span class="term-prompt">kaoutar@dev:~$</span> <span class="term-command">${rawCmd}</span>`);
+
+    switch (cmd) {
+      case "help":
+        appendLine(`
+          <div class="help-grid">
+            <div><span class="cmd-name">projects</span> : Lister les projets récents et naviguer</div>
+            <div><span class="cmd-name">skills</span>   : Afficher la stack technique & architectures</div>
+            <div><span class="cmd-name">dishly</span>   : Détails du projet Dishly (Full Stack)</div>
+            <div><span class="cmd-name">cv</span>       : Télécharger le CV (PDF)</div>
+            <div><span class="cmd-name">contact</span>  : Coordonnées & réseaux</div>
+            <div><span class="cmd-name">whoami</span>   : Présentation du profil ingénieure</div>
+            <div><span class="cmd-name">clear</span>    : Nettoyer la console</div>
+            <div><span class="cmd-name">exit</span>     : Fermer le terminal</div>
+          </div>
+        `);
+        break;
+
+      case "whoami":
+        appendLine(`
+          <div class="term-box">
+            <strong>Kaoutar Bendidi</strong><br/>
+            Élève Ingénieure en 4e année · Spécialité Génie Informatique & Full Stack.<br/>
+            Intérêts : Conception d'APIs REST, architectures réactives, bases relationnelles et cloud.
+          </div>
+        `);
+        break;
+
+      case "skills":
+        appendLine(`
+          <div class="skills-term-table">
+            <div><strong>[Frontend]</strong> : React, TypeScript, Astro, Next.js, HTML/CSS</div>
+            <div><strong>[Backend]</strong>  : Node.js, Express, REST APIs, Prisma ORM</div>
+            <div><strong>[Database]</strong> : PostgreSQL, SQL, MySQL</div>
+            <div><strong>[DevOps]</strong>   : Docker, GitHub Actions, CI/CD, Git, Linux</div>
+          </div>
+        `);
+        break;
+
+      case "projects":
+        appendLine(`
+          <div><strong>Projets sélectionnés :</strong></div>
+          <div>1. <strong>Dishly</strong> (Full Stack - React, Node, Express, Prisma, PostgreSQL) [Production]</div>
+          <div>2. <strong>Sehati</strong> (Web App - Next.js, Node.js, MySQL)</div>
+          <div>3. <strong>Muestra</strong> (Educational Platform - Vue.js, CI/CD)</div>
+          <div>4. <strong>Interactive Generative Studio</strong> (Python, Flask, OpenCV)</div>
+          <div class="term-action">Redirection vers la section Projets...</div>
+        `);
+        setTimeout(() => {
+          closeTerminal();
+          document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+        }, 800);
+        break;
+
+      case "dishly":
+        appendLine(`
+          <div class="term-box">
+            <strong>Dishly — Full Stack Recipe Application</strong><br/>
+            Stack: React 19, Node.js, Express REST API, Prisma ORM, PostgreSQL.<br/>
+            Statut: <span style="color:#4ade80;">Production Ready</span><br/>
+            Fonctionnalités : Authentification sécurisée, gestion relationnelle des recettes, API documentée.
+          </div>
+        `);
+        break;
+
+      case "cv":
+        appendLine(`<div>Téléchargement du CV de Kaoutar Bendidi en cours...</div>`);
+        const a = document.createElement("a");
+        a.href = "/cv-kaoutar-bendidi.pdf";
+        a.download = "cv-kaoutar-bendidi.pdf";
+        a.click();
+        break;
+
+      case "contact":
+        appendLine(`
+          <div><strong>Contact & Liens :</strong></div>
+          <div>Email : <a href="mailto:bendidikaoutar05@gmail.com" class="term-link">bendidikaoutar05@gmail.com</a></div>
+          <div>LinkedIn : <a href="https://linkedin.com/in/bendidi-kaoutar-87b866317" target="_blank" class="term-link">linkedin.com/in/bendidi-kaoutar</a></div>
+          <div>GitHub : <a href="https://github.com/bendidikaoutar" target="_blank" class="term-link">github.com/bendidikaoutar</a></div>
+        `);
+        break;
+
+      case "clear":
+        if (output) {
+          output.innerHTML = "";
+        }
+        break;
+
+      case "exit":
+        closeTerminal();
+        break;
+
+      default:
+        appendLine(`<span class="term-err">Commande inconnue: "${rawCmd}". Tapez <strong>help</strong> pour voir les options.</span>`);
+    }
+  }
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!input) return;
+    const val = input.value;
+    input.value = "";
+    runCommand(val);
+  });
+
+  // Up/Down arrows for history
+  input?.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") {
+      if (historyIndex > 0) {
+        historyIndex--;
+        input.value = history[historyIndex] || "";
+      }
+    } else if (e.key === "ArrowDown") {
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        input.value = history[historyIndex] || "";
+      } else {
+        historyIndex = history.length;
+        input.value = "";
+      }
+    }
+  });
+
+  quickChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const cmd = chip.getAttribute("data-cmd");
+      if (cmd) runCommand(cmd);
+      input?.focus();
+    });
+  });
+</script>
+
+<style>
+  /* Launcher Button */
+  .terminal-launcher-wrap {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+  }
+
+  .terminal-trigger-btn {
+    background: #191421;
+    border: 1px solid color-mix(in srgb, var(--mauve) 40%, transparent);
+    color: var(--bg);
+    padding: 10px 16px;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+  }
+
+  .terminal-trigger-btn:hover {
+    background: var(--mauve-dark);
+    border-color: var(--sage);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  .prompt-sym {
+    color: var(--sage);
+    font-weight: 700;
+  }
+
+  .terminal-kbd {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    color: #9ecc9b;
+  }
+
+  /* Modal */
+  .terminal-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .terminal-modal[hidden] {
+    display: none;
+  }
+
+  .terminal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 10, 20, 0.75);
+    backdrop-filter: blur(8px);
+  }
+
+  .terminal-container {
+    position: relative;
+    width: min(720px, 95vw);
+    height: min(480px, 80vh);
+    background: #140f1c;
+    border: 1px solid color-mix(in srgb, var(--mauve) 45%, transparent);
+    border-radius: 18px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  }
+
+  /* Header */
+  .terminal-header {
+    background: #1c1527;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 7px;
+  }
+
+  .dot-btn {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+  }
+
+  .dot-btn.close { background: #ff5f56; }
+  .dot-btn.minimize { background: #ffbd2e; }
+  .dot-btn.expand { background: #27c93f; }
+
+  .terminal-title-bar {
+    font-size: 0.75rem;
+    color: #a89eb6;
+  }
+
+  .shell-user { color: #879b86; font-weight: 600; }
+  .shell-path { color: #d8cde6; }
+  .shell-branch { color: #b789e9; }
+
+  .terminal-close-btn {
+    background: transparent;
+    border: none;
+    color: #8c8297;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .terminal-close-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Quick action chips */
+  .terminal-quick-chips {
+    background: #171122;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 7px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+  }
+
+  .chips-label {
+    font-size: 0.65rem;
+    color: #7b7189;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+
+  .terminal-quick-chips button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: #c4b9d3;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .terminal-quick-chips button:hover {
+    background: rgba(135, 155, 134, 0.2);
+    border-color: var(--sage);
+    color: #fff;
+  }
+
+  /* Screen output */
+  .terminal-screen {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: #dfd8ea;
+  }
+
+  .term-line {
+    margin-bottom: 8px;
+  }
+
+  .term-accent {
+    color: var(--sage);
+    font-weight: 700;
+  }
+
+  .term-muted {
+    color: #8c8297;
+    font-size: 0.76rem;
+  }
+
+  .term-highlight {
+    color: #e5bf7e;
+    font-weight: 600;
+  }
+
+  .term-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 10px 0;
+  }
+
+  .term-prompt {
+    color: var(--sage);
+    font-weight: 600;
+  }
+
+  .term-command {
+    color: #f7f3ee;
+    font-weight: 600;
+  }
+
+  .term-box {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--sage);
+    padding: 8px 12px;
+    margin: 6px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  :global(.help-grid) {
+    display: grid;
+    gap: 4px;
+    margin: 6px 0;
+    color: #cfc5db;
+  }
+
+  :global(.cmd-name) {
+    color: #b789e9;
+    font-weight: 700;
+  }
+
+  :global(.skills-term-table) {
+    display: grid;
+    gap: 4px;
+    margin: 6px 0;
+  }
+
+  :global(.term-action) {
+    color: var(--sage);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  :global(.term-link) {
+    color: #79c0ff;
+    text-decoration: underline;
+  }
+
+  :global(.term-err) {
+    color: #ff7b72;
+  }
+
+  /* Input */
+  .terminal-input-row {
+    background: #181224;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .input-prompt {
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .prompt-user {
+    color: var(--sage);
+    font-weight: 700;
+  }
+
+  .prompt-tilde {
+    color: #b789e9;
+  }
+
+  .cli-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f7f3ee;
+    font-family: inherit;
+    font-size: 0.82rem;
+  }
+
+  .cli-input::placeholder {
+    color: #635873;
+  }
+
+  @media (max-width: 520px) {
+    .terminal-launcher-wrap {
+      bottom: 16px;
+      right: 16px;
+    }
+
+    .terminal-kbd {
+      display: none;
+    }
+
+    .terminal-container {
+      height: 85vh;
+      border-radius: 14px;
+    }
+  }
+</style>

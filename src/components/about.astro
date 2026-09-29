@@ -1,344 +1,409 @@
-<section id="about" class="about reveal">
-  <div class="container">
-
-    <div class="about-left reveal-item reveal-delay-1">
-      <div class="section-index">
+<section id="about" class="about">
+  <div class="about-shell">
+    <header class="about-heading about-reveal" style="--about-delay: 0ms">
+      <div class="section-kicker">
         <span>02</span>
-        <span class="line"></span>
-        <p>À propos</p>
+        <span class="kicker-line"></span>
+        <p>Profil & approche</p>
       </div>
 
-      <h2>
-        Curieuse.<br />
-        Rigoureuse.<br />
-        Toujours en apprentissage.
+      <p class="code-label" aria-hidden="true"><span>const</span> approach =</p>
+      <h2 class="about-title" aria-label="Concevoir avec intention.">
+        <span id="about-typewriter" data-text="Concevoir avec intention.">Concevoir avec intention.</span><span class="typing-caret" aria-hidden="true"></span>
       </h2>
-    </div>
+    </header>
 
-    <div class="about-right">
+    <aside class="profile-card about-reveal" style="--about-delay: 100ms" aria-label="Profil de Kaoutar Bendidi">
+      <div class="portrait-frame">
+        <img src="/kaoutar-profile.jpg" alt="Portrait de Kaoutar Bendidi" loading="lazy" />
+        <span class="availability-dot" aria-hidden="true"></span>
+      </div>
+      <div class="profile-copy">
+        <p class="profile-name">Kaoutar Bendidi</p>
+        <p class="profile-role">Ingénieure logiciel Full Stack</p>
+      </div>
+      <dl class="profile-details">
+        <div><dt>Formation</dt><dd>Génie informatique</dd></div>
+        <div><dt>Focus</dt><dd>Architecture, Cloud, DevOps</dd></div>
+      </dl>
+    </aside>
 
-      <div class="about-intro">
-        <div class="about-copy reveal-item reveal-delay-2">
-
-      <p class="lead">
-        Kaoutar BENDIDI, étudiante en 4e année d’ingénierie informatique. Je m’intéresse au développement Full Stack et j’explore progressivement le cloud, le DevOps et les usages de l’IA dans le développement logiciel.
+    <div class="about-copy about-reveal" style="--about-delay: 180ms">
+      <p class="about-lead">
+        Je construis des applications web de bout en bout, du modèle de données au déploiement, avec une attention constante à la clarté et à la fiabilité.
       </p>
-
       <p>
-        À travers mes projets, j’apprends à concevoir une application dans son ensemble : interface, logique backend, APIs et bases de données. J’aime comprendre comment les différentes parties d’un produit fonctionnent ensemble et améliorer progressivement ma façon de coder.
+        Mon travail associe interfaces réactives, APIs structurées et bases relationnelles. Chaque décision technique sert un objectif simple : livrer un produit lisible, maintenable et agréable à utiliser.
       </p>
-
-        </div>
-
-        <figure class="about-photo reveal-item reveal-delay-3">
-          <img
-            src="/kaoutar-profile.jpg"
-            alt="Portrait de Kaoutar Bendidi"
-            loading="lazy"
-          />
-        </figure>
-      </div>
-
     </div>
 
-    <div class="about-meta reveal-item reveal-delay-4">
+    <div class="expertise-list" aria-label="Domaines d'expertise">
+      <article class="expertise-item about-reveal" style="--about-delay: 240ms">
+        <span class="expertise-number">01</span>
         <div>
-          <span>01</span>
-          <h3>Frontend</h3>
-          <p>Interfaces modernes, responsive et accessibles.</p>
+          <h3>Frontend Engineering</h3>
+          <p>Interfaces typées, composants réutilisables et accessibilité native.</p>
         </div>
+        <span class="expertise-stack">React · TypeScript · Astro</span>
+      </article>
 
+      <article class="expertise-item about-reveal" style="--about-delay: 320ms">
+        <span class="expertise-number">02</span>
         <div>
-          <span>02</span>
-          <h3>Backend</h3>
-          <p>APIs, logique applicative et gestion des données.</p>
+          <h3>Backend & APIs</h3>
+          <p>Services RESTful, validation, sécurité et persistance relationnelle.</p>
         </div>
+        <span class="expertise-stack">Node.js · Express · Prisma</span>
+      </article>
 
+      <article class="expertise-item about-reveal" style="--about-delay: 400ms">
+        <span class="expertise-number">03</span>
         <div>
-          <span>03</span>
-          <h3>Approche produit</h3>
-          <p>Comprendre le besoin avant de construire la solution.</p>
+          <h3>Delivery & DevOps</h3>
+          <p>Intégration continue, qualité de code et déploiements reproductibles.</p>
         </div>
-      </div>
-
+        <span class="expertise-stack">GitHub Actions · Docker · CI/CD</span>
+      </article>
+    </div>
   </div>
 </section>
 
-<style>
-  .about {
-    padding: 130px 0;
+<script>
+  const aboutSection = document.getElementById("about");
+  const typewriter = document.getElementById("about-typewriter");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = window.matchMedia("(max-width: 580px)").matches;
+  let hasTyped = false;
+
+  function typeHeading() {
+    if (hasTyped || !typewriter) return;
+    hasTyped = true;
+
+    const text = typewriter.dataset.text || typewriter.textContent || "";
+    if (reducedMotion) {
+      typewriter.textContent = text;
+      return;
+    }
+
+    typewriter.textContent = "";
+    let index = 0;
+
+    function writeNextCharacter() {
+      if (!typewriter || index >= text.length) return;
+      typewriter.textContent += text[index];
+      index += 1;
+      window.setTimeout(writeNextCharacter, isMobile ? 30 : 48);
+    }
+
+    window.setTimeout(writeNextCharacter, 180);
   }
 
-  .container {
-    width: min(1120px, 90%);
+  if (aboutSection && !reducedMotion) {
+    const revealItems = aboutSection.querySelectorAll<HTMLElement>(".about-reveal");
+    let hasScheduledUpdate = false;
+
+    function updateScrollProgress() {
+      const viewportHeight = window.innerHeight;
+      const start = viewportHeight * 0.92;
+      const end = viewportHeight * 0.38;
+
+      revealItems.forEach((item) => {
+        const itemTop = item.getBoundingClientRect().top;
+        const progress = Math.min(1, Math.max(0, (start - itemTop) / (start - end)));
+        item.style.setProperty("--scroll-progress", progress.toFixed(3));
+        item.style.setProperty("--scroll-offset", `${((1 - progress) * 36).toFixed(1)}px`);
+      });
+
+      if (aboutSection.getBoundingClientRect().top < viewportHeight * 0.82) {
+        typeHeading();
+      }
+    }
+
+    function scheduleUpdate() {
+      if (hasScheduledUpdate) return;
+      hasScheduledUpdate = true;
+      window.requestAnimationFrame(() => {
+        updateScrollProgress();
+        hasScheduledUpdate = false;
+      });
+    }
+
+    aboutSection.classList.add("about-scroll-active");
+    updateScrollProgress();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
+  } else {
+    typeHeading();
+  }
+</script>
+
+<style>
+  .about {
+    padding: 120px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .about-shell {
+    width: min(1120px, 92%);
     margin: 0 auto;
-
     display: grid;
-    grid-template-columns: 0.72fr 1.28fr;
-    column-gap: 70px;
-    row-gap: 70px;
-
+    grid-template-columns: minmax(0, 1.05fr) minmax(240px, 0.55fr);
+    gap: 36px 64px;
     align-items: start;
   }
 
-  .section-index {
+  .section-kicker {
     display: flex;
     align-items: center;
     gap: 12px;
-
-    margin-bottom: 28px;
-  }
-
-  .section-index span:first-child {
-    font-family: Georgia, serif;
-    color: var(--sage-dark);
-  }
-
-  .line {
-    width: 42px;
-    height: 1px;
-
-    background: var(--sage);
-  }
-
-  .section-index p {
-    margin: 0;
-
-    text-transform: uppercase;
-    letter-spacing: 3px;
-
-    color: var(--mauve);
-
+    margin-bottom: 22px;
+    color: var(--accent-sage);
+    font-family: var(--font-mono);
     font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .section-kicker p { margin: 0; }
+
+  .kicker-line {
+    width: 34px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .code-label {
+    margin: 0 0 8px;
+    color: var(--text-soft);
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+  }
+
+  .code-label span { color: var(--primary); }
+
+  .about-title {
+    max-width: 720px;
+    margin: 0;
+    color: var(--text-main);
+    font-family: var(--font-mono);
+    font-size: clamp(2.45rem, 5vw, 4.6rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.06;
+  }
+
+  .typing-caret {
+    display: inline-block;
+    width: 0.1em;
+    height: 0.9em;
+    margin-left: 0.08em;
+    background: var(--accent-sage);
+    vertical-align: -0.06em;
+    animation: caretBlink 900ms steps(1, end) infinite;
+  }
+
+  .profile-card {
+    justify-self: end;
+    width: min(100%, 280px);
+    padding: 22px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .portrait-frame {
+    position: relative;
+    width: min(172px, 62vw);
+    aspect-ratio: 1;
+    margin: 0 auto 18px;
+  }
+
+  .portrait-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border: 4px solid var(--bg-subtle);
+    border-radius: 50%;
+  }
+
+  .availability-dot {
+    position: absolute;
+    right: 8%;
+    bottom: 8%;
+    width: 17px;
+    height: 17px;
+    border: 3px solid var(--card);
+    border-radius: 50%;
+    background: var(--accent-sage);
+  }
+
+  .profile-copy { text-align: center; }
+  .profile-name, .profile-role { margin: 0; }
+
+  .profile-name {
+    color: var(--text-main);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .profile-role {
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .profile-details {
+    display: grid;
+    gap: 10px;
+    margin: 20px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .profile-details div {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 12px;
+  }
+
+  .profile-details dt, .profile-details dd {
+    margin: 0;
+    font-size: 0.72rem;
+  }
+
+  .profile-details dt {
+    color: var(--text-soft);
+    font-family: var(--font-mono);
+  }
+
+  .profile-details dd {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .about-copy { max-width: 690px; }
+
+  .about-copy p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .about-copy .about-lead {
+    margin-bottom: 16px;
+    color: var(--text-main);
+    font-size: clamp(1.18rem, 2vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.55;
+  }
+
+  .expertise-list {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border);
+  }
+
+  .expertise-item {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .expertise-number {
+    color: var(--accent-sage);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
     font-weight: 700;
   }
 
-  h2 {
-    margin: 0;
+  .expertise-item h3, .expertise-item p { margin: 0; }
 
-    font-family: Georgia, serif;
-    font-size: clamp(3rem, 6vw, 5.4rem);
-    line-height: 0.95;
-
-    letter-spacing: -2px;
-
-    color: var(--mauve-dark);
+  .expertise-item h3 {
+    color: var(--text-main);
+    font-size: 1rem;
   }
 
-  .about-right {
-    padding-top: 44px;
+  .expertise-item p {
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: 0.88rem;
   }
 
-  .lead {
-    font-family: Georgia, serif;
-
-    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-    line-height: 1.4;
-
-    color: var(--text);
-
-    margin-top: 0;
+  .expertise-stack {
+    color: var(--text-soft);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-align: right;
   }
 
-  .about-right {
-  padding-top: 44px;
-}
-
-.lead {
-  font-family: Georgia, serif;
-  font-size: clamp(1.5rem, 2.2vw, 2rem);
-  line-height: 1.45;
-  color: var(--text);
-  margin-top: 0;
-  margin-bottom: 22px;
-}
-
-.about-intro {
-  display: grid;
-  grid-template-columns: minmax(320px, 1fr) clamp(300px, 32vw, 360px);
-  gap: 28px;
-  align-items: start;
-}
-
-.about-copy > p:not(.lead) {
-  max-width: 620px;
-  color: var(--text-soft);
-  font-size: 1rem;
-  line-height: 1.8;
-  margin-bottom: 0;
-}
-
-.about-photo {
-  margin: 0;
-}
-
-.about-photo img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 20px;
-}
-
-.about-meta {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  border-top: 1px solid var(--border);
-}
-
-.about-meta > div {
-  display: grid;
-  grid-template-columns: 45px 1fr;
-  align-items: start;
-  column-gap: 18px;
-  row-gap: 8px;
-
-  padding: 22px 0;
-
-  border-bottom: 1px solid var(--border);
-
-  transition:
-    transform 0.25s ease,
-    padding-left 0.25s ease;
-}
-
-.about-meta > div:hover {
-  padding-left: 8px;
-  transform: translateX(4px);
-}
-
-.about-meta span {
-  color: var(--sage-dark);
-  font-size: 0.75rem;
-  padding-top: 3px;
-}
-
-.about-meta h3 {
-  margin: 0;
-
-  font-family: Georgia, serif;
-  font-size: 1.2rem;
-
-  color: var(--mauve-dark);
-}
-
-.about-meta p {
-  grid-column: 2;
-  margin: 0;
-
-  color: var(--text-soft);
-
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
-
-  @media (max-width: 850px) {
-    .about {
-      padding: 90px 0;
-    }
-
-    .container {
-      grid-template-columns: 1fr;
-      gap: 50px;
-    }
-
-    .about-right {
-      padding-top: 0;
-    }
-
-    .about-intro {
-      grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
-    }
-
-    .about-meta {
-      grid-template-columns: 1fr;
-    }
-
-    .about-meta > div {
-      grid-template-columns: 40px 1fr;
-    }
-
-    .about-meta p {
-      grid-column: 2;
-    }
+  .about-scroll-active .about-reveal {
+    opacity: var(--scroll-progress, 1);
+    transform: translateY(var(--scroll-offset, 0px));
+    will-change: opacity, transform;
   }
 
-  @media (max-width: 520px) {
-    .container {
-      width: min(94%, 1120px);
-      gap: 22px;
+  @keyframes caretBlink { 50% { opacity: 0; } }
+
+  @media (max-width: 800px) {
+    .about { padding: 90px 0; }
+    .about-shell { grid-template-columns: 1fr; gap: 32px; }
+
+    .profile-card {
+      justify-self: start;
+      width: min(100%, 430px);
+      display: grid;
+      grid-template-columns: 116px 1fr;
+      column-gap: 20px;
+      align-items: center;
     }
 
-    .about {
-      padding: 75px 0;
+    .portrait-frame {
+      width: 116px;
+      margin: 0;
+      grid-row: span 2;
     }
 
-    .section-index {
-      margin-bottom: 22px;
+    .profile-copy { text-align: left; }
+    .profile-details { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 580px) {
+    .about { padding: 72px 0; }
+    .about-shell { width: min(94%, 1120px); }
+    .section-kicker { margin-bottom: 18px; font-size: 0.66rem; }
+    .about-title { font-size: clamp(2.2rem, 11vw, 3.2rem); }
+
+    .profile-card {
+      width: 100%;
+      grid-template-columns: 96px 1fr;
+      padding: 18px;
     }
 
-    h2 {
-      width: 96%;
-      font-size: clamp(2.65rem, 12.8vw, 3.8rem);
-      line-height: 0.98;
-      letter-spacing: -1.5px;
-    }
+    .portrait-frame { width: 96px; }
 
-    .lead {
-      margin-bottom: 18px;
-      font-size: clamp(1.2rem, 5.7vw, 1.45rem);
-      line-height: 1.5;
-    }
-
-    .about-intro {
-      grid-template-columns: 1fr;
-      gap: 26px;
-    }
-
-    .about-photo {
-      order: -1;
-      width: 72vw;
-      max-width: 290px;
-      justify-self: end;
-      margin-top: -12px;
-      margin-right: 4vw;
-    }
-
-    .about-photo img {
-      border-radius: 18px;
-    }
-
-    .about-copy {
-      width: 95%;
-    }
-
-    .about-copy > p:not(.lead) {
-      font-size: 1rem;
-      line-height: 1.65;
-    }
-
-    .about-meta {
-      width: 94%;
-      gap: 0;
-      margin-top: 10px;
-    }
-
-    .about-meta > div {
+    .expertise-item {
       grid-template-columns: 34px 1fr;
-      column-gap: 12px;
-      padding: 17px 0;
+      gap: 14px;
     }
 
-    .about-meta h3 {
-      font-size: 1.1rem;
+    .expertise-stack {
+      grid-column: 2;
+      text-align: left;
     }
+  }
 
-    .about-meta p {
-      font-size: 0.9rem;
-      line-height: 1.55;
+  @media (prefers-reduced-motion: reduce) {
+    .typing-caret { animation: none; }
+    .about-scroll-active .about-reveal {
+      opacity: 1;
+      transform: none;
     }
   }
 </style>

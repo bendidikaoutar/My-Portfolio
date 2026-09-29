@@ -1,0 +1,476 @@
+---
+// ApiPlayground.astro - Live REST API Inspector & Playground for Dishly
+---
+
+<div class="api-playground" id="dishly-api-playground">
+  <div class="playground-topbar">
+    <div class="endpoint-selector">
+      <span class="http-badge" id="current-method">GET</span>
+      <select class="endpoint-dropdown" id="endpoint-select" aria-label="Choisir un endpoint de test">
+        <option value="featured">/api/v1/recipes/featured</option>
+        <option value="list">/api/v1/recipes?limit=2&tags=mediterranean</option>
+        <option value="create">POST /api/v1/recipes (Draft recipe)</option>
+        <option value="health">/api/v1/health (DB pool check)</option>
+      </select>
+    </div>
+
+    <button class="send-btn" id="send-request-btn" type="button">
+      <span class="send-icon">▶</span>
+      <span>Envoyer</span>
+    </button>
+  </div>
+
+  <div class="request-details">
+    <div class="meta-row">
+      <span class="meta-item">Host: <code>api.dishly.app</code></span>
+      <span class="meta-item">Auth: <code>Bearer eyJhbG...</code></span>
+      <button class="copy-curl-btn" id="copy-curl-dishly" type="button" title="Copier cURL">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <span>cURL</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="response-panel">
+    <div class="response-header">
+      <div class="response-status">
+        <span class="status-chip success" id="resp-status">200 OK</span>
+        <span class="latency-chip" id="resp-latency">24ms</span>
+        <span class="size-chip" id="resp-size">1.42 KB</span>
+      </div>
+      <span class="content-type">application/json</span>
+    </div>
+
+    <div class="response-body">
+      <pre class="json-code" id="json-viewer"><code><!-- Dynamic JSON --></code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface EndpointResponse {
+    status: number;
+    statusText: string;
+    latency: number;
+    size: string;
+    method: "GET" | "POST";
+    curl: string;
+    data: any;
+  }
+
+  const endpointData: Record<string, EndpointResponse> = {
+    featured: {
+      status: 200,
+      statusText: "200 OK",
+      latency: 22,
+      size: "1.42 KB",
+      method: "GET",
+      curl: `curl -X GET "https://api.dishly.app/v1/recipes/featured" -H "Accept: application/json"`,
+      data: {
+        status: "success",
+        data: {
+          id: "rcp_89f2a01",
+          title: "Tajine Méditerranéen Épicé",
+          slug: "tajine-mediterraneen-epice",
+          author: {
+            id: "usr_kaoutar",
+            name: "Kaoutar Bendidi",
+            role: "Recipe Engineer"
+          },
+          prepTimeMinutes: 25,
+          servings: 4,
+          tags: ["healthy", "protein", "mediterranean"],
+          ingredientsCount: 8,
+          published: true,
+          updatedAt: "2026-03-24T18:42:00.000Z"
+        }
+      }
+    },
+    list: {
+      status: 200,
+      statusText: "200 OK",
+      latency: 31,
+      size: "2.10 KB",
+      method: "GET",
+      curl: `curl -X GET "https://api.dishly.app/v1/recipes?limit=2&tags=mediterranean"`,
+      data: {
+        status: "success",
+        pagination: {
+          page: 1,
+          limit: 2,
+          total: 48,
+          hasNextPage: true
+        },
+        items: [
+          { id: "rcp_01", title: "Salade Quinoa & Feta", prepTime: 15, difficulty: "EASY" },
+          { id: "rcp_02", title: "Bowl Poulet Rôti & Zaatar", prepTime: 30, difficulty: "MEDIUM" }
+        ]
+      }
+    },
+    create: {
+      status: 201,
+      statusText: "201 Created",
+      latency: 48,
+      size: "890 B",
+      method: "POST",
+      curl: `curl -X POST "https://api.dishly.app/v1/recipes" -H "Content-Type: application/json" -d '{"title":"Nouvelle Recette"}'`,
+      data: {
+        status: "created",
+        message: "Recette enregistrée avec succès dans PostgreSQL via Prisma ORM.",
+        record: {
+          id: "rcp_new_9831",
+          title: "Velouté Courge & Noix de Muscade",
+          status: "DRAFT",
+          createdAt: new Date().toISOString()
+        }
+      }
+    },
+    health: {
+      status: 200,
+      statusText: "200 OK",
+      latency: 12,
+      size: "340 B",
+      method: "GET",
+      curl: `curl -X GET "https://api.dishly.app/v1/health"`,
+      data: {
+        system: "healthy",
+        uptimeSeconds: 84920,
+        services: {
+          postgresDb: "connected (pool: 10 connections)",
+          prismaClient: "operational",
+          redisCache: "standby"
+        }
+      }
+    }
+  };
+
+  const select = document.getElementById("endpoint-select") as HTMLSelectElement | null;
+  const sendBtn = document.getElementById("send-request-btn");
+  const methodBadge = document.getElementById("current-method");
+  const respStatus = document.getElementById("resp-status");
+  const respLatency = document.getElementById("resp-latency");
+  const respSize = document.getElementById("resp-size");
+  const jsonViewer = document.getElementById("json-viewer");
+  const curlBtn = document.getElementById("copy-curl-dishly");
+
+  function formatJsonSyntax(obj: any): string {
+    const raw = JSON.stringify(obj, null, 2);
+    return raw
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+        let cls = "json-number";
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = "json-key";
+          } else {
+            cls = "json-string";
+          }
+        } else if (/true|false/.test(match)) {
+          cls = "json-boolean";
+        } else if (/null/.test(match)) {
+          cls = "json-null";
+        }
+        return `<span class="${cls}">${match}</span>`;
+      });
+  }
+
+  function executeRequest(key: string) {
+    const item = endpointData[key] || endpointData.featured;
+    if (!jsonViewer) return;
+
+    if (methodBadge) {
+      methodBadge.textContent = item.method;
+      methodBadge.className = `http-badge ${item.method.toLowerCase()}`;
+    }
+
+    // Simulate real network flight
+    if (sendBtn) sendBtn.classList.add("loading");
+    if (respStatus) {
+      respStatus.textContent = "Fetching...";
+      respStatus.className = "status-chip pending";
+    }
+
+    const delay = Math.floor(Math.random() * 25) + item.latency;
+
+    setTimeout(() => {
+      if (sendBtn) sendBtn.classList.remove("loading");
+      if (respStatus) {
+        respStatus.textContent = item.statusText;
+        respStatus.className = `status-chip ${item.status >= 200 && item.status < 300 ? "success" : "warn"}`;
+      }
+      if (respLatency) respLatency.textContent = `${delay}ms`;
+      if (respSize) respSize.textContent = item.size;
+
+      jsonViewer.innerHTML = formatJsonSyntax(item.data);
+    }, 140);
+  }
+
+  select?.addEventListener("change", (e) => {
+    const val = (e.target as HTMLSelectElement).value;
+    const targetKey = val.includes("create") ? "create" : val.includes("list") ? "list" : val.includes("health") ? "health" : "featured";
+    executeRequest(targetKey);
+  });
+
+  sendBtn?.addEventListener("click", () => {
+    const val = select?.value || "featured";
+    const targetKey = val.includes("create") ? "create" : val.includes("list") ? "list" : val.includes("health") ? "health" : "featured";
+    executeRequest(targetKey);
+  });
+
+  curlBtn?.addEventListener("click", () => {
+    const val = select?.value || "featured";
+    const targetKey = val.includes("create") ? "create" : val.includes("list") ? "list" : val.includes("health") ? "health" : "featured";
+    const item = endpointData[targetKey] || endpointData.featured;
+    navigator.clipboard.writeText(item.curl).then(() => {
+      const span = curlBtn.querySelector("span");
+      if (span) {
+        const prev = span.textContent;
+        span.textContent = "Copié !";
+        setTimeout(() => { span.textContent = prev; }, 1600);
+      }
+    });
+  });
+
+  // Initial load
+  executeRequest("featured");
+</script>
+
+<style>
+  .api-playground {
+    width: 100%;
+    background: #140f1c;
+    border: 1px solid color-mix(in srgb, var(--mauve) 35%, transparent);
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+  }
+
+  .playground-topbar {
+    background: #1a1424;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .endpoint-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .http-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .http-badge.get {
+    background: #123724;
+    color: #4ade80;
+    border: 1px solid #22c55e44;
+  }
+
+  .http-badge.post {
+    background: #3b2a0c;
+    color: #facc15;
+    border: 1px solid #eab30844;
+  }
+
+  .endpoint-dropdown {
+    background: #100b17;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e5def0;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    flex: 1;
+    max-width: 100%;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .endpoint-dropdown:focus {
+    border-color: var(--sage);
+  }
+
+  .send-btn {
+    background: var(--mauve);
+    border: 1px solid color-mix(in srgb, var(--mauve) 80%, white);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.74rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .send-btn:hover {
+    background: var(--mauve-dark);
+    transform: translateY(-1px);
+  }
+
+  .send-btn.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .request-details {
+    background: #161021;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 6px 14px;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.68rem;
+    color: #8c8297;
+  }
+
+  .meta-row code {
+    color: #bfa1df;
+    font-family: inherit;
+  }
+
+  .copy-curl-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cfc6db;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-family: inherit;
+    font-size: 0.66rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .copy-curl-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  .response-panel {
+    display: flex;
+    flex-direction: column;
+    background: #110d18;
+  }
+
+  .response-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: #140f1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.68rem;
+  }
+
+  .response-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-chip {
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  .status-chip.success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .status-chip.pending {
+    background: rgba(234, 179, 8, 0.15);
+    color: #facc15;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+  }
+
+  .latency-chip, .size-chip, .content-type {
+    color: #7b7189;
+  }
+
+  .response-body {
+    padding: 14px;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .json-code {
+    margin: 0;
+    font-family: inherit;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #d8cfe3;
+  }
+
+  :global(.json-key) {
+    color: #92b8ff;
+  }
+
+  :global(.json-string) {
+    color: #8edaa2;
+  }
+
+  :global(.json-number) {
+    color: #ffaa6c;
+  }
+
+  :global(.json-boolean) {
+    color: #c48df5;
+    font-weight: 600;
+  }
+
+  :global(.json-null) {
+    color: #a8a0b2;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .playground-topbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .send-btn {
+      justify-content: center;
+    }
+
+    .meta-row {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+</style>

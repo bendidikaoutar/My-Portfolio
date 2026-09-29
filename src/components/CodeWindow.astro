@@ -1,0 +1,622 @@
+---
+// CodeWindow.astro - Modern interactive code editor with typing stream effect
+---
+
+<div class="code-window hero-card-animate" id="hero-code-window">
+  <div class="window-header">
+    <div class="window-controls" aria-hidden="true">
+      <span class="control-dot close"></span>
+      <span class="control-dot minimize"></span>
+      <span class="control-dot expand"></span>
+    </div>
+
+    <div class="window-tabs" role="tablist" aria-label="Fichiers de code">
+      <button class="window-tab active" data-tab="engineer" role="tab" aria-selected="true" type="button">
+        <span class="tab-icon ts">TS</span>
+        <span>engineer.ts</span>
+      </button>
+      <button class="window-tab" data-tab="server" role="tab" aria-selected="false" type="button">
+        <span class="tab-icon js">JS</span>
+        <span>server.ts</span>
+      </button>
+      <button class="window-tab" data-tab="prisma" role="tab" aria-selected="false" type="button">
+        <span class="tab-icon prisma">▲</span>
+        <span>schema.prisma</span>
+      </button>
+    </div>
+
+    <div class="window-meta">
+      <span class="compiler-badge">
+        <span class="compiler-dot"></span>
+        <span class="compiler-text">Live AST</span>
+      </span>
+      <button class="replay-btn" id="replay-typing" title="Rejouer l'animation de frappe" type="button" aria-label="Rejouer le code">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="window-body">
+    <div class="editor-lines" aria-hidden="true" id="line-numbers">
+      <!-- Line numbers generated dynamically -->
+    </div>
+    <div class="editor-content" id="code-stream-target" tabindex="0" role="region" aria-label="Éditeur de code interactif">
+      <div class="code-text" id="typewriter-content"></div>
+      <span class="cursor" id="typewriter-cursor" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <div class="window-footer">
+    <div class="footer-left">
+      <span class="footer-status-pill">
+        <span class="status-indicator"></span>
+        <span id="footer-status-text">TypeScript: 0 errors</span>
+      </span>
+      <span class="footer-item branch">main*</span>
+    </div>
+    <div class="footer-right">
+      <span class="footer-item">UTF-8</span>
+      <span class="footer-item tab-stats" id="footer-latency">Build: 142ms</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface FileData {
+    name: string;
+    lang: string;
+    status: string;
+    rawLines: string[];
+  }
+
+  const files: Record<string, FileData> = {
+    engineer: {
+      name: "engineer.ts",
+      lang: "typescript",
+      status: "TypeScript: 0 errors",
+      rawLines: [
+        `// @core/engineer.ts — Full Stack Architecture`,
+        `import type { SoftwareEngineer } from "@/core";`,
+        ``,
+        `export const engineer: SoftwareEngineer = {`,
+        `  name: "Kaoutar Bendidi",`,
+        `  role: "Full Stack Engineer",`,
+        `  degree: "4e Année Génie Informatique",`,
+        `  stack: {`,
+        `    frontend: ["React", "TypeScript", "Next.js", "Astro"],`,
+        `    backend:  ["Node.js", "Express", "REST API"],`,
+        `    database: ["PostgreSQL", "Prisma ORM", "SQL"],`,
+        `    devops:   ["CI/CD Pipelines", "Docker", "Git"]`,
+        `  },`,
+        `  focus: "Scalabilité, Clean Architecture & Robustesse",`,
+        `  status: "🟢 Recherche de Stage / Opportunités"`,
+        `};`,
+        ``,
+        `export default engineer;`
+      ]
+    },
+    server: {
+      name: "server.ts",
+      lang: "typescript",
+      status: "Express API: 200 OK",
+      rawLines: [
+        `// @api/server.ts — Scalable REST Microservice`,
+        `import express, { Request, Response } from "express";`,
+        `import { prisma } from "./lib/db";`,
+        ``,
+        `const app = express();`,
+        `app.use(express.json());`,
+        ``,
+        `app.get("/api/v1/health", async (_req: Request, res: Response) => {`,
+        `  const dbCheck = await prisma.$queryRaw\`SELECT 1\`;`,
+        `  return res.status(200).json({`,
+        `    status: "healthy",`,
+        `    engine: "Node.js + PostgreSQL",`,
+        `    latencyMs: 14,`,
+        `    uptime: process.uptime()`,
+        `  });`,
+        `});`,
+        ``,
+        `app.listen(4000, () => console.log("🚀 Server running on :4000"));`
+      ]
+    },
+    prisma: {
+      name: "schema.prisma",
+      lang: "prisma",
+      status: "Prisma Client: Synced",
+      rawLines: [
+        `// prisma/schema.prisma — Relational Modeling`,
+        `datasource db {`,
+        `  provider = "postgresql"`,
+        `  url      = env("DATABASE_URL")`,
+        `}`,
+        ``,
+        `model Project {`,
+        `  id          String    @id @default(cuid())`,
+        `  slug        String    @unique`,
+        `  title       String`,
+        `  category    String`,
+        `  stack       String[]`,
+        `  isCompleted Boolean   @default(true)`,
+        `  createdAt   DateTime  @default(now())`,
+        `}`
+      ]
+    }
+  };
+
+  function highlightSyntax(text: string): string {
+    // Quick syntax colorizer for keywords, strings, types, comments
+    const escaped = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    if (escaped.trim().startsWith("//")) {
+      return `<span class="tok-comment">${escaped}</span>`;
+    }
+
+    return escaped
+      // Comments at end of line
+      .replace(/(\/\/.*$)/g, '<span class="tok-comment">$1</span>')
+      // Strings
+      .replace(/(["'`])(.*?)\1/g, '<span class="tok-string">$1$2$1</span>')
+      // Keywords
+      .replace(/\b(import|export|const|type|from|default|return|async|await|datasource|provider|model|boolean|true|false)\b/g, '<span class="tok-keyword">$1</span>')
+      // Types & Classes
+      .replace(/\b(SoftwareEngineer|Request|Response|Project|String|DateTime|Boolean)\b/g, '<span class="tok-type">$1</span>')
+      // Functions / Methods
+      .replace(/\b(use|get|json|queryRaw|listen|log|cuid|now|status)\b(?=\()/g, '<span class="tok-func">$1</span>')
+      // Numbers
+      .replace(/\b(\d+)\b/g, '<span class="tok-number">$1</span>');
+  }
+
+  let activeTabKey = "engineer";
+  let typingTimer: number | null = null;
+  let isTyping = false;
+
+  const codeTarget = document.getElementById("typewriter-content");
+  const lineNumbers = document.getElementById("line-numbers");
+  const statusText = document.getElementById("footer-status-text");
+  const replayBtn = document.getElementById("replay-typing");
+  const tabs = document.querySelectorAll<HTMLButtonElement>(".window-tab");
+
+  function renderFullCode(tabKey: string) {
+    if (typingTimer) clearTimeout(typingTimer);
+    isTyping = false;
+
+    const file = files[tabKey];
+    if (!file || !codeTarget || !lineNumbers) return;
+
+    if (statusText) statusText.textContent = file.status;
+
+    // Line numbers
+    lineNumbers.innerHTML = file.rawLines.map((_, i) => `<span>${i + 1}</span>`).join("");
+
+    // Lines HTML
+    const htmlLines = file.rawLines.map(line => `<div class="code-line">${highlightSyntax(line) || "&nbsp;"}</div>`).join("");
+    codeTarget.innerHTML = htmlLines;
+  }
+
+  function typewriteCode(tabKey: string) {
+    if (typingTimer) clearTimeout(typingTimer);
+    isTyping = true;
+
+    const file = files[tabKey];
+    if (!file || !codeTarget || !lineNumbers) return;
+
+    if (statusText) statusText.textContent = "Compiling typing stream...";
+
+    codeTarget.innerHTML = "";
+    lineNumbers.innerHTML = "";
+
+    const totalLines = file.rawLines.length;
+    let currentLineIndex = 0;
+    let currentCharIndex = 0;
+
+    // Prepare line numbers up-front or dynamically
+    lineNumbers.innerHTML = file.rawLines.map((_, i) => `<span>${i + 1}</span>`).join("");
+
+    // Create container for lines
+    const lineElements: HTMLDivElement[] = [];
+    for (let i = 0; i < totalLines; i++) {
+      const lineDiv = document.createElement("div");
+      lineDiv.className = "code-line";
+      lineDiv.innerHTML = "&nbsp;";
+      codeTarget.appendChild(lineDiv);
+      lineElements.push(lineDiv);
+    }
+
+    function typeNextChar() {
+      if (!isTyping) return;
+
+      if (currentLineIndex >= totalLines) {
+        isTyping = false;
+        if (statusText) statusText.textContent = file.status;
+        return;
+      }
+
+      const currentRawLine = file.rawLines[currentLineIndex];
+
+      if (currentRawLine.length === 0) {
+        lineElements[currentLineIndex].innerHTML = "&nbsp;";
+        currentLineIndex++;
+        currentCharIndex = 0;
+        typingTimer = window.setTimeout(typeNextChar, 30);
+        return;
+      }
+
+      // Type in small bursts (2-4 characters) for realistic coder pace
+      const step = Math.min(3, currentRawLine.length - currentCharIndex);
+      currentCharIndex += step;
+
+      const partialText = currentRawLine.substring(0, currentCharIndex);
+      lineElements[currentLineIndex].innerHTML = highlightSyntax(partialText);
+
+      if (currentCharIndex >= currentRawLine.length) {
+        // Line complete, small pause before next line
+        currentLineIndex++;
+        currentCharIndex = 0;
+        typingTimer = window.setTimeout(typeNextChar, currentLineIndex % 3 === 0 ? 90 : 35);
+      } else {
+        typingTimer = window.setTimeout(typeNextChar, 18);
+      }
+    }
+
+    typeNextChar();
+  }
+
+  // Setup tab click handlers
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
+      tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
+
+      const key = tab.dataset.tab;
+      if (key && files[key]) {
+        activeTabKey = key;
+        typewriteCode(key);
+      }
+    });
+  });
+
+  replayBtn?.addEventListener("click", () => {
+    typewriteCode(activeTabKey);
+  });
+
+  // IntersectionObserver: trigger typing only when visible on screen
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        typewriteCode(activeTabKey);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const container = document.getElementById("hero-code-window");
+  if (container) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      renderFullCode(activeTabKey);
+    } else {
+      observer.observe(container);
+    }
+  }
+</script>
+
+<style>
+  .code-window {
+    width: 100%;
+    min-height: 480px;
+    background: #191421;
+    border: 1px solid color-mix(in srgb, var(--mauve) 30%, transparent);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow:
+      0 20px 50px -10px rgba(27, 18, 38, 0.45),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  /* Header */
+  .window-header {
+    background: #130f1b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .window-controls {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .control-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .control-dot.close { background: #ff5f56; }
+  .control-dot.minimize { background: #ffbd2e; }
+  .control-dot.expand { background: #27c93f; }
+
+  .window-tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .window-tab {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #8c8297;
+    font-family: inherit;
+    font-size: 0.74rem;
+    padding: 5px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .window-tab:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #dfd8ea;
+  }
+
+  .window-tab.active {
+    background: rgba(135, 155, 134, 0.15);
+    border-color: rgba(135, 155, 134, 0.3);
+    color: #f7f3ee;
+  }
+
+  .tab-icon {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 4px;
+    border-radius: 3px;
+    line-height: 1;
+  }
+
+  .tab-icon.ts {
+    background: #3178c6;
+    color: #fff;
+  }
+
+  .tab-icon.js {
+    background: #f7df1e;
+    color: #000;
+  }
+
+  .tab-icon.prisma {
+    background: #0c344b;
+    color: #16a394;
+  }
+
+  .window-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .compiler-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(135, 155, 134, 0.12);
+    border: 1px solid rgba(135, 155, 134, 0.25);
+    padding: 3px 8px;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    color: #a7bca6;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .compiler-dot {
+    width: 6px;
+    height: 6px;
+    background: #64dd8b;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #64dd8b;
+  }
+
+  .replay-btn {
+    background: transparent;
+    border: none;
+    color: #8c8297;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .replay-btn:hover {
+    color: #f7f3ee;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Body */
+  .window-body {
+    flex: 1;
+    display: flex;
+    padding: 16px 14px;
+    gap: 14px;
+    overflow-y: auto;
+    font-size: 0.81rem;
+    line-height: 1.65;
+    color: #d8d0e3;
+    background: radial-gradient(circle at top right, rgba(99, 65, 132, 0.08), transparent 40%), #191421;
+  }
+
+  .editor-lines {
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    color: #4b415a;
+    text-align: right;
+    font-size: 0.78rem;
+    padding-right: 6px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    min-width: 24px;
+  }
+
+  .editor-lines span {
+    line-height: 1.65;
+  }
+
+  .editor-content {
+    flex: 1;
+    position: relative;
+    white-space: pre-wrap;
+    word-break: break-word;
+    outline: none;
+  }
+
+  .code-line {
+    min-height: 1.65em;
+  }
+
+  /* Syntax Highlighting */
+  :global(.tok-comment) {
+    color: #695e79;
+    font-style: italic;
+  }
+
+  :global(.tok-keyword) {
+    color: #b789e9;
+    font-weight: 600;
+  }
+
+  :global(.tok-string) {
+    color: #9ecc9b;
+  }
+
+  :global(.tok-type) {
+    color: #79c0ff;
+  }
+
+  :global(.tok-func) {
+    color: #e5bf7e;
+  }
+
+  :global(.tok-number) {
+    color: #fca879;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 7px;
+    height: 1.15em;
+    background: var(--sage);
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: cursorBlink 1s infinite;
+  }
+
+  @keyframes cursorBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Footer */
+  .window-footer {
+    background: #110d18;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 7px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    color: #7d738a;
+  }
+
+  .footer-left,
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .footer-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #a7bca6;
+  }
+
+  .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #64dd8b;
+  }
+
+  .footer-item.branch {
+    color: #bfa1df;
+  }
+
+  @media (max-width: 850px) {
+    .code-window {
+      min-height: 420px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .code-window {
+      min-height: 380px;
+      border-radius: 16px;
+    }
+
+    .window-header {
+      padding: 8px 12px;
+    }
+
+    .window-tabs {
+      gap: 2px;
+    }
+
+    .window-tab {
+      padding: 4px 7px;
+      font-size: 0.68rem;
+    }
+
+    .compiler-badge {
+      display: none;
+    }
+
+    .window-body {
+      padding: 12px 10px;
+      gap: 10px;
+      font-size: 0.74rem;
+    }
+
+    .window-footer {
+      padding: 6px 12px;
+      font-size: 0.62rem;
+    }
+
+    .footer-right {
+      display: none;
+    }
+  }
+</style>

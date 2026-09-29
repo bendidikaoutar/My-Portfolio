@@ -1,0 +1,95 @@
+---
+interface Props {
+  text: string;
+  className?: string;
+  mono?: boolean;
+}
+
+const { text, className = "", mono = false } = Astro.props;
+---
+
+<span
+  class:list={["scroll-typewriter", { "scroll-typewriter-mono": mono }, className]}
+  data-scroll-typewriter
+  data-text={text}
+  aria-label={text}
+>{text}<span class="scroll-typewriter-caret" aria-hidden="true"></span></span>
+
+<script>
+  const typewriterElements = document.querySelectorAll<HTMLElement>("[data-scroll-typewriter]");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = window.matchMedia("(max-width: 580px)").matches;
+
+  typewriterElements.forEach((element) => {
+    if (element.dataset.typewriterBound === "true") return;
+    element.dataset.typewriterBound = "true";
+
+    const text = element.dataset.text || element.textContent || "";
+    const typingDelay = text.length > 90 || isMobile ? 22 : 38;
+    let hasTyped = false;
+
+    function typeText() {
+      if (hasTyped) return;
+      hasTyped = true;
+
+      if (reducedMotion) {
+        element.firstChild?.remove();
+        element.prepend(text);
+        return;
+      }
+
+      element.firstChild?.remove();
+      let index = 0;
+
+      function writeNextCharacter() {
+        if (index >= text.length) return;
+        const caret = element.querySelector(".scroll-typewriter-caret");
+        caret?.before(document.createTextNode(text[index]));
+        index += 1;
+        window.setTimeout(writeNextCharacter, typingDelay);
+      }
+
+      window.setTimeout(writeNextCharacter, 120);
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      typeText();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        typeText();
+        observer.unobserve(element);
+      },
+      { threshold: 0, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    observer.observe(element);
+  });
+</script>
+
+<style>
+  .scroll-typewriter-mono {
+    font-family: var(--font-mono);
+  }
+
+  .scroll-typewriter-caret {
+    display: inline-block;
+    width: 0.08em;
+    height: 0.9em;
+    margin-left: 0.08em;
+    background: currentColor;
+    vertical-align: -0.06em;
+    animation: scrollTypewriterCaret 900ms steps(1, end) infinite;
+  }
+
+  @keyframes scrollTypewriterCaret {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-typewriter-caret { animation: none; }
+  }
+</style>

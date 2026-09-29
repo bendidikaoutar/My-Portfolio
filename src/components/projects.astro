@@ -1,459 +1,416 @@
-﻿---
+---
+import ApiPlayground from "./ApiPlayground.astro";
+import ScrollTypewriter from "./ScrollTypewriter.astro";
+
 const projects = [
   {
-    number: "",
-    title: "Muestra",
-    category: "Educational Platform",
-    description:
-      "Plateforme éducative développée en équipe, avec contribution aux interfaces frontend et à l’intégration du pipeline CI/CD.",
-    technologies: ["Vue.js", "JavaScript", "Git", "CI/CD"],
-  },
-  {
-    number: "",
-    title: "Sehati",
-    category: "Web Application",
-    status: "In Progress",
-    description:
-      "Application web Full Stack moderne avec développement des fonctionnalités frontend et backend.",
-    technologies: ["JavaScript", "Vue.js", "Node.js", "MySQL", "Next.js"],
-  },
-  {
-    number: "",
     title: "Dishly",
-    category: "Full Stack Application",
-    meta: "FULL STACK DEVELOPMENT · 2026",
-    status: "In Progress",
-    description:
-      "Application Full Stack permettant de créer, organiser et gérer des recettes à travers une interface moderne et une API REST.",
-    technologies: ["React", "Node.js", "Express", "Prisma", "PostgreSQL"],
+    category: "Application Full Stack",
+    tagline: "Plateforme culinaire collaborative & API REST haute performance",
+    description: "Application complète permettant aux passionnés de cuisine de créer, organiser et partager des recettes avec recherche avancée par tags, calcul nutritionnel et modélisation relationnelle de données.",
+    technologies: ["React 19", "Node.js", "Express", "Prisma ORM", "PostgreSQL", "Tailwind CSS"],
+    highlights: ["API REST avec documentation Swagger", "Transactions SQL sécurisées", "Temps de réponse < 25ms"],
+    isFeatured: true
   },
   {
-    number: "",
+    title: "Muestra",
+    category: "Plateforme Éducative",
+    tagline: "Expérience d'apprentissage interactive & collaborative",
+    description: "Plateforme développée en équipe académique pour dynamiser les échanges étudiants, avec interfaces modulaires et mise en place d'un pipeline d'intégration continue CI/CD.",
+    technologies: ["Vue.js", "JavaScript", "Git", "GitHub Actions", "CI/CD"],
+    highlights: ["Composants réutilisables", "Pipeline de tests automatisé", "Travail d'équipe Agile"]
+  },
+  {
+    title: "Sehati",
+    category: "Application Santé & Bien-être",
+    tagline: "Gestion simplifiée des rendez-vous et suivi médical",
+    description: "Application web Full Stack dédiée à la prise de rendez-vous médicaux et au suivi des patients avec tableaux de bord réactifs et base de données relationnelle sécurisée.",
+    technologies: ["Next.js", "Vue.js", "Node.js", "MySQL", "REST API"],
+    highlights: ["Authentification sécurisée", "Modélisation relationnelle MySQL", "Expérience patient fluide"]
+  },
+  {
     title: "Interactive Generative Studio",
-    category: "Creative Coding",
-    description:
-      "Plateforme créative interactive permettant de générer et manipuler des contenus visuels grâce à différents modules de génération, traitement d’images et visualisation de données.",
-    technologies: ["Python", "Flask", "Matplotlib", "Pandas", "OpenCV"],
+    category: "Creative Coding & Data",
+    tagline: "Génération visuelle & manipulation algorithmique d'images",
+    description: "Studio expérimental interactif permettant de générer et manipuler des contenus visuels grâce à des modules algorithmiques de traitement d'images et de visualisation mathématique.",
+    technologies: ["Python", "Flask", "OpenCV", "Matplotlib", "Pandas"],
+    highlights: ["Filtres de vision par ordinateur", "Visualisation de données", "Génération procédurale"]
   },
   {
-    number: "",
     title: "Budget App",
-    category: "Python Utility",
-    description:
-      "Application Python conçue pour gérer les dépenses personnelles, suivre un budget et organiser les données financières.",
-    technologies: ["Python"],
-  },
+    category: "Utilitaire Financier",
+    tagline: "Suivi budgétaire & organisation des finances personnelles",
+    description: "Outil logiciel conçu pour catégoriser les flux de dépenses, modéliser des budgets prévisionnels et générer des analyses claires de santé financière.",
+    technologies: ["Python", "Data Processing", "CLI & GUI"],
+    highlights: ["Calculs analytiques", "Export structuré de données", "Simplicité d'usage"]
+  }
 ];
 
-const featuredProject = projects.find((project) => project.title === "Dishly");
-const otherProjects = projects.filter((project) => project.title !== "Dishly");
+const featuredProject = projects[0];
+const otherProjects = projects.slice(1);
 ---
 
 <section id="projects" class="projects reveal">
   <div class="container">
+
     <div class="projects-header reveal-item reveal-delay-1">
-      <div class="section-index">
-        <span>04</span>
-        <span class="line"></span>
-        <p>Projets</p>
+      <div class="section-tag">
+        <span class="tag-num">04</span>
+        <span class="tag-title">RÉALISATIONS MAJEURES</span>
       </div>
 
-      <h2>
-        Selected<br />
-        work.
-      </h2>
+      <div class="header-content-grid">
+        <h2>
+          Projets conçus avec<br />
+          <span class="gradient-text">passion et rigueur.</span>
+        </h2>
 
-      <p class="intro">
-        Une sélection de projets personnels et académiques réalisés pour approfondir mes compétences en développement.
-      </p>
+        <p class="intro">
+          <ScrollTypewriter text="Une sélection d'applications complètes développées pour résoudre des besoins concrets, alliant qualité de code et expérience utilisateur soignée." />
+        </p>
+      </div>
     </div>
 
+    <!-- Featured Project: Dishly with Live API Playground -->
     <article class="featured-project reveal-item reveal-delay-2">
       <div class="featured-content">
-        <span class="featured-label">FEATURED PROJECT</span>
-        {featuredProject.status && (
-          <span class="status featured-status">IN PROGRESS</span>
-        )}
-        <h3>{featuredProject.title}</h3>
-        <p>{featuredProject.description}</p>
-        <span class="project-meta">{featuredProject.meta}</span>
-
-        <div class="tags">
-          {
-            featuredProject.technologies.map((tech) => (
-              <span>{tech}</span>
-            ))
-          }
+        <div class="featured-meta-row">
+          <span class="featured-badge">PROJET PHARE</span>
+          <span class="category-pill">{featuredProject.category}</span>
         </div>
 
+        <h3>{featuredProject.title}</h3>
+        <p class="featured-tagline">{featuredProject.tagline}</p>
+        <p class="featured-desc">{featuredProject.description}</p>
+
+        <!-- Highlights -->
+        <div class="highlights-list">
+          {featuredProject.highlights.map(item => (
+            <div class="highlight-item">
+              <span class="check-icon">✓</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="tags">
+          {featuredProject.technologies.map(tech => (
+            <span class="tech-tag">{tech}</span>
+          ))}
+        </div>
       </div>
 
-      <div class="featured-visual" aria-hidden="true">
-        <img src="/dishly-featured.png" alt="" />
+      <!-- Live API Playground or Interactive Showcase -->
+      <div class="featured-visual">
+        <div class="playground-frame-header">
+          <span class="pulse-indicator"></span>
+          <span>BANC D'ESSAI API REST EN DIRECT</span>
+        </div>
+        <ApiPlayground />
       </div>
     </article>
 
+    <!-- Other Projects Grid -->
     <div class="other-projects reveal-item reveal-delay-3">
-      {
-        otherProjects.map((project) => (
-          <article class="project-card">
-            <div class="card-top">
-              <span>{project.number}</span>
+      {otherProjects.map((project, idx) => (
+        <article class="project-card">
+          <div class="card-header">
+            <span class="card-num">0{idx + 2}</span>
+            <span class="card-category">{project.category}</span>
+          </div>
 
-              {project.status && (
-                <span class="status">IN PROGRESS</span>
-              )}
-            </div>
+          <h3 class="card-title">{project.title}</h3>
+          <p class="card-tagline">{project.tagline}</p>
+          <p class="card-desc">{project.description}</p>
 
-            <span class="category">{project.category}</span>
-            <h3>{project.title}</h3>
-            <p>{project.description}</p>
-
-            {project.technologies.length > 0 && (
-              <div class="tags compact-tags">
-                {
-                  project.technologies.map((tech) => (
-                    <span>{tech}</span>
-                  ))
-                }
-              </div>
-            )}
-
-          </article>
-        ))
-      }
+          <div class="tags">
+            {project.technologies.map(tech => (
+              <span class="tech-tag">{tech}</span>
+            ))}
+          </div>
+        </article>
+      ))}
     </div>
+
   </div>
 </section>
 
 <style>
   .projects {
-    padding: 130px 0;
+    padding: 110px 0 130px;
   }
 
   .container {
-    width: min(1120px, 90%);
+    width: min(1180px, 92%);
     margin: 0 auto;
   }
 
   .projects-header {
-    display: grid;
-    grid-template-columns: 0.7fr 1fr;
-    column-gap: 80px;
-    margin-bottom: 70px;
+    margin-bottom: 60px;
   }
 
-  .section-index {
-    grid-column: 1 / -1;
-    display: flex;
+  .section-tag {
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 28px;
+    gap: 8px;
+    background: var(--accent-sage-light);
+    color: var(--accent-sage);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
   }
 
-  .section-index span:first-child {
-    color: var(--sage-dark);
-    font-family: Georgia, serif;
+  .tag-num {
+    font-family: var(--font-mono);
   }
 
-  .line {
-    width: 42px;
-    height: 1px;
-    background: var(--sage);
+  .header-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: end;
   }
 
-  .section-index p,
-  .featured-label,
-  .category,
-  .project-meta {
+  h2 {
     margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 3.4px;
-    font-size: 0.68rem;
-    font-weight: 600;
+    font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    font-weight: 800;
+    color: var(--text-main);
   }
 
-  .section-index p {
-    color: var(--mauve);
-  }
-
-  .projects-header h2 {
-    margin: 0;
-    font-family: Georgia, serif;
-    font-size: clamp(3.5rem, 7vw, 6rem);
-    line-height: 0.9;
-    letter-spacing: -3px;
-    color: var(--mauve-dark);
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary) 20%, var(--accent-sage) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .intro {
-    max-width: 460px;
-    align-self: end;
-    margin: 0 0 8px;
     font-size: 1.05rem;
-    line-height: 1.8;
-    color: var(--text-soft);
+    line-height: 1.75;
+    color: var(--text-muted);
+    margin: 0;
   }
 
+  /* Featured Project Card */
   .featured-project {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
-    gap: 56px;
-    align-items: stretch;
-    padding: 42px;
-    border: 1px solid var(--border);
-    border-radius: 30px;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 48px;
+    align-items: center;
     background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
+    padding: 42px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 40px;
   }
 
-  .featured-content {
+  .featured-meta-row {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
   }
 
-  .featured-label,
-  .project-meta,
-  .category {
-    color: var(--sage-dark);
+  .featured-badge {
+    background: var(--primary);
+    color: #FFFFFF;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
   }
 
-  .featured-content h3,
-  .project-card h3 {
-    margin: 18px 0 20px;
-    font-family: Georgia, serif;
+  .category-pill {
+    font-size: 0.75rem;
+    color: var(--text-soft);
     font-weight: 600;
-    color: var(--mauve-dark);
   }
 
   .featured-content h3 {
-    font-size: clamp(3rem, 6vw, 5.2rem);
-    line-height: 0.86;
-    letter-spacing: -2.5px;
-    font-style: italic;
+    font-size: clamp(2rem, 3.6vw, 2.8rem);
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -1px;
+    margin: 0 0 8px;
   }
 
-  .featured-content p,
-  .project-card p {
-    color: var(--text-soft);
-    line-height: 1.8;
+  .featured-tagline {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0 0 16px;
   }
 
-  .featured-content p {
-    max-width: 610px;
+  .featured-desc {
+    font-size: 0.96rem;
+    line-height: 1.7;
+    color: var(--text-muted);
     margin: 0 0 24px;
-    font-size: 1.02rem;
   }
 
+  .highlights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  .check-icon {
+    color: var(--accent-sage);
+    font-weight: 700;
+  }
+
+  /* Tags */
   .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 28px;
+    gap: 7px;
   }
 
-  .tags span {
-    padding: 7px 11px;
+  .tech-tag {
+    padding: 5px 12px;
+    background: var(--bg-subtle);
     border: 1px solid var(--border);
-    border-radius: 100px;
-    color: var(--text-soft);
-    font-size: 0.75rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
   }
 
+  .tech-tag:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  /* Visual Playground Wrapper */
   .featured-visual {
-    min-width: 0;
-    align-self: center;
+    background: #14101D;
+    border-radius: 20px;
+    border: 1px solid #2B233D;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
   }
 
-  .featured-visual img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1;
-    object-fit: contain;
+  .playground-frame-header {
+    background: #0E0B16;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #A396BC;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #221B32;
   }
 
+  .pulse-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #50E3C2;
+    box-shadow: 0 0 6px #50E3C2;
+  }
+
+  /* Other Projects Grid */
   .other-projects {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px;
-    margin-top: 34px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
   }
 
   .project-card {
-    min-height: 100%;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    padding: 28px;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    background: color-mix(in srgb, var(--card) 92%, var(--bg-soft));
-    transition:
-      transform 0.25s ease,
-      border-color 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
 
   .project-card:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--mauve-dark) 24%, var(--border));
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
   }
 
-  .card-top {
+  .card-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    margin-bottom: 28px;
-    color: var(--sage-dark);
-    font-family: Georgia, serif;
+    align-items: center;
+    margin-bottom: 14px;
   }
 
-  .status {
-    padding: 6px 10px;
-    border-radius: 100px;
-    background: var(--sage);
-    color: var(--mauve-dark);
-    font-family: Inter, Arial, sans-serif;
-    font-size: 0.58rem;
+  .card-num {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .card-category {
+    font-size: 0.74rem;
     font-weight: 600;
-    letter-spacing: 1.6px;
-    text-transform: uppercase;
+    color: var(--text-soft);
   }
 
-  .featured-status {
-    margin-top: 14px;
+  .card-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.4px;
+    margin: 0 0 6px;
   }
 
-  .project-card h3 {
-    font-size: clamp(2rem, 3.2vw, 2.75rem);
-    line-height: 0.95;
-    letter-spacing: -1.2px;
+  .card-tagline {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0 0 12px;
   }
 
-  .project-card p {
-    margin: 0;
-    font-size: 0.94rem;
+  .card-desc {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin: 0 0 20px;
+    flex: 1;
   }
 
-  .compact-tags {
-    margin-top: 24px;
-  }
-
-  .compact-tags span {
-    font-size: 0.7rem;
-    padding: 6px 10px;
-  }
-
-  @media (max-width: 850px) {
-    .projects {
-      padding: 90px 0;
-    }
-
-    .projects-header,
-    .featured-project,
-    .other-projects {
+  @media (max-width: 980px) {
+    .header-content-grid {
       grid-template-columns: 1fr;
-    }
-
-    .projects-header {
-      gap: 35px;
-    }
-
-    .intro {
-      margin-top: 15px;
-    }
-
-    .featured-visual {
-      width: min(100%, 520px);
-      justify-self: center;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .container {
-      width: min(94%, 1120px);
-    }
-
-    .projects {
-      padding: 75px 0;
-    }
-
-    .projects-header {
-      margin-bottom: 48px;
-      gap: 26px;
-    }
-
-    .projects-header h2 {
-      font-size: clamp(3.2rem, 16vw, 4.6rem);
-      line-height: 0.9;
-      letter-spacing: -2px;
-    }
-
-    .intro {
-      width: 88%;
-      margin: 0 0 0 auto;
-      font-size: 1rem;
-      line-height: 1.65;
+      gap: 20px;
     }
 
     .featured-project {
-      padding: 22px;
-      border-radius: 22px;
-      gap: 24px;
-    }
-
-    .featured-content h3 {
-      margin: 16px 0 18px;
-      font-size: clamp(2.8rem, 14vw, 4rem);
-    }
-
-    .featured-content p {
-      font-size: 1rem;
-      line-height: 1.65;
-    }
-
-    .featured-visual {
-      width: 92%;
-      justify-self: end;
+      grid-template-columns: 1fr;
+      gap: 34px;
+      padding: 30px 24px;
     }
 
     .other-projects {
-      gap: 16px;
-      margin-top: 22px;
-    }
-
-    .project-card {
-      width: 94%;
-      min-height: auto;
-      padding: 20px;
-      border-radius: 20px;
-    }
-
-    .project-card:nth-child(even) {
-      width: 90%;
-      justify-self: end;
-    }
-
-    .card-top {
-      margin-bottom: 20px;
-    }
-
-    .project-card h3 {
-      margin: 14px 0 16px;
-      font-size: clamp(1.85rem, 9vw, 2.4rem);
-    }
-
-    .project-card p {
-      font-size: 0.94rem;
-      line-height: 1.65;
-    }
-
-    .tags {
-      gap: 6px;
-    }
-
-    .tags span {
-      font-size: 0.7rem;
+      grid-template-columns: 1fr;
     }
   }
 </style>

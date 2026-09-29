@@ -1,0 +1,377 @@
+---
+// ArchitectureFlow.astro - Interactive Full Stack Data Pipeline & Architecture diagram
+---
+
+<div class="arch-flow" id="arch-pipeline">
+  <div class="arch-header">
+    <div class="arch-badge">
+      <span class="live-dot"></span>
+      <span>Pipeline Architectural Full Stack</span>
+    </div>
+    <span class="arch-hint">Survolez ou cliquez sur une couche pour inspecter l'implémentation</span>
+  </div>
+
+  <div class="pipeline-track">
+    <!-- Step 1: Frontend Client -->
+    <div class="pipeline-node active" data-node="client" tabindex="0">
+      <div class="node-icon">01</div>
+      <div class="node-body">
+        <span class="node-tier">CLIENT TIER</span>
+        <h4>Frontend SPA / SSR</h4>
+        <span class="node-tech">React · TypeScript · Astro</span>
+      </div>
+      <div class="connection-line">
+        <span class="data-packet"></span>
+      </div>
+    </div>
+
+    <!-- Step 2: REST API / Controller -->
+    <div class="pipeline-node" data-node="api" tabindex="0">
+      <div class="node-icon">02</div>
+      <div class="node-body">
+        <span class="node-tier">SERVICE TIER</span>
+        <h4>REST API & Controllers</h4>
+        <span class="node-tech">Node.js · Express · Middleware</span>
+      </div>
+      <div class="connection-line">
+        <span class="data-packet"></span>
+      </div>
+    </div>
+
+    <!-- Step 3: ORM & Database -->
+    <div class="pipeline-node" data-node="database" tabindex="0">
+      <div class="node-icon">03</div>
+      <div class="node-body">
+        <span class="node-tier">PERSISTENCE TIER</span>
+        <h4>Data Engine</h4>
+        <span class="node-tech">PostgreSQL · Prisma ORM · SQL</span>
+      </div>
+      <div class="connection-line">
+        <span class="data-packet"></span>
+      </div>
+    </div>
+
+    <!-- Step 4: DevOps & CI/CD -->
+    <div class="pipeline-node" data-node="devops" tabindex="0">
+      <div class="node-icon">04</div>
+      <div class="node-body">
+        <span class="node-tier">INFRA TIER</span>
+        <h4>DevOps & Delivery</h4>
+        <span class="node-tech">Git · GitHub Actions · CI/CD</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Display Card -->
+  <div class="arch-detail-card" id="arch-detail-card">
+    <div class="detail-header">
+      <span class="detail-badge" id="arch-badge">CLIENT TIER</span>
+      <h3 id="arch-title">Frontend SPA / SSR — React & TypeScript</h3>
+    </div>
+    <p class="detail-desc" id="arch-desc">
+      Conception d'interfaces modulaires typées, découplage des composants UI et gestion optimisée de l'état applicatif avec des temps de rendu minimaux et accessibilité soignée.
+    </p>
+    <div class="detail-tags" id="arch-tags">
+      <span>Virtual DOM</span>
+      <span>Custom Hooks</span>
+      <span>Type Safety</span>
+      <span>Responsive UI</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface NodeDetail {
+    badge: string;
+    title: string;
+    desc: string;
+    tags: string[];
+  }
+
+  const nodeDetails: Record<string, NodeDetail> = {
+    client: {
+      badge: "CLIENT TIER · FRONTEND",
+      title: "Interface Réactive & Expérience Utilisateur",
+      desc: "Développement d'interfaces modulaires fortement typées avec React et TypeScript. Gestion d'état fluide, appels d'API asynchrones, composants réutilisables et accessibilité native (ARIA, navigation clavier).",
+      tags: ["React 19", "TypeScript", "State Management", "Tailwind / CSS Modulaire", "Vite"]
+    },
+    api: {
+      badge: "SERVICE TIER · BACKEND",
+      title: "Architecture API REST & Logique Métier",
+      desc: "Conception de points d'entrée RESTful structurés avec Node.js et Express. Mise en place de middlewares (authentification JWT, validation des requêtes, gestion centralisée des erreurs et limitation de débit).",
+      tags: ["Node.js", "Express", "RESTful Routes", "Error Handling", "Async/Await", "Postman"]
+    },
+    database: {
+      badge: "PERSISTENCE TIER · DATA",
+      title: "Persistance des Données & Schémas Relationnels",
+      desc: "Modélisation de schémas relationnels sous PostgreSQL avec l'ORM Prisma. Optimisation des requêtes, migrations versionnées, intégrité référentielle et transactions ACID fiables.",
+      tags: ["PostgreSQL", "Prisma ORM", "Migrations", "Indexation SQL", "Relations 1:N & N:M"]
+    },
+    devops: {
+      badge: "INFRA TIER · DEVOPS",
+      title: "Intégration Continue & Déploiement",
+      desc: "Automatisation du cycle de livraison logiciel via GitHub Actions. Linting, vérification des types TypeScript et tests automatisés à chaque commit pour garantir la stabilité en production.",
+      tags: ["Git Flow", "GitHub Actions", "CI/CD Pipelines", "Docker", "Linux CLI"]
+    }
+  };
+
+  const nodes = document.querySelectorAll<HTMLElement>(".pipeline-node");
+  const badgeEl = document.getElementById("arch-badge");
+  const titleEl = document.getElementById("arch-title");
+  const descEl = document.getElementById("arch-desc");
+  const tagsEl = document.getElementById("arch-tags");
+
+  function selectNode(key: string) {
+    const data = nodeDetails[key];
+    if (!data) return;
+
+    nodes.forEach(n => n.classList.remove("active"));
+    const activeNode = document.querySelector<HTMLElement>(`.pipeline-node[data-node="${key}"]`);
+    activeNode?.classList.add("active");
+
+    if (badgeEl) badgeEl.textContent = data.badge;
+    if (titleEl) titleEl.textContent = data.title;
+    if (descEl) descEl.textContent = data.desc;
+    if (tagsEl) {
+      tagsEl.innerHTML = data.tags.map(t => `<span>${t}</span>`).join("");
+    }
+  }
+
+  nodes.forEach(node => {
+    node.addEventListener("mouseenter", () => {
+      const key = node.dataset.node;
+      if (key) selectNode(key);
+    });
+    node.addEventListener("click", () => {
+      const key = node.dataset.node;
+      if (key) selectNode(key);
+    });
+    node.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        const key = node.dataset.node;
+        if (key) selectNode(key);
+      }
+    });
+  });
+</script>
+
+<style>
+  .arch-flow {
+    margin-bottom: 50px;
+    background: #191422;
+    border: 1px solid #4d3869;
+    border-radius: 8px;
+    padding: 28px;
+    color: #f3eff9;
+  }
+
+  .arch-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .arch-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(135, 155, 134, 0.15);
+    border: 1px solid rgba(135, 155, 134, 0.3);
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8ee0c5;
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #64dd8b;
+    box-shadow: 0 0 8px #64dd8b;
+    animation: livePulse 2s infinite;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .arch-hint {
+    font-size: 0.76rem;
+    color: #b7adbf;
+    font-family: Georgia, serif;
+    font-style: italic;
+  }
+
+  .pipeline-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .pipeline-node {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s ease;
+    outline: none;
+  }
+
+  .pipeline-node:hover,
+  .pipeline-node:focus-visible,
+  .pipeline-node.active {
+    background: rgba(135, 155, 134, 0.12);
+    border-color: #8ee0c5;
+    transform: translateY(-2px);
+  }
+
+  .pipeline-node.active {
+    box-shadow: 0 0 20px rgba(135, 155, 134, 0.15);
+  }
+
+  .node-icon {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #8ee0c5;
+    font-family: Georgia, serif;
+    margin-bottom: 8px;
+  }
+
+  .node-tier {
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 1.5px;
+    color: #b7adbf;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .node-body h4 {
+    margin: 0 0 6px;
+    font-size: 0.94rem;
+    color: #f3eff9;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+  }
+
+  .node-tech {
+    font-size: 0.74rem;
+    color: #8ee0c5;
+    display: block;
+    line-height: 1.4;
+  }
+
+  .connection-line {
+    position: absolute;
+    top: 50%;
+    right: -14px;
+    width: 14px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .data-packet {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: #8ee0c5;
+    animation: flowPacket 2s infinite ease-in-out;
+  }
+
+  @keyframes flowPacket {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .arch-detail-card {
+    background: #191422;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px 24px;
+  }
+
+  .detail-badge {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8ee0c5;
+    font-weight: 700;
+  }
+
+  .detail-header h3 {
+    margin: 6px 0 10px;
+    font-family: Georgia, serif;
+    font-size: 1.35rem;
+    color: #f3eff9;
+  }
+
+  .detail-desc {
+    margin: 0 0 16px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: #d6cede;
+    max-width: 800px;
+  }
+
+  .detail-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .detail-tags span {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 5px 11px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    color: #f3eff9;
+  }
+
+  @media (max-width: 900px) {
+    .pipeline-track {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .connection-line {
+      display: none;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .arch-flow {
+      padding: 18px;
+      border-radius: 18px;
+    }
+
+    .pipeline-track {
+      grid-template-columns: 1fr;
+    }
+
+    .detail-header h3 {
+      font-size: 1.15rem;
+    }
+
+    .detail-desc {
+      font-size: 0.86rem;
+    }
+  }
+</style>

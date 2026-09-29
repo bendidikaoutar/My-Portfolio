@@ -1,0 +1,792 @@
+---
+// CodeToLife.astro - Le code s'écrit au scroll et fabrique en direct l'application sous vos yeux !
+---
+
+<section id="code-to-life" class="c2l-section reveal">
+  <div class="c2l-container">
+
+    <!-- Header Section -->
+    <div class="c2l-header">
+      <div class="c2l-tag">
+        <span class="sparkle-icon">✨</span>
+        <span>L'ALCHIMIE DU CODE</span>
+      </div>
+      <h2>
+        Du code à la réalité.<br />
+        <span class="gradient-text">Observez la magie s'opérer.</span>
+      </h2>
+      <p class="c2l-subtitle">
+        Faites défiler pour voir comment quelques lignes de code propres donnent vie à une véritable interface sous vos yeux.
+      </p>
+
+      <!-- Stepper Controls (for mobile & quick clicks) -->
+      <div class="c2l-controls">
+        <button type="button" id="c2l-prev-step" class="ctrl-btn" aria-label="Étape précédente">◀ Précédent</button>
+        <span class="step-badge" id="c2l-step-counter">Étape 1 sur 6</span>
+        <button type="button" id="c2l-next-step" class="ctrl-btn primary" aria-label="Étape suivante">Suivant ▶</button>
+      </div>
+    </div>
+
+    <!-- The Split Canvas : Code on the Left, Live UI on the Right -->
+    <div class="c2l-canvas-track" id="c2l-track">
+      <div class="c2l-split-sticky">
+
+        <!-- LEFT: Code Editor Stream -->
+        <div class="code-side">
+          <div class="editor-header">
+            <div class="editor-dots" aria-hidden="true">
+              <span class="dot d-red"></span>
+              <span class="dot d-yellow"></span>
+              <span class="dot d-green"></span>
+            </div>
+            <span class="editor-filename">RecipeCard.tsx</span>
+            <span class="editor-runtime">React + TS</span>
+          </div>
+
+          <div class="code-editor-viewport">
+            <div class="code-lines-list" id="c2l-code-lines">
+              <!-- Dynamically highlighted and revealed lines -->
+            </div>
+          </div>
+
+          <div class="editor-footer">
+            <span class="footer-msg" id="c2l-code-msg">Faites défiler vers le bas...</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: The Living App Preview that builds itself -->
+        <div class="preview-side">
+          <div class="preview-header">
+            <div class="preview-browser-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="preview-url-bar">
+              <span class="url-protocol">https://</span>dishly.app/recipes/tajine
+            </div>
+            <span class="live-pill">● LIVE PREVIEW</span>
+          </div>
+
+          <div class="preview-viewport">
+            <!-- The Card that builds step by step -->
+            <div class="live-recipe-card" id="recipe-card">
+              
+              <!-- Step 2: Image Container -->
+              <div class="live-card-media" id="live-media">
+                <div class="media-placeholder">
+                  <span class="placeholder-icon">📷</span>
+                  <span>Chargement de la photo...</span>
+                </div>
+                <img 
+                  src="/dishly-featured.png" 
+                  alt="Plat Méditerranéen Dishly" 
+                  class="media-real-img"
+                  id="live-img"
+                />
+                <!-- Step 4: Badges -->
+                <div class="media-badges" id="live-badges">
+                  <span class="badge badge-prep">⏱️ 25 min</span>
+                  <span class="badge badge-tag">🌿 Méditerranéen</span>
+                </div>
+              </div>
+
+              <!-- Step 3: Card Content & Title -->
+              <div class="live-card-body" id="live-body">
+                <div class="body-placeholder" id="body-skeleton">
+                  <div class="sk-line sk-title"></div>
+                  <div class="sk-line sk-desc"></div>
+                </div>
+
+                <div class="body-real-content" id="body-content">
+                  <div class="live-title-row">
+                    <h4 class="recipe-title">Tajine Méditerranéen Épicé</h4>
+                    <!-- Step 5: Rating -->
+                    <div class="recipe-rating" id="live-rating">
+                      <span class="star">★</span>
+                      <span class="rating-num">4.9</span>
+                      <span class="rating-count">(128)</span>
+                    </div>
+                  </div>
+                  <p class="recipe-desc">
+                    Plat mijoté aux épices douces, légumes du soleil et huile d'olive vierge.
+                  </p>
+                </div>
+
+                <!-- Step 6: Interactive Button -->
+                <div class="live-card-footer" id="live-footer">
+                  <button type="button" class="order-recipe-btn" id="interactive-btn">
+                    <span>Voir la recette complète</span>
+                    <span class="order-arrow">↗</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="preview-footer-note">
+            <span class="note-icon">💡</span>
+            <span id="c2l-ui-explanation">Étape 1 : Le squelette initial de la carte est créé en mémoire.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Code To Life - Synchronized Scroll Engine
+  const codeLinesData = [
+    {
+      code: `const card = new RecipeCard();`,
+      msg: "Initialisation du composant graphique...",
+      uiNote: "Étape 1 : Le conteneur blanc et ses ombres douces prennent forme."
+    },
+    {
+      code: `card.setImage("/recipes/tajine.jpg");`,
+      msg: "Chargement de la ressource visuelle...",
+      uiNote: "Étape 2 : L'image haute définition s'anime avec un fondu doux."
+    },
+    {
+      code: `card.setTitle("Tajine Méditerranéen Épicé");`,
+      msg: "Injection du titre et du texte descriptif...",
+      uiNote: "Étape 3 : La typographie et la description s'écrivent avec élégance."
+    },
+    {
+      code: `card.addBadges(["25 min", "Méditerranéen"]);`,
+      msg: "Génération des étiquettes intelligentes...",
+      uiNote: "Étape 4 : Les badges d'informations sautent sur l'image."
+    },
+    {
+      code: `card.setRating(4.9, { reviewsCount: 128 });`,
+      msg: "Connexion aux avis des utilisateurs...",
+      uiNote: "Étape 5 : L'évaluation dorée 4.9★ s'illumine."
+    },
+    {
+      code: `card.render({ interactive: true });`,
+      msg: "Composant 100% prêt et interactif !",
+      uiNote: "Étape 6 : Le bouton d'action se déploie. L'application est prête !"
+    }
+  ];
+
+  const codeContainer = document.getElementById("c2l-code-lines");
+  const track = document.getElementById("c2l-track");
+  const stepCounter = document.getElementById("c2l-step-counter");
+  const codeMsg = document.getElementById("c2l-code-msg");
+  const uiExplanation = document.getElementById("c2l-ui-explanation");
+  const prevBtn = document.getElementById("c2l-prev-step");
+  const nextBtn = document.getElementById("c2l-next-step");
+
+  // Living UI Elements
+  const recipeCard = document.getElementById("recipe-card");
+  const liveImg = document.getElementById("live-img");
+  const liveBadges = document.getElementById("live-badges");
+  const bodyContent = document.getElementById("body-content");
+  const bodySkeleton = document.getElementById("body-skeleton");
+  const liveRating = document.getElementById("live-rating");
+  const liveFooter = document.getElementById("live-footer");
+
+  // Build Code Lines DOM
+  if (codeContainer) {
+    codeContainer.innerHTML = codeLinesData.map((item, i) => `
+      <div class="c2l-line" data-step="${i + 1}">
+        <span class="c2l-num">${i + 1}</span>
+        <span class="c2l-content">${item.code}</span>
+      </div>
+    `).join("");
+  }
+
+  const lines = document.querySelectorAll(".c2l-line");
+  let currentStep = 1;
+
+  function applyStep(step: number) {
+    currentStep = Math.max(1, Math.min(6, step));
+
+    // Update Code Lines
+    lines.forEach((line, index) => {
+      if (index < currentStep) {
+        line.classList.add("revealed");
+        if (index === currentStep - 1) line.classList.add("active");
+        else line.classList.remove("active");
+      } else {
+        line.classList.remove("revealed");
+        line.classList.remove("active");
+      }
+    });
+
+    // Update Counter & Text Notes
+    if (stepCounter) stepCounter.textContent = `Étape ${currentStep} sur 6`;
+    const curData = codeLinesData[currentStep - 1];
+    if (codeMsg) codeMsg.textContent = curData.msg;
+    if (uiExplanation) uiExplanation.textContent = curData.uiNote;
+
+    // Build Live UI Step by Step !
+    // Step 1: Card container exists
+    recipeCard?.classList.add("step-1-ready");
+
+    // Step 2: Image
+    if (currentStep >= 2) liveImg?.classList.add("visible");
+    else liveImg?.classList.remove("visible");
+
+    // Step 3: Title & Content
+    if (currentStep >= 3) {
+      bodyContent?.classList.add("visible");
+      bodySkeleton?.classList.add("hidden");
+    } else {
+      bodyContent?.classList.remove("visible");
+      bodySkeleton?.classList.remove("hidden");
+    }
+
+    // Step 4: Badges
+    if (currentStep >= 4) liveBadges?.classList.add("visible");
+    else liveBadges?.classList.remove("visible");
+
+    // Step 5: Rating
+    if (currentStep >= 5) liveRating?.classList.add("visible");
+    else liveRating?.classList.remove("visible");
+
+    // Step 6: Action Button
+    if (currentStep >= 6) liveFooter?.classList.add("visible");
+    else liveFooter?.classList.remove("visible");
+  }
+
+  // Scroll Sync
+  function onScroll() {
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    const startOffset = windowHeight * 0.7;
+    const currentScrolled = startOffset - rect.top;
+    const totalDistance = rect.height;
+
+    if (currentScrolled <= 0) {
+      applyStep(1);
+      return;
+    }
+
+    const progress = Math.min(1, Math.max(0, currentScrolled / totalDistance));
+    const step = Math.min(6, Math.floor(progress * 6) + 1);
+    applyStep(step);
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+
+  prevBtn?.addEventListener("click", () => applyStep(currentStep - 1));
+  nextBtn?.addEventListener("click", () => applyStep(currentStep + 1));
+
+  // Initial step setup
+  applyStep(1);
+</script>
+
+<style>
+  .c2l-section {
+    padding: 100px 0 130px;
+    background: color-mix(in srgb, var(--bg-subtle) 40%, transparent);
+    position: relative;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .c2l-container {
+    width: min(1180px, 92%);
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .c2l-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 50px;
+  }
+
+  .c2l-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-amber-light);
+    color: var(--accent-amber);
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+
+  .c2l-header h2 {
+    font-size: clamp(2.3rem, 4.4vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: var(--text-main);
+    font-weight: 800;
+    margin: 0 0 18px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary) 20%, var(--accent-sage) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .c2l-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0 0 26px;
+  }
+
+  .c2l-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 6px 12px;
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ctrl-btn {
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 999px;
+    transition: all 0.2s;
+  }
+
+  .ctrl-btn:hover {
+    color: var(--primary);
+  }
+
+  .ctrl-btn.primary {
+    background: var(--primary);
+    color: #FFFFFF;
+  }
+
+  .ctrl-btn.primary:hover {
+    background: var(--primary-hover);
+  }
+
+  .step-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    font-family: var(--font-mono);
+  }
+
+  /* Scroll Track */
+  .c2l-canvas-track {
+    min-height: 160vh;
+    position: relative;
+  }
+
+  .c2l-split-sticky {
+    position: sticky;
+    top: 90px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: stretch;
+  }
+
+  /* LEFT: Code Side */
+  .code-side {
+    background: #14111D;
+    border: 1px solid #2B233D;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .editor-header {
+    background: #0E0C15;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #221B32;
+  }
+
+  .editor-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot.d-red { background: #FF5F56; }
+  .dot.d-yellow { background: #FFBD2E; }
+  .dot.d-green { background: #27C93F; }
+
+  .editor-filename {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #DDD4EC;
+    font-weight: 600;
+  }
+
+  .editor-runtime {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent-sage);
+    background: rgba(80, 227, 194, 0.12);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  .code-editor-viewport {
+    padding: 24px 20px;
+    flex: 1;
+    min-height: 380px;
+  }
+
+  .code-lines-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .c2l-line {
+    display: flex;
+    gap: 16px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    opacity: 0.2;
+    transform: translateX(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
+    color: #A396BC;
+  }
+
+  .c2l-line.revealed {
+    opacity: 0.85;
+    transform: translateX(0);
+    color: #EFE9FB;
+  }
+
+  .c2l-line.active {
+    opacity: 1;
+    background: rgba(157, 109, 232, 0.18);
+    box-shadow: inset 3px 0 0 var(--primary);
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+
+  .c2l-num {
+    color: #55486C;
+    user-select: none;
+    min-width: 18px;
+    text-align: right;
+  }
+
+  .editor-footer {
+    background: #0E0C15;
+    border-top: 1px solid #221B32;
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: #8C80A5;
+  }
+
+  /* RIGHT: Live Preview Side */
+  .preview-side {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .preview-header {
+    background: var(--bg-subtle);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .preview-browser-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .preview-browser-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .preview-url-bar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    font-family: var(--font-mono);
+  }
+
+  .url-protocol {
+    color: var(--accent-sage);
+  }
+
+  .live-pill {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #10B981;
+    letter-spacing: 0.5px;
+  }
+
+  .preview-viewport {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, color-mix(in srgb, var(--primary) 4%, transparent), transparent 70%);
+  }
+
+  /* The Recipe Card */
+  .live-recipe-card {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+  }
+
+  /* Media Container */
+  .live-card-media {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    background: var(--bg-subtle);
+    overflow: hidden;
+  }
+
+  .media-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+  }
+
+  .media-real-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.08);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .media-real-img.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Badges */
+  .media-badges {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+  }
+
+  .media-badges.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    color: #FFFFFF;
+  }
+
+  .badge-prep { background: rgba(30, 24, 40, 0.8); }
+  .badge-tag { background: rgba(63, 122, 92, 0.85); }
+
+  /* Body */
+  .live-card-body {
+    padding: 20px;
+  }
+
+  /* Skeleton */
+  .body-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .body-placeholder.hidden {
+    display: none;
+  }
+
+  .sk-line {
+    background: var(--border);
+    border-radius: 4px;
+    animation: skPulse 1.5s infinite;
+  }
+
+  .sk-title { width: 75%; height: 20px; }
+  .sk-desc { width: 95%; height: 14px; }
+
+  @keyframes skPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Real Content */
+  .body-real-content {
+    display: none;
+  }
+
+  .body-real-content.visible {
+    display: block;
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  .live-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .recipe-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .recipe-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-amber-light);
+    color: var(--accent-amber);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: all 0.3s ease;
+  }
+
+  .recipe-rating.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .recipe-desc {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    margin: 0 0 16px;
+    line-height: 1.55;
+  }
+
+  /* Footer Action */
+  .live-card-footer {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.35s ease;
+  }
+
+  .live-card-footer.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .order-recipe-btn {
+    width: 100%;
+    background: var(--primary);
+    color: #FFFFFF;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 30%, transparent);
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .order-recipe-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+  }
+
+  .preview-footer-note {
+    background: var(--bg-subtle);
+    border-top: 1px solid var(--border);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .c2l-canvas-track {
+      min-height: auto;
+    }
+
+    .c2l-split-sticky {
+      position: static;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+</style>

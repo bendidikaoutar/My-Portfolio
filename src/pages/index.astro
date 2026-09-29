@@ -8,7 +8,6 @@ import Skills from "../components/skills.astro";
 import Projects from "../components/projects.astro";
 import Contact from "../components/contact.astro";
 import Footer from "../components/footer.astro";
-
 ---
 
 <html lang="fr">
@@ -19,51 +18,80 @@ import Footer from "../components/footer.astro";
       content="width=device-width, initial-scale=1.0"
     />
 
-		<title>Kaoutar | Étudiante ingénieure en informatique</title>
+    <title>Kaoutar Bendidi — Studio Numérique & Ingénierie Logicielle</title>
     <meta
       name="description"
-      content="Portfolio de Kaoutar Bendidi, étudiante ingénieure en informatique, intéressée par le développement Full Stack, le cloud et le DevOps."
+      content="Portfolio de Kaoutar Bendidi, élève ingénieure en génie informatique. Conception logicielle, architectures Full Stack et expériences web interactives."
     />
-		<script is:inline>document.documentElement.classList.add("js");</script>
-		<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const elements = document.querySelectorAll(".reveal");
 
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      !("IntersectionObserver" in window)
-    ) {
-      elements.forEach((element) => element.classList.add("visible"));
-      return;
-    }
+    <!-- Google Fonts: Plus Jakarta Sans pour la modernité et l'élégance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-    const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    {
-      threshold: 0.08,
-      rootMargin: "0px 0px -10% 0px",
-    }
-    );
+    <!-- Prévention de flash de thème -->
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      let savedMode = null;
+      try {
+        savedMode = localStorage.getItem("kaoutar_portfolio_mode");
+      } catch (e) {}
+      if (savedMode === "code") {
+        document.documentElement.setAttribute("data-dev-mode", "true");
+      }
+    </script>
 
-    elements.forEach((element) => observer.observe(element));
-  });
-</script>
+    <script>
+      const revealElements = document.querySelectorAll(".reveal");
+
+      if (
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        !("IntersectionObserver" in window)
+      ) {
+        revealElements.forEach((element) => element.classList.add("visible"));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: "0px 0px -10% 0px" }
+        );
+
+        revealElements.forEach((element) => observer.observe(element));
+      }
+    </script>
   </head>
 
   <body>
+    <!-- 1. Navigation avec le Dual Switch (Mode Visuel ⇋ Mode Codeuse) -->
     <Navbar />
-    <Hero />
-    <About />
-    <Skills />
-    <Projects />
-    <Contact />
+
+    <main>
+      <!-- 2. Hero Interactive Studio (Accroche forte & Carte 3D studio au curseur) -->
+      <Hero />
+
+      <!-- 3. À propos : Profil, Vision & 3 piliers d'ingénierie -->
+      <About />
+
+      <!-- 4. Technologies & Architecture logicielle -->
+      <Skills />
+
+      <!-- 5. Réalisations majeures (Dishly avec banc d'essai API, Muestra, Sehati, Studio Génératif, Budget App) -->
+      <Projects />
+
+      <!-- 6. Contact -->
+      <Contact />
+    </main>
+
+    <!-- 8. Footer -->
     <Footer />
   </body>
 </html>
