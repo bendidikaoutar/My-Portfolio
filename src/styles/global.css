@@ -1,17 +1,19 @@
 :root {
-  /* Mode Visuel (Par défaut) : Lumineux, élégant, créatif & accessible */
-  --bg: #FBF9F6;
-  --bg-subtle: #F3EFE9;
+  /* Light theme tokens; the document starts in dark mode. */
+  --bg: #F8FAFD;
+  --bg-subtle: #EFF3F9;
   --card: #FFFFFF;
-  --card-border: #E8E2D8;
-  --border: #DDD6CA;
+  --card-border: #DCE3EF;
+  --border: #CDD6E5;
 
-  --text-main: #1D1826;
-  --text-muted: #5E5669;
-  --text-soft: #7C7489;
+  --text-main: #18243B;
+  --text-muted: #536078;
+  --text-soft: #63718A;
 
-  --primary: #593285;
-  --primary-hover: #45246B;
+  --primary: #6742AE;
+  --primary-hover: #53348F;
+  --on-primary: #FFFFFF;
+  --grid-line: rgba(87, 111, 151, 0.055);
   --primary-light: rgba(89, 50, 133, 0.08);
 
   --accent-sage: #3F7A5C;
@@ -28,20 +30,22 @@
   --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
-/* Mode Codeuse (Activé via le Dual Switch) : Univers tech sombre, précis & immersif */
+/* Dark theme; the existing attribute preserves saved theme preferences. */
 html[data-dev-mode="true"] {
-  --bg: #0D0B12;
-  --bg-subtle: #14111D;
-  --card: #181424;
-  --card-border: #2D253F;
-  --border: #261F36;
+  --bg: #0E1522;
+  --bg-subtle: #121C2C;
+  --card: #172235;
+  --card-border: #2B3950;
+  --border: #344259;
+  --on-primary: #111827;
+  --grid-line: rgba(152, 177, 218, 0.045);
 
   --text-main: #F3EFF9;
-  --text-muted: #A39AB5;
-  --text-soft: #7D7390;
+  --text-muted: #B1BDD0;
+  --text-soft: #97A7C0;
 
-  --primary: #9D6DE8;
-  --primary-hover: #B288F8;
+  --primary: #BC9AF4;
+  --primary-hover: #CEB2FA;
   --primary-light: rgba(157, 109, 232, 0.15);
 
   --accent-sage: #50E3C2;
@@ -59,9 +63,16 @@ html[data-dev-mode="true"] {
   box-sizing: border-box;
 }
 
+:root { color-scheme: light; }
+html[data-dev-mode="true"] { color-scheme: dark; }
+section[id] { scroll-margin-top: 90px; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
+.skip-link { position: fixed; top: 12px; left: 12px; z-index: 2000; padding: 10px 16px; background: var(--card); border: 1px solid var(--primary); transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
+
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
@@ -71,7 +82,7 @@ body {
   background-color: var(--bg);
   color: var(--text-main);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.35s ease, color 0.35s ease;
   background-image:
     radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--primary) 7%, transparent) 0%, transparent 40%),

@@ -1,5 +1,5 @@
 ---
-// ApiPlayground.astro - Live REST API Inspector & Playground for Dishly
+// Local, illustrative REST responses for Dishly. No network requests.
 ---
 
 <div class="api-playground" id="dishly-api-playground">
@@ -16,13 +16,13 @@
 
     <button class="send-btn" id="send-request-btn" type="button">
       <span class="send-icon">▶</span>
-      <span>Envoyer</span>
+      <span>Simuler</span>
     </button>
   </div>
 
   <div class="request-details">
     <div class="meta-row">
-      <span class="meta-item">Host: <code>api.dishly.app</code></span>
+      <span class="meta-item">Exemple : <code>api.dishly.app</code></span>
       <span class="meta-item">Auth: <code>Bearer eyJhbG...</code></span>
       <button class="copy-curl-btn" id="copy-curl-dishly" type="button" title="Copier cURL">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -36,7 +36,7 @@
 
   <div class="response-panel">
     <div class="response-header">
-      <div class="response-status">
+      <div class="response-status" role="status" aria-live="polite">
         <span class="status-chip success" id="resp-status">200 OK</span>
         <span class="latency-chip" id="resp-latency">24ms</span>
         <span class="size-chip" id="resp-size">1.42 KB</span>
@@ -188,10 +188,10 @@
       methodBadge.className = `http-badge ${item.method.toLowerCase()}`;
     }
 
-    // Simulate real network flight
+    // Display a local example response
     if (sendBtn) sendBtn.classList.add("loading");
     if (respStatus) {
-      respStatus.textContent = "Fetching...";
+      respStatus.textContent = "Simulation…";
       respStatus.className = "status-chip pending";
     }
 
@@ -203,7 +203,7 @@
         respStatus.textContent = item.statusText;
         respStatus.className = `status-chip ${item.status >= 200 && item.status < 300 ? "success" : "warn"}`;
       }
-      if (respLatency) respLatency.textContent = `${delay}ms`;
+      if (respLatency) respLatency.textContent = `${delay}ms (exemple)`;
       if (respSize) respSize.textContent = item.size;
 
       jsonViewer.innerHTML = formatJsonSyntax(item.data);
@@ -226,6 +226,11 @@
     const val = select?.value || "featured";
     const targetKey = val.includes("create") ? "create" : val.includes("list") ? "list" : val.includes("health") ? "health" : "featured";
     const item = endpointData[targetKey] || endpointData.featured;
+    const label = curlBtn.querySelector("span");
+    if (!navigator.clipboard) {
+      if (label) label.textContent = "Copie indisponible";
+      return;
+    }
     navigator.clipboard.writeText(item.curl).then(() => {
       const span = curlBtn.querySelector("span");
       if (span) {
@@ -233,6 +238,8 @@
         span.textContent = "Copié !";
         setTimeout(() => { span.textContent = prev; }, 1600);
       }
+    }).catch(() => {
+      if (label) label.textContent = "Copie indisponible";
     });
   });
 
@@ -243,9 +250,10 @@
 <style>
   .api-playground {
     width: 100%;
-    background: #140f1c;
-    border: 1px solid color-mix(in srgb, var(--mauve) 35%, transparent);
-    border-radius: 18px;
+    color-scheme: dark;
+    background: #101724;
+    border: 1px solid color-mix(in srgb, #7952af 35%, transparent);
+    border-radius: 7px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -302,18 +310,21 @@
     font-size: 0.76rem;
     flex: 1;
     max-width: 100%;
+    min-width: 0;
     cursor: pointer;
     outline: none;
     transition: border-color 0.2s;
   }
 
   .endpoint-dropdown:focus {
-    border-color: var(--sage);
+    border-color: #8ee0c1;
+    outline: 2px solid #8ee0c1;
+    outline-offset: 2px;
   }
 
   .send-btn {
-    background: var(--mauve);
-    border: 1px solid color-mix(in srgb, var(--mauve) 80%, white);
+    background: #7952af;
+    border: 1px solid color-mix(in srgb, #7952af 80%, white);
     color: #fff;
     padding: 6px 14px;
     border-radius: 6px;
@@ -329,7 +340,7 @@
   }
 
   .send-btn:hover {
-    background: var(--mauve-dark);
+    background: #684799;
     transform: translateY(-1px);
   }
 
@@ -419,7 +430,7 @@
   }
 
   .latency-chip, .size-chip, .content-type {
-    color: #7b7189;
+    color: #a8a0b6;
   }
 
   .response-body {
@@ -468,6 +479,8 @@
       justify-content: center;
     }
 
+    .response-header { flex-wrap: wrap; gap: 8px; }
+    .response-status { flex-wrap: wrap; }
     .meta-row {
       flex-wrap: wrap;
       gap: 8px;

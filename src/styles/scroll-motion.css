@@ -1,0 +1,51 @@
+/* Content is static and fully visible until the shared controller enables motion. */
+.reading-progress { position: absolute; inset: auto 0 -2px; height: 2px; overflow: hidden; pointer-events: none; }
+.reading-progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent-sage)); transform: scaleX(var(--reading-progress, 0)); transform-origin: left; }
+.scroll-motion .hero .workspace {
+  transform: translateY(calc(var(--hero-progress, 0) * 40px)) rotate(calc(1deg - var(--hero-progress, 0) * 1deg)) scale(calc(1 - var(--hero-progress, 0) * 0.04));
+  transform-origin: center;
+}
+html.scroll-motion [data-motion="journey"] { position: relative; gap: 24px; }
+html.scroll-motion [data-motion="journey"]::before,
+html.scroll-motion [data-motion="journey"]::after { content: ""; position: absolute; left: 0; top: 0; width: calc(100% - (100% - 48px) / 3); height: 2px; background: var(--border); pointer-events: none; }
+html.scroll-motion [data-motion="journey"]::after { background: linear-gradient(90deg, var(--primary), var(--accent-sage)); transform: scaleX(var(--journey-progress, 0)); transform-origin: left; }
+html.scroll-motion [data-motion="journey"] li { border-top-color: transparent; }
+html.scroll-motion [data-motion="journey"] li::before { z-index: 1; background: var(--border); border: 2px solid var(--bg); width: 11px; height: 11px; top: -4px; }
+html.scroll-motion [data-motion="journey"] li.is-reached::before { background: var(--primary); }
+html.scroll-motion [data-motion="journey"] li.is-current::before { background: var(--accent-sage); box-shadow: 0 0 0 5px var(--accent-sage-light); }
+html.scroll-motion [data-motion="journey"] li.is-current h3 { color: var(--primary); }
+.arch-section.is-pinned .arch-flow { position: sticky; top: calc(var(--motion-nav-height) + 24px); margin-bottom: 0; }
+/* Padding alone cannot form a sticky travel area; its containing block includes the full track. */
+.arch-section.is-pinned { height: auto; padding-bottom: 0; }
+.arch-section.is-pinned::after { content: ""; display: block; height: var(--architecture-distance); }
+.scroll-motion .arch-flow .data-packet { animation: none; left: 0; width: 100%; transform: scaleX(var(--connection-progress, 0)); transform-origin: left; }
+.other-projects { position: relative; }
+.project-slot { min-width: 0; }
+.scroll-motion .other-projects.is-desktop { display: flex; flex-direction: column; gap: 16vh; }
+.scroll-motion .other-projects.is-desktop .project-slot { width: 100%; }
+.other-projects.is-stacked { padding-bottom: 16vh; }
+.other-projects.is-stacked .project-slot { position: sticky; top: var(--project-top); z-index: calc(1 + var(--project-index)); }
+.other-projects.is-stacked .project-card { transform: scale(calc(1 - var(--project-cover, 0) * 0.04)); transform-origin: center top; box-shadow: var(--shadow-lg); }
+.scroll-motion .other-projects:not(.is-stacked) .project-card { opacity: calc(0.55 + var(--entrance, 1) * 0.45); transform: translateY(calc((1 - var(--entrance, 1)) * 16px)); }
+.scroll-motion .contact > .container { opacity: calc(0.4 + var(--entrance, 1) * 0.6); transform: translateY(calc((1 - var(--entrance, 1)) * 24px)); }
+.scroll-motion .contact:focus-within > .container,
+.scroll-motion .project-slot:focus-within .project-card { opacity: 1; transform: none; }
+@media (max-width: 1023px), (max-height: 719px) {
+  .scroll-motion .hero .workspace { transform: none; }
+  .scroll-motion .contact > .container { transform: translateY(calc((1 - var(--entrance, 1)) * 16px)); }
+}
+@media (max-width: 580px) {
+  html.scroll-motion [data-motion="journey"] { padding-left: 20px; }
+  html.scroll-motion [data-motion="journey"]::before,
+  html.scroll-motion [data-motion="journey"]::after { width: 2px; height: 100%; }
+  html.scroll-motion [data-motion="journey"]::after { transform: scaleY(var(--journey-progress, 0)); transform-origin: top; }
+  html.scroll-motion [data-motion="journey"] li { padding-top: 0; }
+  html.scroll-motion [data-motion="journey"] li::before { left: -24px; top: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arch-section.is-pinned::after { display: none; }
+  .arch-section.is-pinned .arch-flow, .other-projects.is-stacked .project-slot { position: static; }
+  .other-projects.is-stacked { padding-bottom: 0; }
+  .scroll-motion .hero .workspace, .other-projects .project-card, .contact > .container { transform: none !important; opacity: 1 !important; }
+  .arch-flow .data-packet, .arch-flow .live-dot { animation: none !important; }
+}

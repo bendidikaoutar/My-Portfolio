@@ -1,623 +1,85 @@
----
-import ScrollTypewriter from "./ScrollTypewriter.astro";
----
-
-<section id="home" class="hero">
+<section data-motion="hero" id="home" class="hero">
   <div class="hero-container">
-
     <div class="hero-content">
-
-      <div class="hero-top hero-animate delay-1"><span class="index">&lt;/&gt;</span><span class="line"></span><p>Full Stack · Cloud &amp; DevOps</p></div>
-
-      <h1 class="hero-animate delay-2">
-         des architectures
-        <span>robustes &amp; scalables</span>
-      </h1>
-
-      <p class="hero-role hero-animate delay-3"><ScrollTypewriter text="Ingénieure Full Stack · Architecture Cloud & DevOps" mono /></p>
-
-      <div class="hero-bottom">
-
-        <p class="description hero-animate delay-3">
-          Je conçois et développe des applications web complètes — du schéma de base de données jusqu'au déploiement CI/CD — en priorisant la lisibilité, la robustesse et l'expérience utilisateur.
-        </p>
-
-        <div class="buttons hero-animate delay-4">
-          <a href="#projects" class="primary">
-            Explorer mes projets
-            <span>↗</span>
-          </a>
-
-          <a href="/cv-kaoutar-bendidi.pdf" class="secondary" download>
-            Télécharger CV
-          </a>
-        </div>
-
+      <p class="eyebrow"><span aria-hidden="true">~/</span> portfolio de développeuse</p>
+      <p class="hello">Bonjour, je suis</p>
+      <h1>Kaoutar<span>Bendidi<span class="cursor" aria-hidden="true">_</span></span></h1>
+      <p class="hero-role">Élève ingénieure en informatique<br /><span>Développement Full Stack</span></p>
+      <p class="description">Je développe des applications web et j’explore les systèmes qui les font fonctionner. Du modèle de données à l’interface, j’apprends en construisant.</p>
+      <div class="buttons">
+        <a href="#projects" class="primary">Explorer mes projets <span aria-hidden="true">↗</span></a>
+        <a href="/cv-kaoutar-bendidi.pdf" class="secondary" download>Télécharger mon CV <span aria-hidden="true">↓</span></a>
       </div>
-
-      <div class="stack hero-animate delay-5">
-        <span>React</span>
-        <span>Node.js</span>
-        <span>TypeScript</span>
-        <span>PostgreSQL</span>
-        <span>Docker</span>
-        <span>CI/CD</span>
-      </div>
-
     </div>
-
-    <div class="code-card hero-card-animate" id="developer-code-card">
-      <div class="code-card-header">
-        <div class="mac-dots" aria-hidden="true">
-          <span class="dot d-red"></span>
-          <span class="dot d-yellow"></span>
-          <span class="dot d-green"></span>
-        </div>
-        <div class="editor-tab">
-          <span class="ts-badge">TS</span>
-          <span class="tab-filename">kaoutar.config.ts</span>
-        </div>
-        <div class="header-status">
-          <span class="pulse-dot"></span>
-          <span>TypeScript 5.5</span>
-        </div>
-      </div>
-      <div class="code-card-body">
-        <div class="line-nums" aria-hidden="true">
-          <span>1</span><span>2</span><span>3</span><span>4</span>
-          <span>5</span><span>6</span><span>7</span><span>8</span>
-          <span>9</span><span>10</span><span>11</span><span>12</span>
-          <span>13</span><span>14</span>
-        </div>
-        <pre class="editor-pre"><code><span class="t-kw">import</span> &#123; <span class="t-type">FullStackEngineer</span> &#125; <span class="t-kw">from</span> <span class="t-str">"@kaoutar/core"</span>;
-
-<span class="t-kw">export const</span> <span class="t-var">engineer</span>: <span class="t-type">FullStackEngineer</span> = &#123;
-  <span class="t-prop">name</span>: <span class="t-str">"Kaoutar Bendidi"</span>,
-  <span class="t-prop">education</span>: <span class="t-str">"4e annee Genie Info"</span>,
-  <span class="t-prop">specialty</span>: <span class="t-str">"Full Stack &amp; Cloud"</span>,
-  <span class="t-prop">stack</span>: &#123;
-    <span class="t-prop">client</span>: [<span class="t-str">"React 19"</span>, <span class="t-str">"TypeScript"</span>],
-    <span class="t-prop">server</span>: [<span class="t-str">"Node.js"</span>, <span class="t-str">"Express"</span>, <span class="t-str">"Prisma"</span>],
-    <span class="t-prop">data</span>: [<span class="t-str">"PostgreSQL"</span>, <span class="t-str">"ACID"</span>],
-    <span class="t-prop">infra</span>: [<span class="t-str">"Docker"</span>, <span class="t-str">"CI/CD"</span>]
+    <div class="workspace" aria-label="Mon profil sous forme de code">
+      <div class="workspace-title"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>kaoutar / workspace</span><span aria-hidden="true">⌘</span></div>
+      <div class="workspace-tabs"><span class="active-tab"><span class="ts-badge">TS</span> profil.ts</span><a href="#projects">projets/ <span aria-hidden="true">↗</span></a></div>
+      <div class="editor">
+        <div class="line-numbers" aria-hidden="true">{Array.from({length: 15}, (_, i) => <span>{i + 1}</span>)}</div>
+        <pre tabindex="0" aria-label="Profil TypeScript"><code><span class="comment">// Apprendre. Construire. Itérer.</span>
+<span class="keyword">const</span> <span class="variable">profil</span> = &#123;
+  <span class="property">nom</span>: <span class="string">"Kaoutar Bendidi"</span>,
+  <span class="property">formation</span>: <span class="string">"Génie informatique"</span>,
+  <span class="property">année</span>: <span class="number">4</span>,
+  <span class="property">focus</span>: <span class="string">"Full Stack"</span>,
+  <span class="property">stack</span>: &#123;
+    <span class="property">front</span>: <span class="string">"React · TypeScript"</span>,
+    <span class="property">back</span>: <span class="string">"Node.js · Prisma"</span>,
+    <span class="property">data</span>: <span class="string">"PostgreSQL"</span>
   &#125;,
-  <span class="t-prop">open</span>: <span class="t-kw">true</span>
-&#125;;</code></pre>
+  <span class="property">explorations</span>: [<span class="string">"Cloud"</span>, <span class="string">"DevOps"</span>],
+  <span class="property">recherche</span>: <span class="string">"Stage"</span>
+&#125; <span class="keyword">as const</span>;
+<span class="comment">// La suite se construit en projets.</span></code></pre>
       </div>
-      <div class="code-card-footer">
-        <button type="button" class="run-btn" id="run-hero-code" aria-describedby="hero-output-box">
-          <span class="play-icon">&#9654;</span>
-          <span id="run-hero-code-label">Run engineer.build()</span>
-        </button>
-        <div class="exec-output" id="hero-output-box" role="status" aria-live="polite">
-          <span class="exec-ok" id="hero-exec-status">&#10003; 0 errors</span>
-          <span class="exec-dim" id="hero-exec-meta">16ms &middot; git:(main)</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="ticker">
-    <div class="ticker-content">
-      <div class="ticker-group">
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-      </div>
-
-      <div class="ticker-group" aria-hidden="true">
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-        <span>DESIGN × CODE × CURIOSITÉ × CRÉATION × FULL STACK ×</span>
-      </div>
+      <div class="terminal"><p><span aria-hidden="true">❯</span> découvrir mes réalisations</p><a href="#projects">Ouvrir les projets <span aria-hidden="true">↗</span></a></div>
+      <div class="workspace-status"><span>⑂ main</span><span>TypeScript <span aria-hidden="true">·</span> UTF-8</span></div>
     </div>
   </div>
+  <div class="hero-footer"><span><i aria-hidden="true"></i> À la recherche d’un stage</span><a href="#about">Découvrir mon parcours <span aria-hidden="true">↓</span></a></div>
 </section>
 
-<script>
-  const runButton = document.getElementById("run-hero-code") as HTMLButtonElement | null;
-  const runLabel = document.getElementById("run-hero-code-label");
-  const runStatus = document.getElementById("hero-exec-status");
-  const runMeta = document.getElementById("hero-exec-meta");
-  const codeCard = document.getElementById("developer-code-card");
-
-  runButton?.addEventListener("click", () => {
-    if (runButton.disabled || !runLabel || !runStatus || !runMeta) return;
-
-    runButton.disabled = true;
-    runButton.setAttribute("aria-busy", "true");
-    runLabel.textContent = "Building...";
-    runStatus.textContent = "Compiling configuration";
-    runMeta.textContent = "checking stack";
-    codeCard?.classList.add("is-running");
-
-    window.setTimeout(() => {
-      runLabel.textContent = "Build complete";
-      runStatus.textContent = "✓ 0 errors";
-      runMeta.textContent = "42ms | 6 capabilities ready";
-      runButton.removeAttribute("aria-busy");
-      codeCard?.classList.remove("is-running");
-      codeCard?.classList.add("build-complete");
-
-      window.setTimeout(() => {
-        runButton.disabled = false;
-        runLabel.textContent = "Run engineer.build()";
-        codeCard?.classList.remove("build-complete");
-      }, 2200);
-    }, 700);
-  });
-</script>
-
 <style>
-  .hero {
-    min-height: calc(100vh - 72px);
-    padding-top: 70px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .hero-container {
-    width: min(1120px, 90%);
-    margin: 0 auto;
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 70px;
-    align-items: center;
-    align-content: center;
-  }
-
-  /* TOP LABEL */
-  .hero-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 22px;
-  }
-
-  .hero-top p {
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--primary);
-  }
-
-  .index {
-    font-family: var(--font-mono, monospace);
-    color: var(--accent-sage);
-  }
-
-  .line {
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--accent-sage);
-  }
-
-  /* BIG TITLE */
-  h1 {
-    font-family: var(--font-sans, sans-serif);
-    font-size: clamp(2.6rem, 5vw, 4.2rem);
-    line-height: 1.1;
-    letter-spacing: -2px;
-    margin: 0 0 24px;
-    color: var(--text-main);
-    font-weight: 800;
-  }
-
-  h1 span {
-    display: inline;
-    color: var(--primary);
-  }
-
-  .hero-role {
-    width: fit-content;
-    margin: 0 0 28px;
-    color: var(--text-muted);
-    font-family: var(--font-mono, monospace);
-    font-size: clamp(0.8rem, 1.5vw, 1rem);
-    line-height: 1.5;
-  }
-
-  /* DESCRIPTION */
-  .description {
-    max-width: 520px;
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: var(--text-muted);
-  }
-
-  /* BUTTONS */
-  .buttons {
-    display: flex;
-    gap: 14px;
-    margin-top: 28px;
-    flex-wrap: wrap;
-  }
-
-  .buttons a {
-    padding: 14px 22px;
-    border-radius: 100px;
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.9rem;
-    transition: all 0.25s ease;
-  }
-
-  .primary {
-    background: var(--primary);
-    color: #fff;
-    border: 1px solid var(--primary);
-  }
-
-  .primary span {
-    transition: transform 0.25s ease;
-  }
-
-  .primary:hover {
-    opacity: 0.88;
-    transform: translateY(-3px);
-  }
-
-  .primary:hover span {
-    transform: translate(3px, -3px);
-  }
-
-  .secondary {
-    color: var(--primary);
-    border: 1px solid var(--border);
-  }
-
-  .secondary:hover {
-    background: color-mix(in srgb, var(--primary) 8%, transparent);
-    transform: translateY(-3px);
-  }
-
-  /* STACK CHIPS */
-  .stack {
-    display: flex;
-    gap: 9px;
-    flex-wrap: wrap;
-    margin-top: 42px;
-  }
-
-  .stack span {
-    padding: 7px 12px;
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    font-family: var(--font-mono, monospace);
-  }
-
-  /* ─── CODE CARD (right column) ─── */
-  .code-card {
-    width: 100%;
-    min-height: 400px;
-    background: #0d1117;
-    border: 1px solid #30363d;
-    border-radius: 14px;
-    overflow: hidden;
-    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
-    box-shadow:
-      0 24px 60px rgba(0,0,0,0.4),
-      0 0 0 1px rgba(255,255,255,0.04);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .code-card-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 16px;
-    background: #161b22;
-    border-bottom: 1px solid #30363d;
-  }
-
-  .mac-dots {
-    display: flex;
-    gap: 6px;
-  }
-
-  .dot {
-    display: block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-
-  .d-red    { background: #ff5f57; }
-  .d-yellow { background: #ffbd2e; }
-  .d-green  { background: #28ca41; }
-
-  .editor-tab {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 12px;
-    background: #0d1117;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    color: #e6edf3;
-  }
-
-  .ts-badge {
-    background: #3178c6;
-    color: #fff;
-    font-size: 0.6rem;
-    font-weight: 800;
-    padding: 2px 5px;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-  }
-
-  .tab-filename {
-    color: #e6edf3;
-    font-size: 0.8rem;
-  }
-
-  .header-status {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.65rem;
-    color: #7d8590;
-  }
-
-  .pulse-dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: #28ca41;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  .code-card-body {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-    padding: 20px 0;
-  }
-
-  .line-nums {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 0 14px;
-    min-width: 42px;
-    color: #3d444d;
-    font-size: 0.75rem;
-    line-height: 1.7;
-    user-select: none;
-    border-right: 1px solid #21262d;
-  }
-
-  .line-nums span {
-    display: block;
-  }
-
-  .editor-pre {
-    margin: 0;
-    padding: 0 20px;
-    font-size: 0.8rem;
-    line-height: 1.7;
-    color: #e6edf3;
-    overflow: auto;
-    white-space: pre;
-    flex: 1;
-  }
-
-  /* Syntax tokens */
-  .t-kw   { color: #ff7b72; }   /* import, export, const, true */
-  .t-type { color: #79c0ff; }   /* types */
-  .t-str  { color: #a5d6ff; }   /* strings */
-  .t-var  { color: #d2a8ff; }   /* variable name */
-  .t-prop { color: #7ee787; }   /* object properties */
-
-  .code-card-footer {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 16px;
-    background: #161b22;
-    border-top: 1px solid #30363d;
-    flex-wrap: wrap;
-  }
-
-  .run-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 16px;
-    background: #238636;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-family: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
-  }
-
-  .run-btn:hover {
-    background: #2ea043;
-    transform: translateY(-2px);
-  }
-
-  .run-btn:focus-visible {
-    outline: 2px solid #79c0ff;
-    outline-offset: 3px;
-  }
-
-  .run-btn:disabled {
-    cursor: wait;
-    background: #1f6feb;
-    transform: none;
-  }
-
-  .code-card.is-running .exec-ok {
-    color: #79c0ff;
-  }
-
-  .code-card.build-complete {
-    box-shadow:
-      0 24px 60px rgba(0,0,0,0.4),
-      0 0 0 1px rgba(63, 185, 80, 0.5),
-      0 0 24px rgba(63, 185, 80, 0.16);
-  }
-
-  .play-icon {
-    font-size: 0.7rem;
-  }
-
-  .exec-output {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.72rem;
-  }
-
-  .exec-ok  { color: #3fb950; }
-  .exec-dim { color: #3d444d; }
-
-  /* TICKER */
-  .ticker {
-    margin-top: 70px;
-    width: 100%;
-    max-width: 100vw;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-    contain: paint;
-  }
-
-  .ticker-content {
-    display: flex;
-    width: max-content;
-    white-space: nowrap;
-  }
-
-  .ticker-group {
-    display: flex;
-    flex: 0 0 auto;
-    width: max-content;
-    padding: 14px 0;
-    white-space: nowrap;
-    animation: ticker 24s linear infinite;
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-
-  .ticker-group span {
-    white-space: nowrap;
-    font-size: 0.7rem;
-    letter-spacing: 4px;
-    color: var(--text-muted);
-    padding-right: 50px;
-  }
-
-  /* LOAD ANIMATIONS */
-  .hero-animate {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: heroReveal 0.8s ease forwards;
-  }
-
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.25s; }
-  .delay-3 { animation-delay: 0.4s; }
-  .delay-4 { animation-delay: 0.55s; }
-  .delay-5 { animation-delay: 0.7s; }
-
-  .hero-card-animate {
-    opacity: 0;
-    transform: translateX(45px);
-    animation: cardReveal 1s ease forwards;
-    animation-delay: 0.35s;
-  }
-
-  @keyframes heroReveal {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes cardReveal {
-    to { opacity: 1; transform: translateX(0); }
-  }
-
-  @keyframes pulse {
-    50% { opacity: 0.45; }
-  }
-
-  @keyframes ticker {
-    from { transform: translate3d(0, 0, 0); }
-    to   { transform: translate3d(-100%, 0, 0); }
-  }
-
-  /* MOBILE */
-  @media (max-width: 850px) {
-    .hero { padding-top: clamp(38px, 8vw, 58px); }
-    .hero-container {
-      grid-template-columns: 1fr;
-      gap: 34px;
-    }
-    h1 {
-      max-width: 720px;
-      font-size: clamp(2.2rem, 9vw, 3.8rem);
-      letter-spacing: -1.5px;
-    }
-    .code-card {
-      width: min(88%, 520px);
-      min-height: clamp(300px, 60vw, 400px);
-      justify-self: end;
-    }
-    .ticker { margin-top: 50px; }
-  }
-
-  @media (max-width: 520px) {
-    .hero { min-height: auto; padding-top: 34px; }
-    .hero-container {
-      width: min(94%, 1120px);
-      gap: 28px;
-    }
-    .hero-top { margin-bottom: 18px; }
-    .hero-top p { font-size: 0.64rem; letter-spacing: 2.2px; }
-    h1 {
-      max-width: 94%;
-      margin-bottom: 28px;
-      font-size: clamp(2rem, 11vw, 3rem);
-      line-height: 1.15;
-      letter-spacing: -1px;
-    }
-    .hero-role { font-size: clamp(0.72rem, 4vw, 0.9rem); }
-    .description { width: 92%; margin: 0; font-size: 1rem; line-height: 1.65; }
-    .buttons { align-items: center; gap: 9px; margin-top: 22px; }
-    .buttons a { justify-content: center; text-align: center; padding: 11px 16px; font-size: 0.82rem; }
-    .stack { gap: 7px; width: 88%; margin-top: 30px; }
-    .stack span { padding: 6px 10px; font-size: 0.68rem; }
-    .code-card { width: 88%; min-height: clamp(280px, 80vw, 360px); border-radius: 10px; }
-    .ticker-group span { font-size: 0.62rem; letter-spacing: 2.5px; padding-right: 36px; }
-    .ticker-group { animation-duration: 32s; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-    }
-    .ticker-group { animation: none !important; transform: none !important; }
-  }
+  .hero { padding: clamp(52px, 8vw, 100px) 0 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 40px 40px; }
+  .hero-container { width: min(1180px, 92%); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+  .eyebrow { color: var(--primary); font: 0.75rem var(--font-mono); margin: 0 0 28px; }
+  .eyebrow > span { color: var(--accent-sage); margin-right: 8px; }
+  .hello { color: var(--text-muted); margin: 0 0 10px; font-size: 1rem; }
+  h1 { margin: 0 0 24px; font-size: clamp(3.4rem, 6.5vw, 5.7rem); line-height: 1.03; letter-spacing: -0.065em; font-weight: 800; }
+  h1 > span { display: block; color: var(--primary); }
+  .cursor { color: var(--accent-sage); font-weight: 500; }
+  .hero-role { font-size: clamp(1rem, 1.5vw, 1.15rem); line-height: 1.7; font-weight: 600; margin: 0 0 20px; }
+  .hero-role span { color: var(--text-muted); font-weight: 400; }
+  .description { color: var(--text-muted); max-width: 480px; font-size: 0.98rem; line-height: 1.85; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .buttons a { padding: 13px 18px; border: 1px solid var(--border); border-radius: 7px; font-size: 0.83rem; font-weight: 600; display: inline-flex; align-items: center; gap: 14px; }
+  .buttons .primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+  .primary:hover { background: var(--primary-hover); }
+  .secondary { background: var(--card); }
+  .secondary:hover { border-color: var(--primary); color: var(--primary); }
+  .workspace { min-width: 0; background: #101724; color: #d9e2f2; border: 1px solid #303b50; border-radius: 10px; overflow: hidden; font-family: var(--font-mono); box-shadow: 0 24px 70px -25px #14244460; transform: rotate(1deg); }
+  .workspace-title { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; font-size: 0.65rem; color: #99a8be; background: #182131; border-bottom: 1px solid #2b3547; }
+  .window-dots { display: flex; gap: 5px; }
+  .window-dots i { width: 7px; height: 7px; border-radius: 50%; background: #526179; }
+  .window-dots i:first-child { background: #b598ee; }
+  .workspace-tabs { display: flex; border-bottom: 1px solid #2b3547; font-size: 0.72rem; }
+  .workspace-tabs > * { display: flex; gap: 8px; align-items: center; padding: 13px 18px; }
+  .active-tab { border-top: 2px solid #b598ee; border-right: 1px solid #2b3547; }
+  .workspace-tabs a { color: #9eacc3; }
+  .workspace-tabs a:hover { color: #e1d3ff; background: #1d293c; }
+  .ts-badge { color: #8cbcff; font-size: 0.65rem; font-weight: 700; }
+  .editor { display: flex; padding: 24px 0; font-size: 0.74rem; line-height: 1.95; }
+  .line-numbers { display: flex; flex-direction: column; padding: 0 14px 0 18px; color: #65748b; text-align: right; user-select: none; }
+  pre { margin: 0; padding-right: 20px; min-width: 0; overflow-x: auto; font: inherit; }
+  code { font: inherit; }
+  .comment { color: #96a4ba; } .keyword { color: #c8a9ff; } .variable { color: #a8cfff; } .property { color: #d9e2f2; } .string { color: #8ee0c1; } .number { color: #f4c48a; }
+  .terminal { padding: 16px 20px; border-top: 1px solid #2b3547; background: #131c2b; font-size: 0.7rem; }
+  .terminal p { margin: 0 0 10px; color: #aab7ca; } .terminal p span { color: #8ee0c1; margin-right: 8px; }
+  .terminal a { color: #ceb4ff; text-decoration: underline; text-underline-offset: 4px; }
+  .workspace-status { display: flex; justify-content: space-between; gap: 12px; padding: 8px 16px; font-size: 0.62rem; color: #a9b9d0; background: #1e2b40; }
+  .hero-footer { width: min(1180px, 92%); margin: 64px auto 0; padding: 22px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; font: 0.72rem var(--font-mono); color: var(--text-muted); }
+  .hero-footer > span { display: flex; align-items: center; gap: 8px; } .hero-footer i { width: 6px; height: 6px; background: var(--accent-sage); border-radius: 50%; }
+  .hero-footer a:hover { color: var(--primary); }
+  @media (max-width: 900px) { .hero-container { grid-template-columns: 1fr; gap: 40px; } .workspace { transform: none; width: 100%; max-width: 650px; } .description { max-width: 580px; } .hero-footer { margin-top: 40px; } }
+  @media (max-width: 480px) { .editor { font-size: 0.68rem; } .line-numbers { padding-left: 10px; padding-right: 10px; } .buttons a { padding: 12px 14px; } h1 { font-size: clamp(3rem, 13vw, 4rem); } }
 </style>

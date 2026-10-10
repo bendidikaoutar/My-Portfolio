@@ -2,18 +2,18 @@
 // contact.astro - Section contact élégante et accessible
 ---
 
-<section id="contact" class="contact reveal">
+<section id="contact" class="contact" data-motion="contact">
   <div class="container">
 
-    <div class="contact-left reveal-item reveal-delay-1">
+    <div class="contact-left">
       <div class="section-tag">
         <span class="tag-num">05</span>
         <span class="tag-title">CONTACT & ÉCHANGE</span>
       </div>
 
       <h2>
-        Une idée ? Un projet ?<br />
-        <span class="gradient-text">Construisons ensemble.</span>
+        Un stage ? Un projet ?<br />
+        <span class="gradient-text">Échangeons.</span>
       </h2>
 
       <p class="contact-sub">
@@ -21,7 +21,7 @@
       </p>
     </div>
 
-    <div class="contact-right reveal-item reveal-delay-2">
+    <div class="contact-right">
       <div class="contact-card">
         <span class="card-label">EMAIL DIRECT</span>
         <a href="mailto:bendidikaoutar05@gmail.com" class="email-link">
@@ -88,7 +88,7 @@
     background: var(--primary-light);
     color: var(--primary);
     padding: 4px 12px;
-    border-radius: 999px;
+    border-radius: 5px;
     font-size: 0.76rem;
     font-weight: 700;
     margin-bottom: 20px;
@@ -126,7 +126,7 @@
   .contact-card {
     background: var(--card);
     border: 1px solid var(--card-border);
-    border-radius: 24px;
+    border-radius: 10px;
     padding: 38px;
     box-shadow: var(--shadow-lg);
   }
@@ -198,7 +198,7 @@
 
   .cv-btn:hover {
     background: var(--primary);
-    color: #FFFFFF;
+    color: var(--on-primary);
   }
 
   @media (max-width: 900px) {

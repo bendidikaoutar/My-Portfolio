@@ -1,6 +1,6 @@
 ---
 import ArchitectureFlow from "./ArchitectureFlow.astro";
-import ScrollTypewriter from "./ScrollTypewriter.astro";
+
 ---
 
 <section id="skills" class="skills">
@@ -15,18 +15,18 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
 
       <div class="skills-header-grid">
         <h2>
-          <ScrollTypewriter text="Technologies &" mono /><br />
-          <ScrollTypewriter text="Architectures maîtrisées." mono />
+          Ma boîte à outils.<br />
+          <span>Du code au déploiement.</span>
         </h2>
 
         <p class="skills-lead">
-          De la modélisation relationnelle de données jusqu'à l'orchestration de conteneurs et de pipelines CI/CD, chaque choix technologique répond à des impératifs de scalabilité, de sécurité et d'ergonomie.
+          Les technologies que je mets en pratique dans mes projets, et les outils que j’explore pour aller plus loin. Le schéma ci-dessous permet de suivre le trajet d’une requête à travers une application.
         </p>
       </div>
     </div>
 
     <!-- Live Interactive Full Stack Architecture Pipeline -->
-    <div class="arch-section">
+    <div class="arch-section" data-motion="architecture">
       <ArchitectureFlow />
     </div>
 
@@ -37,7 +37,7 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
         <span class="number">01</span>
         <div class="skill-meta">
           <h3>Frontend</h3>
-          <span class="skill-subtitle">Interfaces & UX</span>
+          <a class="skill-subtitle" href="#project-dishly">En pratique · Dishly ↗</a>
         </div>
         <div class="tags">
           <span>React 19</span>
@@ -55,7 +55,7 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
         <span class="number">02</span>
         <div class="skill-meta">
           <h3>Backend</h3>
-          <span class="skill-subtitle">APIs & Microservices</span>
+          <a class="skill-subtitle" href="#project-dishly">API & données · Dishly ↗</a>
         </div>
         <div class="tags">
           <span>Node.js</span>
@@ -71,7 +71,7 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
         <span class="number">03</span>
         <div class="skill-meta">
           <h3>Database</h3>
-          <span class="skill-subtitle">Persistance & Modélisation</span>
+          <a class="skill-subtitle" href="#project-sehati">Modélisation · Sehati ↗</a>
         </div>
         <div class="tags">
           <span>PostgreSQL</span>
@@ -86,7 +86,7 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
         <span class="number">04</span>
         <div class="skill-meta">
           <h3>DevOps & QA</h3>
-          <span class="skill-subtitle">Intégration & Déploiement</span>
+          <span class="skill-subtitle">CI/CD en projet · Docker en apprentissage</span>
         </div>
         <div class="tags">
           <span>Git & GitHub Flow</span>
@@ -128,7 +128,7 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
   }
 
   .section-index span:first-child {
-    font-family: Georgia, serif;
+    font-family: var(--font-sans);
     color: var(--accent-sage);
   }
 
@@ -156,9 +156,9 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
 
   h2 {
     margin: 0;
-    font-family: Georgia, serif;
-    font-size: clamp(3rem, 5vw, 4.8rem);
-    line-height: 0.95;
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 4vw, 3.3rem);
+    line-height: 1.15;
     letter-spacing: -2px;
     color: var(--text-main);
   }
@@ -201,12 +201,12 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
     font-size: 0.78rem;
     font-weight: 700;
     padding-top: 4px;
-    font-family: Georgia, serif;
+    font-family: var(--font-sans);
   }
 
   .skill-meta h3 {
     margin: 0 0 4px;
-    font-family: Georgia, serif;
+    font-family: var(--font-sans);
     font-size: 1.35rem;
     color: var(--text-main);
   }
@@ -228,7 +228,7 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
   .tags span {
     border: 1px solid var(--border);
     padding: 7px 13px;
-    border-radius: 100px;
+    border-radius: 5px;
     font-size: 0.78rem;
     color: var(--text-muted);
     background: var(--card);
@@ -284,4 +284,6 @@ import ScrollTypewriter from "./ScrollTypewriter.astro";
       padding: 6px 10px;
     }
   }
+  h2 span { color: var(--primary); }
+  .skill-subtitle[href]:hover { text-decoration: underline; text-underline-offset: 4px; }
 </style>

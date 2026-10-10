@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import "../styles/scroll-motion.css";
 
 import Navbar from "../components/navbar.astro";
 import Hero from "../components/hero.astro";
@@ -10,7 +11,7 @@ import Contact from "../components/contact.astro";
 import Footer from "../components/footer.astro";
 ---
 
-<html lang="fr">
+<html lang="fr" data-dev-mode="true">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -18,7 +19,7 @@ import Footer from "../components/footer.astro";
       content="width=device-width, initial-scale=1.0"
     />
 
-    <title>Kaoutar Bendidi — Studio Numérique & Ingénierie Logicielle</title>
+    <title>Kaoutar Bendidi — Élève ingénieure en informatique</title>
     <meta
       name="description"
       content="Portfolio de Kaoutar Bendidi, élève ingénieure en génie informatique. Conception logicielle, architectures Full Stack et expériences web interactives."
@@ -39,43 +40,23 @@ import Footer from "../components/footer.astro";
       try {
         savedMode = localStorage.getItem("kaoutar_portfolio_mode");
       } catch (e) {}
-      if (savedMode === "code") {
-        document.documentElement.setAttribute("data-dev-mode", "true");
+      if (savedMode === "visual") {
+        document.documentElement.removeAttribute("data-dev-mode");
       }
     </script>
 
     <script>
-      const revealElements = document.querySelectorAll(".reveal");
-
-      if (
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-        !("IntersectionObserver" in window)
-      ) {
-        revealElements.forEach((element) => element.classList.add("visible"));
-      } else {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.08, rootMargin: "0px 0px -10% 0px" }
-        );
-
-        revealElements.forEach((element) => observer.observe(element));
-      }
+      import "../scripts/scroll-motion";
     </script>
   </head>
 
   <body>
-    <!-- 1. Navigation avec le Dual Switch (Mode Visuel ⇋ Mode Codeuse) -->
+    <a href="#main-content" class="skip-link">Aller au contenu</a>
+    <!-- 1. Navigation et choix du thème -->
     <Navbar />
 
-    <main>
-      <!-- 2. Hero Interactive Studio (Accroche forte & Carte 3D studio au curseur) -->
+    <main id="main-content">
+      <!-- 2. Présentation et profil TypeScript -->
       <Hero />
 
       <!-- 3. À propos : Profil, Vision & 3 piliers d'ingénierie -->

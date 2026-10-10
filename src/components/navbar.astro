@@ -1,10 +1,10 @@
 ---
-// navbar.astro - Navigation avec Dual Switch (Mode Visuel / Mode Codeuse)
+// navbar.astro - Navigation et choix du thème
 ---
 
 <nav id="main-nav">
   <div class="nav-container">
-    
+
     <!-- Logo -->
     <a href="#home" class="logo" aria-label="Kaoutar Bendidi Accueil">
       <span class="logo-bracket">&lt;</span>
@@ -13,34 +13,34 @@
       <span class="logo-bracket">/&gt;</span>
     </a>
 
-    <!-- Le fameux Dual Switch : Visuel vs Codeuse -->
-    <div class="mode-switch-wrapper" role="radiogroup" aria-label="Mode d'affichage">
-      <button 
-        type="button" 
-        class="switch-pill active" 
+    <!-- Thème clair ou sombre -->
+    <div class="mode-switch-wrapper" role="group" aria-label="Thème d’affichage">
+      <button
+        type="button"
+        class="switch-pill"
         id="switch-visual"
-        role="radio"
-        aria-checked="true"
-        title="Mode Visuel : Accessible, clair et moderne pour tout le monde"
+
+        aria-pressed="false"
+        aria-label="Thème clair" title="Thème clair"
       >
-        <span class="pill-icon">👁️</span>
-        <span class="pill-label">Visuel</span>
+        <span class="pill-icon" aria-hidden="true">☼</span>
+        <span class="pill-label">Clair</span>
       </button>
-      <button 
-        type="button" 
-        class="switch-pill" 
+      <button
+        type="button"
+        class="switch-pill active"
         id="switch-code"
-        role="radio"
-        aria-checked="false"
-        title="Mode Codeuse : Coulisses techniques, specs et packages"
+
+        aria-pressed="true"
+        aria-label="Thème sombre" title="Thème sombre"
       >
-        <span class="pill-icon">💻</span>
-        <span class="pill-label">Codeuse</span>
+        <span class="pill-icon" aria-hidden="true">☾</span>
+        <span class="pill-label">Sombre</span>
       </button>
     </div>
 
     <!-- Menu Links -->
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links">
       <li><a href="#about">À propos</a></li>
       <li><a href="#skills">Stack</a></li>
       <li><a href="#projects">Projets</a></li>
@@ -48,16 +48,17 @@
     </ul>
 
     <!-- Mobile Menu Toggle -->
-    <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Ouvrir le menu">
+    <button class="mobile-toggle" id="mobile-toggle-btn" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
       <span></span>
       <span></span>
     </button>
 
   </div>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
 </nav>
 
 <script>
-  // Initialisation du Dual Switch (Mode Visuel vs Mode Codeuse)
+  // Initialisation du thème
   const html = document.documentElement;
   const switchVisual = document.getElementById("switch-visual");
   const switchCode = document.getElementById("switch-code");
@@ -77,16 +78,16 @@
     if (isDev) {
       html.setAttribute("data-dev-mode", "true");
       switchVisual?.classList.remove("active");
-      switchVisual?.setAttribute("aria-checked", "false");
+      switchVisual?.setAttribute("aria-pressed", "false");
       switchCode?.classList.add("active");
-      switchCode?.setAttribute("aria-checked", "true");
+      switchCode?.setAttribute("aria-pressed", "true");
       saveMode("code");
     } else {
       html.removeAttribute("data-dev-mode");
       switchCode?.classList.remove("active");
-      switchCode?.setAttribute("aria-checked", "false");
+      switchCode?.setAttribute("aria-pressed", "false");
       switchVisual?.classList.add("active");
-      switchVisual?.setAttribute("aria-checked", "true");
+      switchVisual?.setAttribute("aria-pressed", "true");
       saveMode("visual");
     }
     window.dispatchEvent(new CustomEvent("portfolio-mode-changed", { detail: { isDev } }));
@@ -97,12 +98,12 @@
   try {
     savedMode = localStorage.getItem(modeStorageKey);
   } catch {
-    // Keep the default visual mode when browser storage is unavailable.
+    // Keep the default dark mode when browser storage is unavailable.
   }
-  if (savedMode === "code") {
-    setMode(true);
-  } else {
+  if (savedMode === "visual") {
     setMode(false);
+  } else {
+    setMode(true);
   }
 
   switchVisual?.addEventListener("click", () => setMode(false));
@@ -111,14 +112,24 @@
   // Mobile navigation
   mobileToggle?.addEventListener("click", () => {
     navLinks?.classList.toggle("open");
-    mobileToggle.classList.toggle("active");
+    const isOpen = mobileToggle.classList.toggle("active");
+    mobileToggle.setAttribute("aria-expanded", String(isOpen));
+    mobileToggle.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
   });
 
   document.querySelectorAll(".nav-links a").forEach((link) => {
     link.addEventListener("click", () => {
       navLinks?.classList.remove("open");
       mobileToggle?.classList.remove("active");
+      mobileToggle?.setAttribute("aria-expanded", "false");
+      mobileToggle?.setAttribute("aria-label", "Ouvrir le menu");
     });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && navLinks?.classList.contains("open")) {
+      mobileToggle?.click();
+      mobileToggle?.focus();
+    }
   });
 </script>
 
@@ -173,15 +184,15 @@
     background: var(--bg-subtle);
     border: 1px solid var(--border);
     padding: 3px;
-    border-radius: 999px;
+    border-radius: 6px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
   .switch-pill {
     background: transparent;
     border: none;
-    padding: 5px 13px;
-    border-radius: 999px;
+    padding: 8px 13px;
+    border-radius: 6px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -239,7 +250,7 @@
 
   .nav-contact-btn:hover {
     background: var(--primary);
-    color: #FFFFFF !important;
+    color: var(--on-primary) !important;
     transform: translateY(-1px);
   }
 
@@ -279,6 +290,7 @@
       background: var(--bg);
       border-bottom: 1px solid var(--border);
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
       transform: translateY(-15px);
       transition: all 0.3s ease;
@@ -287,6 +299,7 @@
 
     .nav-links.open {
       opacity: 1;
+      visibility: visible;
       pointer-events: auto;
       transform: translateY(0);
     }

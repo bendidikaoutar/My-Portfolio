@@ -6,14 +6,14 @@
   <div class="arch-header">
     <div class="arch-badge">
       <span class="live-dot"></span>
-      <span>Pipeline Architectural Full Stack</span>
+      <span>Le trajet d’une requête</span>
     </div>
-    <span class="arch-hint">Survolez ou cliquez sur une couche pour inspecter l'implémentation</span>
+    <span class="arch-hint">Explorez les couches d’une application Full Stack</span>
   </div>
 
   <div class="pipeline-track">
     <!-- Step 1: Frontend Client -->
-    <div class="pipeline-node active" data-node="client" tabindex="0">
+    <div class="pipeline-node active" data-node="client" tabindex="0" role="button" aria-controls="arch-detail-card">
       <div class="node-icon">01</div>
       <div class="node-body">
         <span class="node-tier">CLIENT TIER</span>
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Step 2: REST API / Controller -->
-    <div class="pipeline-node" data-node="api" tabindex="0">
+    <div class="pipeline-node" data-node="api" tabindex="0" role="button" aria-controls="arch-detail-card">
       <div class="node-icon">02</div>
       <div class="node-body">
         <span class="node-tier">SERVICE TIER</span>
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Step 3: ORM & Database -->
-    <div class="pipeline-node" data-node="database" tabindex="0">
+    <div class="pipeline-node" data-node="database" tabindex="0" role="button" aria-controls="arch-detail-card">
       <div class="node-icon">03</div>
       <div class="node-body">
         <span class="node-tier">PERSISTENCE TIER</span>
@@ -52,7 +52,7 @@
     </div>
 
     <!-- Step 4: DevOps & CI/CD -->
-    <div class="pipeline-node" data-node="devops" tabindex="0">
+    <div class="pipeline-node" data-node="devops" tabindex="0" role="button" aria-controls="arch-detail-card">
       <div class="node-icon">04</div>
       <div class="node-body">
         <span class="node-tier">INFRA TIER</span>
@@ -115,6 +115,8 @@
     }
   };
 
+  const pipeline = document.getElementById("arch-pipeline");
+  let selectedKey = "";
   const nodes = document.querySelectorAll<HTMLElement>(".pipeline-node");
   const badgeEl = document.getElementById("arch-badge");
   const titleEl = document.getElementById("arch-title");
@@ -123,11 +125,13 @@
 
   function selectNode(key: string) {
     const data = nodeDetails[key];
-    if (!data) return;
+    if (!data || selectedKey === key) return;
+    selectedKey = key;
 
-    nodes.forEach(n => n.classList.remove("active"));
+    nodes.forEach(n => { n.classList.remove("active"); n.setAttribute("aria-pressed", "false"); });
     const activeNode = document.querySelector<HTMLElement>(`.pipeline-node[data-node="${key}"]`);
     activeNode?.classList.add("active");
+    activeNode?.setAttribute("aria-pressed", "true");
 
     if (badgeEl) badgeEl.textContent = data.badge;
     if (titleEl) titleEl.textContent = data.title;
@@ -138,28 +142,35 @@
   }
 
   nodes.forEach(node => {
-    node.addEventListener("mouseenter", () => {
-      const key = node.dataset.node;
-      if (key) selectNode(key);
-    });
     node.addEventListener("click", () => {
       const key = node.dataset.node;
-      if (key) selectNode(key);
+      if (key) {
+        selectNode(key);
+        pipeline?.dispatchEvent(new CustomEvent("architecture-manual", { bubbles: true, detail: { key } }));
+      }
     });
     node.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
         const key = node.dataset.node;
-        if (key) selectNode(key);
+        if (key) {
+        selectNode(key);
+        pipeline?.dispatchEvent(new CustomEvent("architecture-manual", { bubbles: true, detail: { key } }));
+      }
       }
     });
   });
+  pipeline?.addEventListener("architecture-scroll", (event) => {
+    selectNode((event as CustomEvent<{ key: string }>).detail.key);
+  });
+  selectNode("client");
 </script>
 
 <style>
   .arch-flow {
     margin-bottom: 50px;
-    background: #191422;
-    border: 1px solid #4d3869;
+    background: #101724;
+    border: 1px solid #303b50;
     border-radius: 8px;
     padding: 28px;
     color: #f3eff9;
@@ -206,7 +217,7 @@
   .arch-hint {
     font-size: 0.76rem;
     color: #b7adbf;
-    font-family: Georgia, serif;
+    font-family: var(--font-mono);
     font-style: italic;
   }
 
@@ -221,7 +232,7 @@
   .pipeline-node {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
+    border-radius: 7px;
     padding: 16px;
     cursor: pointer;
     position: relative;
@@ -245,7 +256,7 @@
     font-size: 0.72rem;
     font-weight: 700;
     color: #8ee0c5;
-    font-family: Georgia, serif;
+    font-family: var(--font-mono);
     margin-bottom: 8px;
   }
 
@@ -301,9 +312,9 @@
   }
 
   .arch-detail-card {
-    background: #191422;
+    background: #101724;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
+    border-radius: 7px;
     padding: 20px 24px;
   }
 
@@ -317,7 +328,7 @@
 
   .detail-header h3 {
     margin: 6px 0 10px;
-    font-family: Georgia, serif;
+    font-family: var(--font-mono);
     font-size: 1.35rem;
     color: #f3eff9;
   }
@@ -373,5 +384,9 @@
     .detail-desc {
       font-size: 0.86rem;
     }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .live-dot { animation: none; }
+    .pipeline-node { transition: none; }
   }
 </style>

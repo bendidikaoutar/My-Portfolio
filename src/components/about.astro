@@ -1,53 +1,59 @@
 <section id="about" class="about">
   <div class="about-shell">
-    <header class="about-heading about-reveal" style="--about-delay: 0ms">
+    <header class="about-heading">
       <div class="section-kicker">
         <span>02</span>
         <span class="kicker-line"></span>
-        <p>Profil & approche</p>
+        <p>Profil & parcours</p>
       </div>
 
-      <p class="code-label" aria-hidden="true"><span>const</span> approach =</p>
-      <h2 class="about-title" aria-label="Concevoir avec intention.">
-        <span id="about-typewriter" data-text="Concevoir avec intention.">Concevoir avec intention.</span><span class="typing-caret" aria-hidden="true"></span>
+      <p class="code-label" aria-hidden="true"><span>const</span> parcours =</p>
+      <h2 class="about-title" aria-label="Apprendre en construisant.">
+        <span>Apprendre en construisant.</span>
       </h2>
     </header>
 
-    <aside class="profile-card about-reveal" style="--about-delay: 100ms" aria-label="Profil de Kaoutar Bendidi">
+    <aside class="profile-card" aria-label="Profil de Kaoutar Bendidi">
       <div class="portrait-frame">
         <img src="/kaoutar-profile.jpg" alt="Portrait de Kaoutar Bendidi" loading="lazy" />
         <span class="availability-dot" aria-hidden="true"></span>
       </div>
       <div class="profile-copy">
         <p class="profile-name">Kaoutar Bendidi</p>
-        <p class="profile-role">Ingénieure logiciel Full Stack</p>
+        <p class="profile-role">Élève ingénieure en informatique</p>
       </div>
       <dl class="profile-details">
-        <div><dt>Formation</dt><dd>Génie informatique</dd></div>
-        <div><dt>Focus</dt><dd>Architecture, Cloud, DevOps</dd></div>
+        <div><dt>Formation</dt><dd>4e année · Génie informatique</dd></div>
+        <div><dt>Focus</dt><dd>Développement Full Stack</dd></div>
       </dl>
     </aside>
 
-    <div class="about-copy about-reveal" style="--about-delay: 180ms">
+    <div class="about-copy">
       <p class="about-lead">
-        Je construis des applications web de bout en bout, du modèle de données au déploiement, avec une attention constante à la clarté et à la fiabilité.
+        Étudiante en génie informatique, j’aime comprendre comment les différentes parties d’une application fonctionnent ensemble.
       </p>
       <p>
-        Mon travail associe interfaces réactives, APIs structurées et bases relationnelles. Chaque décision technique sert un objectif simple : livrer un produit lisible, maintenable et agréable à utiliser.
+        Mes projets me permettent de relier la théorie à la pratique : concevoir une interface, structurer une API, modéliser les données, puis améliorer l’ensemble. J’explore aussi le Cloud et les outils DevOps pour mieux comprendre le déploiement.
       </p>
     </div>
 
-    <div class="expertise-list" aria-label="Domaines d'expertise">
-      <article class="expertise-item about-reveal" style="--about-delay: 240ms">
+    <ol data-motion="journey" class="learning-path" aria-label="Mon parcours en informatique">
+      <li><span>Formation</span><h3>Génie informatique</h3><p>En 4e année, je relie mes apprentissages à des applications concrètes.</p></li>
+      <li><span>Mise en pratique</span><h3>Projets personnels & collectifs</h3><p>Du Full Stack avec Dishly au travail en équipe avec Muestra.</p></li>
+      <li><span>Prochaine étape</span><h3>Un stage pour progresser</h3><p>Contribuer à un projet et apprendre aux côtés d’une équipe technique.</p></li>
+    </ol>
+
+    <div class="expertise-list" aria-label="Domaines que je pratique">
+      <article class="expertise-item">
         <span class="expertise-number">01</span>
         <div>
-          <h3>Frontend Engineering</h3>
+          <h3>Développement frontend</h3>
           <p>Interfaces typées, composants réutilisables et accessibilité native.</p>
         </div>
         <span class="expertise-stack">React · TypeScript · Astro</span>
       </article>
 
-      <article class="expertise-item about-reveal" style="--about-delay: 320ms">
+      <article class="expertise-item">
         <span class="expertise-number">02</span>
         <div>
           <h3>Backend & APIs</h3>
@@ -56,11 +62,11 @@
         <span class="expertise-stack">Node.js · Express · Prisma</span>
       </article>
 
-      <article class="expertise-item about-reveal" style="--about-delay: 400ms">
+      <article class="expertise-item">
         <span class="expertise-number">03</span>
         <div>
-          <h3>Delivery & DevOps</h3>
-          <p>Intégration continue, qualité de code et déploiements reproductibles.</p>
+          <h3>Exploration DevOps</h3>
+          <p>Pratique de l’intégration continue et apprentissage des conteneurs.</p>
         </div>
         <span class="expertise-stack">GitHub Actions · Docker · CI/CD</span>
       </article>
@@ -68,74 +74,6 @@
   </div>
 </section>
 
-<script>
-  const aboutSection = document.getElementById("about");
-  const typewriter = document.getElementById("about-typewriter");
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isMobile = window.matchMedia("(max-width: 580px)").matches;
-  let hasTyped = false;
-
-  function typeHeading() {
-    if (hasTyped || !typewriter) return;
-    hasTyped = true;
-
-    const text = typewriter.dataset.text || typewriter.textContent || "";
-    if (reducedMotion) {
-      typewriter.textContent = text;
-      return;
-    }
-
-    typewriter.textContent = "";
-    let index = 0;
-
-    function writeNextCharacter() {
-      if (!typewriter || index >= text.length) return;
-      typewriter.textContent += text[index];
-      index += 1;
-      window.setTimeout(writeNextCharacter, isMobile ? 30 : 48);
-    }
-
-    window.setTimeout(writeNextCharacter, 180);
-  }
-
-  if (aboutSection && !reducedMotion) {
-    const revealItems = aboutSection.querySelectorAll<HTMLElement>(".about-reveal");
-    let hasScheduledUpdate = false;
-
-    function updateScrollProgress() {
-      const viewportHeight = window.innerHeight;
-      const start = viewportHeight * 0.92;
-      const end = viewportHeight * 0.38;
-
-      revealItems.forEach((item) => {
-        const itemTop = item.getBoundingClientRect().top;
-        const progress = Math.min(1, Math.max(0, (start - itemTop) / (start - end)));
-        item.style.setProperty("--scroll-progress", progress.toFixed(3));
-        item.style.setProperty("--scroll-offset", `${((1 - progress) * 36).toFixed(1)}px`);
-      });
-
-      if (aboutSection.getBoundingClientRect().top < viewportHeight * 0.82) {
-        typeHeading();
-      }
-    }
-
-    function scheduleUpdate() {
-      if (hasScheduledUpdate) return;
-      hasScheduledUpdate = true;
-      window.requestAnimationFrame(() => {
-        updateScrollProgress();
-        hasScheduledUpdate = false;
-      });
-    }
-
-    aboutSection.classList.add("about-scroll-active");
-    updateScrollProgress();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate, { passive: true });
-  } else {
-    typeHeading();
-  }
-</script>
 
 <style>
   .about {
@@ -186,22 +124,13 @@
     max-width: 720px;
     margin: 0;
     color: var(--text-main);
-    font-family: var(--font-mono);
-    font-size: clamp(2.45rem, 5vw, 4.6rem);
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 4vw, 3.3rem);
     font-weight: 800;
     letter-spacing: 0;
     line-height: 1.06;
   }
 
-  .typing-caret {
-    display: inline-block;
-    width: 0.1em;
-    height: 0.9em;
-    margin-left: 0.08em;
-    background: var(--accent-sage);
-    vertical-align: -0.06em;
-    animation: caretBlink 900ms steps(1, end) infinite;
-  }
 
   .profile-card {
     justify-self: end;
@@ -307,6 +236,13 @@
     border-top: 1px solid var(--border);
   }
 
+  .learning-path { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding: 0; margin: 12px 0; list-style: none; }
+  .learning-path li { position: relative; border-top: 1px solid var(--border); padding: 24px 0 0; }
+  .learning-path li::before { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--primary); }
+  .learning-path span { font: 0.68rem var(--font-mono); color: var(--primary); }
+  .learning-path h3 { font-size: 0.95rem; margin: 10px 0 8px; }
+  .learning-path p { font-size: 0.85rem; line-height: 1.75; color: var(--text-muted); margin: 0; }
+
   .expertise-item {
     display: grid;
     grid-template-columns: 42px minmax(0, 1fr) auto;
@@ -343,13 +279,7 @@
     text-align: right;
   }
 
-  .about-scroll-active .about-reveal {
-    opacity: var(--scroll-progress, 1);
-    transform: translateY(var(--scroll-offset, 0px));
-    will-change: opacity, transform;
-  }
 
-  @keyframes caretBlink { 50% { opacity: 0; } }
 
   @media (max-width: 800px) {
     .about { padding: 90px 0; }
@@ -375,6 +305,7 @@
   }
 
   @media (max-width: 580px) {
+    .learning-path { grid-template-columns: 1fr; }
     .about { padding: 72px 0; }
     .about-shell { width: min(94%, 1120px); }
     .section-kicker { margin-bottom: 18px; font-size: 0.66rem; }
@@ -399,11 +330,4 @@
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .typing-caret { animation: none; }
-    .about-scroll-active .about-reveal {
-      opacity: 1;
-      transform: none;
-    }
-  }
 </style>

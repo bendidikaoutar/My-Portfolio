@@ -1,15 +1,15 @@
 ---
 import ApiPlayground from "./ApiPlayground.astro";
-import ScrollTypewriter from "./ScrollTypewriter.astro";
+
 
 const projects = [
   {
     title: "Dishly",
     category: "Application Full Stack",
-    tagline: "Plateforme culinaire collaborative & API REST haute performance",
+    tagline: "Plateforme culinaire collaborative & API REST",
     description: "Application complète permettant aux passionnés de cuisine de créer, organiser et partager des recettes avec recherche avancée par tags, calcul nutritionnel et modélisation relationnelle de données.",
     technologies: ["React 19", "Node.js", "Express", "Prisma ORM", "PostgreSQL", "Tailwind CSS"],
-    highlights: ["API REST avec documentation Swagger", "Transactions SQL sécurisées", "Temps de réponse < 25ms"],
+    highlights: ["API REST avec documentation Swagger", "Transactions SQL sécurisées", "Recherche de recettes par tags"],
     isFeatured: true
   },
   {
@@ -50,367 +50,114 @@ const featuredProject = projects[0];
 const otherProjects = projects.slice(1);
 ---
 
-<section id="projects" class="projects reveal">
+<section id="projects" class="projects">
   <div class="container">
-
-    <div class="projects-header reveal-item reveal-delay-1">
-      <div class="section-tag">
-        <span class="tag-num">04</span>
-        <span class="tag-title">RÉALISATIONS MAJEURES</span>
+    <header class="projects-header">
+      <div>
+        <p class="section-label">04 <span>/</span> projets sélectionnés</p>
+        <h2>Des idées.<br /><span>Du code. Des projets.</span></h2>
       </div>
-
-      <div class="header-content-grid">
-        <h2>
-          Projets conçus avec<br />
-          <span class="gradient-text">passion et rigueur.</span>
-        </h2>
-
-        <p class="intro">
-          <ScrollTypewriter text="Une sélection d'applications complètes développées pour résoudre des besoins concrets, alliant qualité de code et expérience utilisateur soignée." />
-        </p>
+      <div class="header-intro">
+        <p>Des applications pour mettre en pratique mes apprentissages, résoudre des besoins concrets et explorer de nouvelles technologies.</p>
+        <a href="https://github.com/bendidikaoutar" target="_blank" rel="noopener noreferrer">Mon profil GitHub <span aria-hidden="true">↗</span></a>
       </div>
-    </div>
+    </header>
 
-    <!-- Featured Project: Dishly with Live API Playground -->
-    <article class="featured-project reveal-item reveal-delay-2">
-      <div class="featured-content">
-        <div class="featured-meta-row">
-          <span class="featured-badge">PROJET PHARE</span>
-          <span class="category-pill">{featuredProject.category}</span>
+    <article class="featured-project" id="project-dishly">
+      <div class="project-bar"><span>01 / dishly</span><span>Projet Full Stack</span></div>
+      <div class="featured-grid">
+        <div class="featured-content">
+          <p class="project-label">APPLICATION CULINAIRE</p>
+          <h3>{featuredProject.title}</h3>
+          <p class="project-purpose">Créer, organiser et partager ses recettes au même endroit.</p>
+          <p class="featured-desc">{featuredProject.description}</p>
+          <dl class="project-notes">
+            <div><dt>Le besoin</dt><dd>Retrouver et partager des recettes grâce à une recherche par tags.</dd></div>
+            <div><dt>La construction</dt><dd>Une interface React, une API Express et des données relationnelles gérées avec Prisma et PostgreSQL.</dd></div>
+          </dl>
+          <div class="tags" aria-label="Technologies de Dishly">{featuredProject.technologies.map(tech => <span>{tech}</span>)}</div>
         </div>
-
-        <h3>{featuredProject.title}</h3>
-        <p class="featured-tagline">{featuredProject.tagline}</p>
-        <p class="featured-desc">{featuredProject.description}</p>
-
-        <!-- Highlights -->
-        <div class="highlights-list">
-          {featuredProject.highlights.map(item => (
-            <div class="highlight-item">
-              <span class="check-icon">✓</span>
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-
-        <div class="tags">
-          {featuredProject.technologies.map(tech => (
-            <span class="tech-tag">{tech}</span>
-          ))}
-        </div>
+        <figure class="featured-art">
+          <img src="/dishly-featured.png" alt="Illustration de présentation de Dishly : organiser, créer et partager des recettes" width="1254" height="1254" loading="lazy" />
+          <figcaption><span>Dishly</span> Visuel de présentation</figcaption>
+        </figure>
       </div>
-
-      <!-- Live API Playground or Interactive Showcase -->
-      <div class="featured-visual">
-        <div class="playground-frame-header">
-          <span class="pulse-indicator"></span>
-          <span>BANC D'ESSAI API REST EN DIRECT</span>
+      <details class="technical-details featured-details">
+        <summary><span><span class="detail-symbol" aria-hidden="true">&lt;/&gt;</span> Explorer le fonctionnement de l’API</span><span class="expand-icon" aria-hidden="true">+</span></summary>
+        <div class="api-demo">
+          <p class="simulation-note"><strong>Simulation interactive.</strong> Les réponses et les temps affichés sont des exemples locaux. Aucune requête n’est envoyée à un serveur.</p>
+          <ApiPlayground />
         </div>
-        <ApiPlayground />
-      </div>
+      </details>
     </article>
 
-    <!-- Other Projects Grid -->
-    <div class="other-projects reveal-item reveal-delay-3">
+    <div class="other-projects" data-motion="projects">
       {otherProjects.map((project, idx) => (
-        <article class="project-card">
-          <div class="card-header">
-            <span class="card-num">0{idx + 2}</span>
-            <span class="card-category">{project.category}</span>
+        <div class="project-slot" style={`--project-index: ${idx}`}><article class="project-card" id={['project-muestra', 'project-sehati', 'project-studio', 'project-budget'][idx]}>
+          <div class="project-bar"><span>0{idx + 2} / {['muestra', 'sehati', 'generative-studio', 'budget-app'][idx]}</span><span aria-hidden="true">⌁</span></div>
+          <div class="card-content">
+            <p class="project-label">{project.category}</p>
+            <h3>{project.title}</h3>
+            <p class="card-desc">{project.description}</p>
+            {project.title === 'Muestra' && <p class="team-note">Projet académique réalisé en équipe.</p>}
+            <div class="tags" aria-label={'Technologies de ' + project.title}>{project.technologies.map(tech => <span>{tech}</span>)}</div>
           </div>
-
-          <h3 class="card-title">{project.title}</h3>
-          <p class="card-tagline">{project.tagline}</p>
-          <p class="card-desc">{project.description}</p>
-
-          <div class="tags">
-            {project.technologies.map(tech => (
-              <span class="tech-tag">{tech}</span>
-            ))}
-          </div>
-        </article>
+          <details class="technical-details">
+            <summary><span>À l’intérieur du projet</span><span class="expand-icon" aria-hidden="true">+</span></summary>
+            <ul class="project-highlights">{project.highlights.map(item => <li>{item}</li>)}</ul>
+          </details>
+        </article></div>
       ))}
     </div>
-
   </div>
 </section>
 
 <style>
-  .projects {
-    padding: 110px 0 130px;
-  }
-
-  .container {
-    width: min(1180px, 92%);
-    margin: 0 auto;
-  }
-
-  .projects-header {
-    margin-bottom: 60px;
-  }
-
-  .section-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent-sage-light);
-    color: var(--accent-sage);
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 0.76rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-  }
-
-  .tag-num {
-    font-family: var(--font-mono);
-  }
-
-  .header-content-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: end;
-  }
-
-  h2 {
-    margin: 0;
-    font-size: clamp(2.4rem, 4.4vw, 3.6rem);
-    line-height: 1.1;
-    letter-spacing: -1.5px;
-    font-weight: 800;
-    color: var(--text-main);
-  }
-
-  .gradient-text {
-    background: linear-gradient(135deg, var(--primary) 20%, var(--accent-sage) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .intro {
-    font-size: 1.05rem;
-    line-height: 1.75;
-    color: var(--text-muted);
-    margin: 0;
-  }
-
-  /* Featured Project Card */
-  .featured-project {
-    display: grid;
-    grid-template-columns: 1fr 1.05fr;
-    gap: 48px;
-    align-items: center;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 28px;
-    padding: 42px;
-    box-shadow: var(--shadow-lg);
-    margin-bottom: 40px;
-  }
-
-  .featured-meta-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-
-  .featured-badge {
-    background: var(--primary);
-    color: #FFFFFF;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 999px;
-    letter-spacing: 0.5px;
-  }
-
-  .category-pill {
-    font-size: 0.75rem;
-    color: var(--text-soft);
-    font-weight: 600;
-  }
-
-  .featured-content h3 {
-    font-size: clamp(2rem, 3.6vw, 2.8rem);
-    font-weight: 800;
-    color: var(--text-main);
-    letter-spacing: -1px;
-    margin: 0 0 8px;
-  }
-
-  .featured-tagline {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin: 0 0 16px;
-  }
-
-  .featured-desc {
-    font-size: 0.96rem;
-    line-height: 1.7;
-    color: var(--text-muted);
-    margin: 0 0 24px;
-  }
-
-  .highlights-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  .highlight-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.88rem;
-    color: var(--text-main);
-    font-weight: 500;
-  }
-
-  .check-icon {
-    color: var(--accent-sage);
-    font-weight: 700;
-  }
-
-  /* Tags */
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  .tech-tag {
-    padding: 5px 12px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.76rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: all 0.2s ease;
-  }
-
-  .tech-tag:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-
-  /* Visual Playground Wrapper */
-  .featured-visual {
-    background: #14101D;
-    border-radius: 20px;
-    border: 1px solid #2B233D;
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-  }
-
-  .playground-frame-header {
-    background: #0E0B16;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: #A396BC;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid #221B32;
-  }
-
-  .pulse-indicator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #50E3C2;
-    box-shadow: 0 0 6px #50E3C2;
-  }
-
-  /* Other Projects Grid */
-  .other-projects {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-
-  .project-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 22px;
-    padding: 30px;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  }
-
-  .project-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--primary);
-    box-shadow: var(--shadow-md);
-  }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-
-  .card-num {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--primary);
-  }
-
-  .card-category {
-    font-size: 0.74rem;
-    font-weight: 600;
-    color: var(--text-soft);
-  }
-
-  .card-title {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--text-main);
-    letter-spacing: -0.4px;
-    margin: 0 0 6px;
-  }
-
-  .card-tagline {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin: 0 0 12px;
-  }
-
-  .card-desc {
-    font-size: 0.92rem;
-    line-height: 1.65;
-    color: var(--text-muted);
-    margin: 0 0 20px;
-    flex: 1;
-  }
-
-  @media (max-width: 980px) {
-    .header-content-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-
-    .featured-project {
-      grid-template-columns: 1fr;
-      gap: 34px;
-      padding: 30px 24px;
-    }
-
-    .other-projects {
-      grid-template-columns: 1fr;
-    }
-  }
+  .projects { padding: 100px 0; }
+  .container { width: min(1180px, 92%); margin: 0 auto; }
+  .projects-header { display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: end; margin-bottom: 40px; }
+  .section-label { margin: 0 0 22px; font: 0.73rem var(--font-mono); color: var(--primary); }
+  .section-label span { margin: 0 10px; color: var(--text-soft); }
+  h2 { margin: 0; font-size: clamp(2rem, 4vw, 3.3rem); line-height: 1.15; letter-spacing: -1.5px; }
+  h2 > span { color: var(--primary); }
+  .header-intro p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; margin: 0 0 16px; }
+  .header-intro a { display: inline-flex; gap: 18px; font-size: 0.85rem; font-weight: 600; color: var(--primary); }
+  .header-intro a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .featured-project, .project-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 10px; overflow: hidden; scroll-margin-top: 100px; }
+  .featured-project { margin-bottom: 24px; box-shadow: var(--shadow-sm); }
+  .project-bar { background: var(--bg-subtle); padding: 13px 22px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; gap: 16px; color: var(--text-muted); font: 0.7rem var(--font-mono); }
+  .featured-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; padding: 36px; align-items: center; }
+  .featured-content { min-width: 0; }
+  .project-label { color: var(--accent-sage); font: 0.65rem var(--font-mono); letter-spacing: 1px; text-transform: uppercase; margin: 0 0 14px; }
+  h3 { font-size: 1.5rem; line-height: 1.25; letter-spacing: -0.6px; margin: 0 0 14px; }
+  .featured-content h3 { font-size: 2.8rem; }
+  .project-purpose { font-size: 1.1rem; font-weight: 600; margin: 0 0 14px; }
+  .featured-desc, .card-desc { font-size: 0.91rem; line-height: 1.8; color: var(--text-muted); margin: 0 0 22px; }
+  .project-notes { display: grid; gap: 14px; border-left: 2px solid var(--border); padding-left: 16px; margin: 24px 0; }
+  dt { color: var(--primary); font: 0.68rem var(--font-mono); margin-bottom: 4px; }
+  dd { color: var(--text-muted); font-size: 0.83rem; margin: 0; line-height: 1.7; }
+  .featured-art { margin: 0; border: 1px solid var(--card-border); border-radius: 6px; overflow: hidden; }
+  .featured-art img { display: block; width: 100%; height: auto; }
+  figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 12px 16px; background: var(--bg-subtle); color: var(--text-muted); font: 0.65rem var(--font-mono); }
+  figcaption span { color: var(--primary); }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tags span { font: 0.67rem var(--font-mono); padding: 6px 9px; background: var(--bg-subtle); border: 1px solid var(--card-border); border-radius: 4px; color: var(--text-muted); }
+  .technical-details { border-top: 1px solid var(--card-border); }
+  summary { cursor: pointer; padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 0.8rem; font-weight: 600; color: var(--primary); list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { background: var(--bg-subtle); }
+  .detail-symbol { margin-right: 10px; font-family: var(--font-mono); }
+  .expand-icon { font-size: 1.3rem; font-weight: 400; }
+  details[open] .expand-icon { transform: rotate(45deg); }
+  .api-demo { padding: 0 24px 24px; min-width: 0; }
+  .simulation-note { font-size: 0.8rem; line-height: 1.7; color: var(--text-muted); margin: 0 0 16px; }
+  .other-projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+  .project-card { transition: border-color 0.2s ease; }
+  .project-card:hover { border-color: var(--primary); }
+  .card-content { padding: 28px; }
+  .team-note { color: var(--primary); font-size: 0.78rem; margin: -8px 0 20px; }
+  .project-highlights { margin: 0; padding: 0 28px 22px 42px; color: var(--text-muted); font-size: 0.85rem; line-height: 2; }
+  .project-highlights li::marker { color: var(--accent-sage); }
+  @media (max-width: 900px) { .projects-header { grid-template-columns: 1fr; gap: 24px; } .featured-grid { grid-template-columns: 1fr; padding: 24px; gap: 28px; } .featured-art { max-width: 480px; } }
+  @media (max-width: 600px) { .projects { padding: 72px 0; } .other-projects { grid-template-columns: 1fr; } .card-content { padding: 22px; } .featured-grid { padding: 22px; } .project-bar { padding: 12px 18px; font-size: 0.65rem; } .api-demo { padding: 0 14px 18px; } }
 </style>
