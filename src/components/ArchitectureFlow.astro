@@ -154,9 +154,9 @@
         e.preventDefault();
         const key = node.dataset.node;
         if (key) {
-        selectNode(key);
-        pipeline?.dispatchEvent(new CustomEvent("architecture-manual", { bubbles: true, detail: { key } }));
-      }
+          selectNode(key);
+          pipeline?.dispatchEvent(new CustomEvent("architecture-manual", { bubbles: true, detail: { key } }));
+        }
       }
     });
   });
@@ -347,7 +347,7 @@
     flex-wrap: wrap;
   }
 
-  .detail-tags span {
+  .detail-tags :global(span) {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 5px 11px;

@@ -29,6 +29,7 @@ let lastArchitectureKey = "";
 let projectStarts: number[] = [];
 let projectInsets: number[] = [];
 let anchorProject = false;
+let revealFocusedProject = false;
 
 function schedule(measure = false) {
   dirty ||= measure;
@@ -39,6 +40,9 @@ function measure() {
   navHeight = nav?.offsetHeight ?? 70;
   root.style.setProperty("--motion-nav-height", `${navHeight}px`);
   const immersive = desktop.matches && !reducedMotion.matches;
+  if (journey && steps.length) {
+    journey.style.setProperty("--journey-track-height", `${steps[steps.length - 1].offsetTop - steps[0].offsetTop}px`);
+  }
 
   // offsetHeight excludes the transforms applied to the editor and cards.
   architecturePinned = immersive && !!pipeline && pipeline.offsetHeight <= innerHeight - navHeight - 48;
@@ -102,6 +106,16 @@ function update() {
   if (dirty) {
     dirty = false;
     measure();
+  }
+  if (revealFocusedProject) {
+    revealFocusedProject = false;
+    const focused = document.activeElement;
+    if (focused instanceof HTMLElement && projects?.contains(focused)) {
+      const bounds = focused.getBoundingClientRect();
+      if (bounds.top < navHeight + 24 || bounds.bottom > innerHeight - 24) {
+        focused.scrollIntoView({ block: "center", behavior: "instant" });
+      }
+    }
   }
   set(root, "--reading-progress", clamp(scrollY / Math.max(1, root.scrollHeight - innerHeight)));
   if (reducedMotion.matches) return;
@@ -177,7 +191,10 @@ reducedMotion.addEventListener("change", preferenceChanged);
 document.fonts?.ready.then(() => schedule(true));
 document.addEventListener("load", () => schedule(true), true);
 document.addEventListener("toggle", () => schedule(true), true);
-projects?.addEventListener("focusin", () => schedule(true));
+projects?.addEventListener("focusin", () => {
+  revealFocusedProject = true;
+  schedule(true);
+});
 projects?.addEventListener("focusout", () => schedule(true));
 pipeline?.addEventListener("architecture-manual", () => {
   manualArchitecture = true;

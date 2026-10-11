@@ -5,15 +5,15 @@
   transform: translateY(calc(var(--hero-progress, 0) * 40px)) rotate(calc(1deg - var(--hero-progress, 0) * 1deg)) scale(calc(1 - var(--hero-progress, 0) * 0.04));
   transform-origin: center;
 }
-html.scroll-motion [data-motion="journey"] { position: relative; gap: 24px; }
-html.scroll-motion [data-motion="journey"]::before,
-html.scroll-motion [data-motion="journey"]::after { content: ""; position: absolute; left: 0; top: 0; width: calc(100% - (100% - 48px) / 3); height: 2px; background: var(--border); pointer-events: none; }
-html.scroll-motion [data-motion="journey"]::after { background: linear-gradient(90deg, var(--primary), var(--accent-sage)); transform: scaleX(var(--journey-progress, 0)); transform-origin: left; }
-html.scroll-motion [data-motion="journey"] li { border-top-color: transparent; }
-html.scroll-motion [data-motion="journey"] li::before { z-index: 1; background: var(--border); border: 2px solid var(--bg); width: 11px; height: 11px; top: -4px; }
-html.scroll-motion [data-motion="journey"] li.is-reached::before { background: var(--primary); }
-html.scroll-motion [data-motion="journey"] li.is-current::before { background: var(--accent-sage); box-shadow: 0 0 0 5px var(--accent-sage-light); }
-html.scroll-motion [data-motion="journey"] li.is-current h3 { color: var(--primary); }
+.scroll-motion #about [data-motion="journey"] { position: relative; gap: 24px; }
+.scroll-motion #about [data-motion="journey"]::before,
+.scroll-motion #about [data-motion="journey"]::after { content: ""; position: absolute; left: 0; top: 0; width: calc(100% - (100% - 48px) / 3); height: 2px; background: var(--border); pointer-events: none; }
+.scroll-motion #about [data-motion="journey"]::after { background: linear-gradient(90deg, var(--primary), var(--accent-sage)); transform: scaleX(var(--journey-progress, 0)); transform-origin: left; }
+.scroll-motion #about [data-motion="journey"] li { border-top-color: transparent; }
+.scroll-motion #about [data-motion="journey"] li::before { z-index: 1; background: var(--border); border: 2px solid var(--bg); width: 11px; height: 11px; top: -4px; }
+.scroll-motion #about [data-motion="journey"] li.is-reached::before { background: var(--primary); }
+.scroll-motion #about [data-motion="journey"] li.is-current::before { background: var(--accent-sage); box-shadow: 0 0 0 5px var(--accent-sage-light); }
+.scroll-motion #about [data-motion="journey"] li.is-current h3 { color: var(--primary); }
 .arch-section.is-pinned .arch-flow { position: sticky; top: calc(var(--motion-nav-height) + 24px); margin-bottom: 0; }
 /* Padding alone cannot form a sticky travel area; its containing block includes the full track. */
 .arch-section.is-pinned { height: auto; padding-bottom: 0; }
@@ -35,12 +35,12 @@ html.scroll-motion [data-motion="journey"] li.is-current h3 { color: var(--prima
   .scroll-motion .contact > .container { transform: translateY(calc((1 - var(--entrance, 1)) * 16px)); }
 }
 @media (max-width: 580px) {
-  html.scroll-motion [data-motion="journey"] { padding-left: 20px; }
-  html.scroll-motion [data-motion="journey"]::before,
-  html.scroll-motion [data-motion="journey"]::after { width: 2px; height: 100%; }
-  html.scroll-motion [data-motion="journey"]::after { transform: scaleY(var(--journey-progress, 0)); transform-origin: top; }
-  html.scroll-motion [data-motion="journey"] li { padding-top: 0; }
-  html.scroll-motion [data-motion="journey"] li::before { left: -24px; top: 4px; }
+  .scroll-motion #about [data-motion="journey"] { padding-left: 20px; }
+  .scroll-motion #about [data-motion="journey"]::before,
+  .scroll-motion #about [data-motion="journey"]::after { top: 9px; width: 2px; height: var(--journey-track-height, 100%); }
+  .scroll-motion #about [data-motion="journey"]::after { transform: scaleY(var(--journey-progress, 0)); transform-origin: top; }
+  .scroll-motion #about [data-motion="journey"] li { padding-top: 0; }
+  .scroll-motion #about [data-motion="journey"] li::before { left: -24px; top: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .arch-section.is-pinned::after { display: none; }
