@@ -1,5 +1,74 @@
 ---
 import ArchitectureFlow from "./ArchitectureFlow.astro";
+import MobileSkills from "./MobileSkills.astro";
+
+const categories = [
+  {
+    "id": "frontend",
+    "name": "Frontend",
+    "title": "Des interfaces claires et réactives",
+    "description": "Je construis des interfaces web avec des composants réutilisables et une mise en page adaptée à chaque écran.",
+    "context": "En pratique",
+    "technologies": [
+      "React 19",
+      "JavaScript",
+      "Vue.js",
+      "Next.js",
+      "Astro",
+      "Tailwind CSS",
+      "HTML5 / Semantic",
+      "CSS Modulaire",
+      "State Management"
+    ]
+  },
+  {
+    "id": "backend",
+    "name": "Backend",
+    "title": "La logique derrière l’interface",
+    "description": "Je structure les API, la validation des données et l’authentification. J’étudie aussi les design patterns pour mieux organiser la logique des applications.",
+    "context": "API & données",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "Prisma ORM",
+      "RESTful APIs",
+      "Auth & JWT",
+      "Middleware Architecture",
+      "Design Patterns (en cours)"
+    ]
+  },
+  {
+    "id": "data",
+    "name": "Données",
+    "title": "Des données bien organisées",
+    "description": "Je modélise les relations entre les données et j’utilise SQL pour les enregistrer, les retrouver et les faire évoluer.",
+    "context": "Modélisation",
+    "technologies": [
+      "PostgreSQL",
+      "SQL",
+      "MySQL",
+      "Schema Migrations",
+      "Relations & Indexation"
+    ]
+  },
+  {
+    "id": "devops",
+    "name": "DevOps",
+    "title": "Le déploiement en apprentissage",
+    "description": "Je pratique Git, mais je n’ai pas encore déployé d’application en production. J’apprends actuellement GitLab, Docker, Linux et les différentes étapes d’un déploiement.",
+    "context": "DevOps & déploiement · En cours d’apprentissage",
+    "technologies": [
+      "Git & GitHub Flow",
+      "GitHub Actions (CI/CD)",
+      "GitLab (en cours)",
+      "Docker Basics",
+      "Administration Linux (en cours)",
+      "Postman ",
+      "Linux CLI",
+      "Swagger / OpenAPI"
+    ]
+  }
+];
 
 ---
 
@@ -19,91 +88,39 @@ import ArchitectureFlow from "./ArchitectureFlow.astro";
           <span>Du code au déploiement.</span>
         </h2>
 
-        <p class="skills-lead">
+        <p class="skills-lead desktop-intro">
           Les technologies que je mets en pratique dans mes projets, et les outils que j’explore pour aller plus loin. Le schéma ci-dessous permet de suivre le trajet d’une requête à travers une application.
         </p>
+        <p class="skills-lead mobile-intro">Les outils que je pratique, de l’interface au déploiement. Explore chaque catégorie.</p>
       </div>
     </div>
+
+    <MobileSkills categories={categories} />
 
     <!-- Live Interactive Full Stack Architecture Pipeline -->
     <div class="arch-section" data-motion="architecture">
       <ArchitectureFlow />
     </div>
 
-    <!-- Categorized Skill Matrix -->
+    <!-- Shared data keeps desktop and mobile technologies in sync. -->
     <div class="skills-list">
-
-      <div class="skill-row">
-        <span class="number">01</span>
-        <div class="skill-meta">
-          <h3>Frontend</h3>
-          <a class="skill-subtitle" href="#project-dishly">En pratique · Dishly ↗</a>
+      {categories.map((category, index) => (
+        <div class="skill-row">
+          <span class="number">0{index + 1}</span>
+          <div class="skill-meta">
+            <h3>{category.id === 'data' ? 'Database' : category.id === 'devops' ? 'DevOps & QA' : category.name}</h3>
+            {category.href ? <a class="skill-subtitle" href={category.href}>{category.context}</a> : <span class="skill-subtitle">{category.context}</span>}
+          </div>
+          <div class="tags">{category.technologies.map(tech => <span>{tech}</span>)}</div>
         </div>
-        <div class="tags">
-          <span>React 19</span>
-          <span>TypeScript</span>
-          <span>Next.js</span>
-          <span>Astro</span>
-          <span>Tailwind CSS</span>
-          <span>HTML5 / Semantic</span>
-          <span>CSS Modulaire</span>
-          <span>State Management</span>
-        </div>
-      </div>
-
-      <div class="skill-row">
-        <span class="number">02</span>
-        <div class="skill-meta">
-          <h3>Backend</h3>
-          <a class="skill-subtitle" href="#project-dishly">API & données · Dishly ↗</a>
-        </div>
-        <div class="tags">
-          <span>Node.js</span>
-          <span>Express</span>
-          <span>Prisma ORM</span>
-          <span>RESTful APIs</span>
-          <span>Auth & JWT</span>
-          <span>Middleware Architecture</span>
-        </div>
-      </div>
-
-      <div class="skill-row">
-        <span class="number">03</span>
-        <div class="skill-meta">
-          <h3>Database</h3>
-          <a class="skill-subtitle" href="#project-sehati">Modélisation · Sehati ↗</a>
-        </div>
-        <div class="tags">
-          <span>PostgreSQL</span>
-          <span>SQL</span>
-          <span>MySQL</span>
-          <span>Schema Migrations</span>
-          <span>Relations & Indexation</span>
-        </div>
-      </div>
-
-      <div class="skill-row">
-        <span class="number">04</span>
-        <div class="skill-meta">
-          <h3>DevOps & QA</h3>
-          <span class="skill-subtitle">CI/CD en projet · Docker en apprentissage</span>
-        </div>
-        <div class="tags">
-          <span>Git & GitHub Flow</span>
-          <span>GitHub Actions (CI/CD)</span>
-          <span>Docker Basics</span>
-          <span>Postman / Thunder</span>
-          <span>Linux CLI</span>
-          <span>Swagger / OpenAPI</span>
-        </div>
-      </div>
-
+      ))}
     </div>
 
   </div>
 </section>
 
 <style>
+  .mobile-intro { display: none; }
   .skills {
     padding: 130px 0;
     background: var(--bg-subtle);
@@ -283,6 +300,17 @@ import ArchitectureFlow from "./ArchitectureFlow.astro";
       font-size: 0.72rem;
       padding: 6px 10px;
     }
+  }
+  @media (max-width: 767px) {
+    .arch-section, .skills-list, .desktop-intro { display: none; }
+    .mobile-intro { display: block; }
+    .skills { padding: 64px 0; }
+    .skills-topbar { margin-bottom: 24px; }
+    .section-index { margin-bottom: 20px; gap: 10px; }
+    .section-index p { letter-spacing: 1.6px; font-size: 0.68rem; }
+    .skills-header-grid { gap: 16px; }
+    h2 { font-size: clamp(1.8rem, 7vw, 2.5rem); letter-spacing: -1px; }
+    .skills-lead { font-size: 0.92rem; line-height: 1.7; }
   }
   h2 span { color: var(--primary); }
   .skill-subtitle[href]:hover { text-decoration: underline; text-underline-offset: 4px; }

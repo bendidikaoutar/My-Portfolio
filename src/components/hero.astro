@@ -9,25 +9,29 @@
       <div class="buttons">
         <a href="#projects" class="primary">Explorer mes projets <span aria-hidden="true">↗</span></a>
         <a href="/cv-kaoutar-bendidi.pdf" class="secondary" download>Télécharger mon CV <span aria-hidden="true">↓</span></a>
+        <a href="#contact" class="contact-shortcut">Me contacter <span aria-hidden="true">→</span></a>
       </div>
     </div>
     <div class="workspace" aria-label="Mon profil sous forme de code">
       <div class="workspace-title"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>kaoutar / workspace</span><span aria-hidden="true">⌘</span></div>
       <div class="workspace-tabs"><span class="active-tab"><span class="ts-badge">TS</span> profil.ts</span><a href="#projects">projets/ <span aria-hidden="true">↗</span></a></div>
       <div class="editor">
-        <div class="line-numbers" aria-hidden="true">{Array.from({length: 15}, (_, i) => <span>{i + 1}</span>)}</div>
+        <div class="line-numbers" aria-hidden="true">{Array.from({length: 18}, (_, i) => <span>{i + 1}</span>)}</div>
         <pre tabindex="0" aria-label="Profil TypeScript"><code><span class="comment">// Apprendre. Construire. Itérer.</span>
 <span class="keyword">const</span> <span class="variable">profil</span> = &#123;
   <span class="property">nom</span>: <span class="string">"Kaoutar Bendidi"</span>,
   <span class="property">formation</span>: <span class="string">"Génie informatique"</span>,
   <span class="property">année</span>: <span class="number">4</span>,
-  <span class="property">focus</span>: <span class="string">"Full Stack"</span>,
+  <span class="property">focus</span>: <span class="string">"Full Stack · DevOps · DevSecOps"</span>,
   <span class="property">stack</span>: &#123;
-    <span class="property">front</span>: <span class="string">"React · TypeScript"</span>,
-    <span class="property">back</span>: <span class="string">"Node.js · Prisma"</span>,
+    <span class="property">front</span>: <span class="string">"JavaScript · Tailwind · Vue"</span>,
+    <span class="property">back</span>: <span class="string">"Java · JavaScript · Prisma · Node.js · Express.js · PHP"</span>,
     <span class="property">data</span>: <span class="string">"PostgreSQL"</span>
   &#125;,
-  <span class="property">explorations</span>: [<span class="string">"Cloud"</span>, <span class="string">"DevOps"</span>],
+  <span class="property">apprentissage</span>: [
+    <span class="string">"Design Patterns"</span>,
+    <span class="string">"Administration systèmes"</span>
+  ],
   <span class="property">recherche</span>: <span class="string">"Stage"</span>
 &#125; <span class="keyword">as const</span>;
 <span class="comment">// La suite se construit en projets.</span></code></pre>
@@ -56,7 +60,8 @@
   .buttons .primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
   .primary:hover { background: var(--primary-hover); }
   .secondary { background: var(--card); }
-  .secondary:hover { border-color: var(--primary); color: var(--primary); }
+  .secondary:hover, .contact-shortcut:hover { border-color: var(--primary); color: var(--primary); }
+  .contact-shortcut { background: var(--bg-subtle); color: var(--text-main); }
   .workspace { min-width: 0; background: #101724; color: #d9e2f2; border: 1px solid #303b50; border-radius: 10px; overflow: hidden; font-family: var(--font-mono); box-shadow: 0 24px 70px -25px #14244460; transform: rotate(1deg); }
   .workspace-title { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; font-size: 0.65rem; color: #99a8be; background: #182131; border-bottom: 1px solid #2b3547; }
   .window-dots { display: flex; gap: 5px; }
@@ -81,5 +86,27 @@
   .hero-footer > span { display: flex; align-items: center; gap: 8px; } .hero-footer i { width: 6px; height: 6px; background: var(--accent-sage); border-radius: 50%; }
   .hero-footer a:hover { color: var(--primary); }
   @media (max-width: 900px) { .hero-container { grid-template-columns: 1fr; gap: 40px; } .workspace { transform: none; width: 100%; max-width: 650px; } .description { max-width: 580px; } .hero-footer { margin-top: 40px; } }
-  @media (max-width: 480px) { .editor { font-size: 0.68rem; } .line-numbers { padding-left: 10px; padding-right: 10px; } .buttons a { padding: 12px 14px; } h1 { font-size: clamp(3rem, 13vw, 4rem); } }
+  @media (max-width: 480px) {
+    .hero { padding-top: 38px; background-size: 32px 32px; }
+    .hero-container { width: min(100% - 32px, 440px); gap: 28px; }
+    .eyebrow { margin-bottom: 18px; font-size: 0.78rem; }
+    .hello { margin-bottom: 6px; }
+    h1 { margin-bottom: 18px; font-size: clamp(2.8rem, 13vw, 3.7rem); }
+    .hero-role { margin-bottom: 14px; line-height: 1.55; }
+    .description { margin: 0; font-size: 0.94rem; line-height: 1.7; }
+    .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+    .buttons a { min-height: 46px; justify-content: space-between; padding: 11px 13px; font-size: 0.78rem; gap: 8px; }
+    .buttons .primary { grid-column: 1 / -1; }
+    .workspace { border-radius: 9px; }
+    .workspace-title { padding: 11px 13px; font-size: 0.7rem; }
+    .workspace-tabs { font-size: 0.73rem; }
+    .workspace-tabs > * { padding: 11px 14px; }
+    .editor { padding: 16px 0; font-size: 0.72rem; line-height: 1.62; }
+    .line-numbers { padding-left: 10px; padding-right: 10px; }
+    pre { padding-right: 14px; }
+    .terminal { padding: 12px 16px; font-size: 0.72rem; }
+    .terminal p { margin-bottom: 6px; }
+    .workspace-status { padding: 7px 13px; font-size: 0.68rem; }
+    .hero-footer { width: calc(100% - 32px); margin-top: 28px; padding: 18px 0; font-size: 0.74rem; }
+  }
 </style>

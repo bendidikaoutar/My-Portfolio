@@ -14,6 +14,34 @@
 .scroll-motion #about [data-motion="journey"] li.is-reached::before { background: var(--primary); }
 .scroll-motion #about [data-motion="journey"] li.is-current::before { background: var(--accent-sage); box-shadow: 0 0 0 5px var(--accent-sage-light); }
 .scroll-motion #about [data-motion="journey"] li.is-current h3 { color: var(--primary); }
+.scroll-motion #about [data-about-reveal] {
+  opacity: calc(0.38 + var(--about-entrance, 0) * 0.62);
+  transform: translateY(calc((1 - var(--about-entrance, 0)) * 52px))
+    scale(calc(0.97 + var(--about-entrance, 0) * 0.03));
+  will-change: opacity, transform;
+}
+.scroll-motion #about .about-type-token {
+  opacity: 0.1;
+  transition: opacity 120ms ease;
+}
+.scroll-motion #about .about-type-token.is-written { opacity: 1; }
+.scroll-motion #about .about-type-token.has-caret::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 3px;
+  vertical-align: -0.08em;
+  background: var(--accent-sage);
+  animation: about-caret 760ms steps(1, end) infinite;
+}
+@keyframes about-caret { 50% { opacity: 0; } }
+.scroll-motion #about [data-motion="journey"] li {
+  opacity: calc(0.42 + var(--journey-progress, 0) * 0.18);
+  transform: translateY(8px);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+.scroll-motion #about [data-motion="journey"] li.is-reached { opacity: 1; transform: translateY(0); }
 .arch-section.is-pinned .arch-flow { position: sticky; top: calc(var(--motion-nav-height) + 24px); margin-bottom: 0; }
 /* Padding alone cannot form a sticky travel area; its containing block includes the full track. */
 .arch-section.is-pinned { height: auto; padding-bottom: 0; }
@@ -21,18 +49,22 @@
 .scroll-motion .arch-flow .data-packet { animation: none; left: 0; width: 100%; transform: scaleX(var(--connection-progress, 0)); transform-origin: left; }
 .other-projects { position: relative; }
 .project-slot { min-width: 0; }
-.scroll-motion .other-projects.is-desktop { display: flex; flex-direction: column; gap: 16vh; }
-.scroll-motion .other-projects.is-desktop .project-slot { width: 100%; }
+.scroll-motion .other-projects.is-scroll-layout { display: flex; flex-direction: column; gap: 16svh; }
+.scroll-motion .other-projects.is-scroll-layout .project-slot { width: 100%; }
 .other-projects.is-stacked { padding-bottom: 16vh; }
 .other-projects.is-stacked .project-slot { position: sticky; top: var(--project-top); z-index: calc(1 + var(--project-index)); }
 .other-projects.is-stacked .project-card { transform: scale(calc(1 - var(--project-cover, 0) * 0.04)); transform-origin: center top; box-shadow: var(--shadow-lg); }
 .scroll-motion .other-projects:not(.is-stacked) .project-card { opacity: calc(0.55 + var(--entrance, 1) * 0.45); transform: translateY(calc((1 - var(--entrance, 1)) * 16px)); }
 .scroll-motion .contact > .container { opacity: calc(0.4 + var(--entrance, 1) * 0.6); transform: translateY(calc((1 - var(--entrance, 1)) * 24px)); }
 .scroll-motion .contact:focus-within > .container,
-.scroll-motion .project-slot:focus-within .project-card { opacity: 1; transform: none; }
+.scroll-motion .project-slot:has(:focus-visible) .project-card { opacity: 1; transform: none; }
 @media (max-width: 1023px), (max-height: 719px) {
   .scroll-motion .hero .workspace { transform: none; }
   .scroll-motion .contact > .container { transform: translateY(calc((1 - var(--entrance, 1)) * 16px)); }
+  .scroll-motion #about [data-about-reveal] {
+    transform: translateY(calc((1 - var(--about-entrance, 0)) * 36px))
+      scale(calc(0.97 + var(--about-entrance, 0) * 0.03));
+  }
 }
 @media (max-width: 580px) {
   .scroll-motion #about [data-motion="journey"] { padding-left: 20px; }
@@ -46,6 +78,35 @@
   .arch-section.is-pinned::after { display: none; }
   .arch-section.is-pinned .arch-flow, .other-projects.is-stacked .project-slot { position: static; }
   .other-projects.is-stacked { padding-bottom: 0; }
-  .scroll-motion .hero .workspace, .other-projects .project-card, .contact > .container { transform: none !important; opacity: 1 !important; }
+  .scroll-motion .hero .workspace, .other-projects .project-card, .contact > .container,
+  .scroll-motion #about [data-about-reveal], .scroll-motion #about [data-motion="journey"] li { transform: none !important; opacity: 1 !important; }
+  .scroll-motion #about .about-type-token { opacity: 1 !important; transition: none !important; }
+  .scroll-motion #about .about-type-token.has-caret::after { display: none; }
   .arch-flow .data-packet, .arch-flow .live-dot { animation: none !important; }
+}
+/* The original code remains complete for screen readers and copying without JS. */
+.typing-source {
+  user-select: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: pre;
+}
+.typing-unwritten { opacity: 0; }
+.typing-caret { position: relative; }
+.typing-caret::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1.15em;
+  border-left: 2px solid #8ee0c1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .typing-unwritten { opacity: 1; }
+  .typing-caret { display: none; }
 }

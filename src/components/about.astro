@@ -1,4 +1,4 @@
-<section id="about" class="about">
+<section id="about" class="about" data-motion="about">
   <div class="about-shell">
     <header class="about-heading">
       <div class="section-kicker">
@@ -8,12 +8,12 @@
       </div>
 
       <p class="code-label" aria-hidden="true"><span>const</span> parcours =</p>
-      <h2 class="about-title" aria-label="Apprendre en construisant.">
+      <h2 class="about-title" aria-label="Apprendre en construisant." data-about-type="characters">
         <span>Apprendre en construisant.</span>
       </h2>
     </header>
 
-    <aside class="profile-card" aria-label="Profil de Kaoutar Bendidi">
+    <aside class="profile-card" aria-label="Profil de Kaoutar Bendidi" data-about-reveal data-about-profile>
       <div class="portrait-frame">
         <img src="/kaoutar-profile.jpg" alt="Portrait de Kaoutar Bendidi" loading="lazy" />
         <span class="availability-dot" aria-hidden="true"></span>
@@ -29,11 +29,11 @@
     </aside>
 
     <div class="about-copy">
-      <p class="about-lead">
+      <p class="about-lead" data-about-type="words">
         Étudiante en génie informatique, j’aime comprendre comment les différentes parties d’une application fonctionnent ensemble.
       </p>
-      <p>
-        Mes projets me permettent de relier la théorie à la pratique : concevoir une interface, structurer une API, modéliser les données, puis améliorer l’ensemble. J’explore aussi le Cloud et les outils DevOps pour mieux comprendre le déploiement.
+      <p data-about-type="words">
+        Mes projets me permettent de relier la théorie à la pratique : concevoir une interface, structurer une API, modéliser les données, puis améliorer l’ensemble. J’approfondis actuellement les design patterns et l’administration des systèmes Linux afin de mieux structurer mes applications et comprendre leur environnement d’exécution.
       </p>
     </div>
 
@@ -44,7 +44,7 @@
     </ol>
 
     <div class="expertise-list" aria-label="Domaines que je pratique">
-      <article class="expertise-item">
+      <article class="expertise-item" data-about-reveal>
         <span class="expertise-number">01</span>
         <div>
           <h3>Développement frontend</h3>
@@ -53,7 +53,7 @@
         <span class="expertise-stack">React · TypeScript · Astro</span>
       </article>
 
-      <article class="expertise-item">
+      <article class="expertise-item" data-about-reveal>
         <span class="expertise-number">02</span>
         <div>
           <h3>Backend & APIs</h3>
@@ -62,7 +62,7 @@
         <span class="expertise-stack">Node.js · Express · Prisma</span>
       </article>
 
-      <article class="expertise-item">
+      <article class="expertise-item" data-about-reveal>
         <span class="expertise-number">03</span>
         <div>
           <h3>Exploration DevOps</h3>

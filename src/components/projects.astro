@@ -1,6 +1,7 @@
 ---
 import ApiPlayground from "./ApiPlayground.astro";
-
+import { Image } from "astro:assets";
+import dishlyMark from "../assets/dishly-mark.png";
 
 const projects = [
   {
@@ -16,15 +17,15 @@ const projects = [
     title: "Muestra",
     category: "Plateforme Éducative",
     tagline: "Expérience d'apprentissage interactive & collaborative",
-    description: "Plateforme développée en équipe académique pour dynamiser les échanges étudiants, avec interfaces modulaires et mise en place d'un pipeline d'intégration continue CI/CD.",
-    technologies: ["Vue.js", "JavaScript", "Git", "GitHub Actions", "CI/CD"],
-    highlights: ["Composants réutilisables", "Pipeline de tests automatisé", "Travail d'équipe Agile"]
+    description: "Plateforme réalisée en équipe académique pour faciliter les échanges entre étudiants, enseignants et recruteurs. Les étudiants y publient leurs formations et expériences avec un système de validation.",
+    technologies: ["Express.js", "Figma", "Tailwind CSS"],
+    highlights: ["Publication des formations et expériences", "Système de validation", "Interfaces pour plusieurs profils"]
   },
   {
     title: "Sehati",
-    category: "Application Santé & Bien-être",
+    category: "Projet en cours · Santé & Bien-être",
     tagline: "Gestion simplifiée des rendez-vous et suivi médical",
-    description: "Application web Full Stack dédiée à la prise de rendez-vous médicaux et au suivi des patients avec tableaux de bord réactifs et base de données relationnelle sécurisée.",
+    description: "Projet en cours : application web Full Stack dédiée à la prise de rendez-vous médicaux et au suivi des patients.",
     technologies: ["Next.js", "Vue.js", "Node.js", "MySQL", "REST API"],
     highlights: ["Authentification sécurisée", "Modélisation relationnelle MySQL", "Expérience patient fluide"]
   },
@@ -41,7 +42,7 @@ const projects = [
     category: "Utilitaire Financier",
     tagline: "Suivi budgétaire & organisation des finances personnelles",
     description: "Outil logiciel conçu pour catégoriser les flux de dépenses, modéliser des budgets prévisionnels et générer des analyses claires de santé financière.",
-    technologies: ["Python", "Data Processing", "CLI & GUI"],
+    technologies: ["Python"],
     highlights: ["Calculs analytiques", "Export structuré de données", "Simplicité d'usage"]
   }
 ];
@@ -65,10 +66,13 @@ const otherProjects = projects.slice(1);
 
     <article class="featured-project" id="project-dishly">
       <div class="project-bar"><span>01 / dishly</span><span>Projet Full Stack</span></div>
-      <div class="featured-grid">
+      <div class="featured-body">
         <div class="featured-content">
           <p class="project-label">APPLICATION CULINAIRE</p>
-          <h3>{featuredProject.title}</h3>
+          <div class="featured-heading">
+            <Image src={dishlyMark} alt="" width={64} height={64} densities={[1, 2]} format="webp" class="dishly-icon" loading="lazy" />
+            <h3>{featuredProject.title}</h3>
+          </div>
           <p class="project-purpose">Créer, organiser et partager ses recettes au même endroit.</p>
           <p class="featured-desc">{featuredProject.description}</p>
           <dl class="project-notes">
@@ -77,10 +81,6 @@ const otherProjects = projects.slice(1);
           </dl>
           <div class="tags" aria-label="Technologies de Dishly">{featuredProject.technologies.map(tech => <span>{tech}</span>)}</div>
         </div>
-        <figure class="featured-art">
-          <img src="/dishly-featured.png" alt="Illustration de présentation de Dishly : organiser, créer et partager des recettes" width="1254" height="1254" loading="lazy" />
-          <figcaption><span>Dishly</span> Visuel de présentation</figcaption>
-        </figure>
       </div>
       <details class="technical-details featured-details">
         <summary><span><span class="detail-symbol" aria-hidden="true">&lt;/&gt;</span> Explorer le fonctionnement de l’API</span><span class="expand-icon" aria-hidden="true">+</span></summary>
@@ -99,7 +99,7 @@ const otherProjects = projects.slice(1);
             <p class="project-label">{project.category}</p>
             <h3>{project.title}</h3>
             <p class="card-desc">{project.description}</p>
-            {project.title === 'Muestra' && <p class="team-note">Projet académique réalisé en équipe.</p>}
+            {project.title === 'Muestra' && <p class="team-note">Ma contribution : développement frontend.</p>}
             <div class="tags" aria-label={'Technologies de ' + project.title}>{project.technologies.map(tech => <span>{tech}</span>)}</div>
           </div>
           <details class="technical-details">
@@ -126,20 +126,19 @@ const otherProjects = projects.slice(1);
   .featured-project, .project-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 10px; overflow: hidden; scroll-margin-top: 100px; }
   .featured-project { margin-bottom: 24px; box-shadow: var(--shadow-sm); }
   .project-bar { background: var(--bg-subtle); padding: 13px 22px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; gap: 16px; color: var(--text-muted); font: 0.7rem var(--font-mono); }
-  .featured-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; padding: 36px; align-items: center; }
+  .featured-body { padding: 36px; }
   .featured-content { min-width: 0; }
   .project-label { color: var(--accent-sage); font: 0.65rem var(--font-mono); letter-spacing: 1px; text-transform: uppercase; margin: 0 0 14px; }
   h3 { font-size: 1.5rem; line-height: 1.25; letter-spacing: -0.6px; margin: 0 0 14px; }
-  .featured-content h3 { font-size: 2.8rem; }
+  .featured-heading { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .dishly-icon { display: block; width: 64px; height: 64px; object-fit: contain; flex-shrink: 0; }
+  .featured-heading h3 { font-size: 2.8rem; margin: 0; }
   .project-purpose { font-size: 1.1rem; font-weight: 600; margin: 0 0 14px; }
   .featured-desc, .card-desc { font-size: 0.91rem; line-height: 1.8; color: var(--text-muted); margin: 0 0 22px; }
   .project-notes { display: grid; gap: 14px; border-left: 2px solid var(--border); padding-left: 16px; margin: 24px 0; }
   dt { color: var(--primary); font: 0.68rem var(--font-mono); margin-bottom: 4px; }
   dd { color: var(--text-muted); font-size: 0.83rem; margin: 0; line-height: 1.7; }
-  .featured-art { margin: 0; border: 1px solid var(--card-border); border-radius: 6px; overflow: hidden; }
-  .featured-art img { display: block; width: 100%; height: auto; }
-  figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 12px 16px; background: var(--bg-subtle); color: var(--text-muted); font: 0.65rem var(--font-mono); }
-  figcaption span { color: var(--primary); }
+  .featured-desc, .project-notes { max-width: 85ch; }
   .tags { display: flex; flex-wrap: wrap; gap: 7px; }
   .tags span { font: 0.67rem var(--font-mono); padding: 6px 9px; background: var(--bg-subtle); border: 1px solid var(--card-border); border-radius: 4px; color: var(--text-muted); }
   .technical-details { border-top: 1px solid var(--card-border); }
@@ -158,6 +157,18 @@ const otherProjects = projects.slice(1);
   .team-note { color: var(--primary); font-size: 0.78rem; margin: -8px 0 20px; }
   .project-highlights { margin: 0; padding: 0 28px 22px 42px; color: var(--text-muted); font-size: 0.85rem; line-height: 2; }
   .project-highlights li::marker { color: var(--accent-sage); }
-  @media (max-width: 900px) { .projects-header { grid-template-columns: 1fr; gap: 24px; } .featured-grid { grid-template-columns: 1fr; padding: 24px; gap: 28px; } .featured-art { max-width: 480px; } }
-  @media (max-width: 600px) { .projects { padding: 72px 0; } .other-projects { grid-template-columns: 1fr; } .card-content { padding: 22px; } .featured-grid { padding: 22px; } .project-bar { padding: 12px 18px; font-size: 0.65rem; } .api-demo { padding: 0 14px 18px; } }
+  @media (max-width: 900px) { .projects-header { grid-template-columns: 1fr; gap: 24px; } .featured-body { padding: 24px; } }
+  @media (max-width: 600px) {
+    .projects { padding: 68px 0; }
+    .container { width: calc(100% - 32px); }
+    .other-projects { grid-template-columns: 1fr; }
+    .card-content, .featured-body { padding: 20px; }
+    .dishly-icon { width: 52px; height: 52px; }
+    .featured-heading h3 { font-size: 2.2rem; }
+    .project-bar { padding: 12px 16px; font-size: 0.72rem; }
+    .project-label, dt, .tags span { font-size: 0.72rem; }
+    .tags span { padding: 7px 10px; }
+    .technical-details summary { min-height: 48px; }
+    .api-demo { padding: 0 14px 18px; }
+  }
 </style>

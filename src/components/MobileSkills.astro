@@ -1,0 +1,91 @@
+---
+interface Category {
+  id: string;
+  name: string;
+  title: string;
+  description: string;
+  context: string;
+  href?: string;
+  technologies: string[];
+}
+interface Props { categories: Category[]; }
+const { categories } = Astro.props;
+---
+
+<div class="mobile-skills-scene" data-motion="mobile-skills">
+<div class="mobile-skills" data-mobile-skills>
+  <div class="explorer-header" aria-hidden="true"><span>&lt;/&gt; stack.config</span><span>4 catégories</span></div>
+  <div class="category-controls" role="group" aria-label="Choisir une catégorie de compétences">
+    {categories.map((category, index) => (
+      <button type="button" id={`skill-button-${category.id}`} data-category={category.id} aria-pressed={index === 0 ? 'true' : 'false'} aria-controls={`skill-panel-${category.id}`}>
+        {category.name}
+      </button>
+    ))}
+  </div>
+  <div class="category-panels">
+    {categories.map((category, index) => (
+      <section class="category-panel" id={`skill-panel-${category.id}`} data-panel={category.id} aria-labelledby={`skill-title-${category.id}`}>
+        <p class="category-index">0{index + 1} / {category.name}</p>
+        <h3 id={`skill-title-${category.id}`}>{category.title}</h3>
+        <p class="category-description">{category.description}</p>
+        <ul class="technology-list" aria-label={`Technologies ${category.name}`}>
+          {category.technologies.map(tech => <li>{tech}</li>)}
+        </ul>
+        <div class="category-context">
+          {category.href ? <a href={category.href}>{category.context}</a> : <p>{category.context}</p>}
+        </div>
+      </section>
+    ))}
+  </div>
+</div>
+
+</div>
+
+
+<style>
+  .mobile-skills-scene { display: none; }
+  @media (max-width: 767px) {
+    .mobile-skills-scene { display: block; position: relative; }
+    .mobile-skills-scene.is-pinned { height: calc(var(--mobile-skills-height) + var(--mobile-skills-distance)); }
+    .is-pinned .mobile-skills { position: sticky; top: calc(var(--motion-nav-height) + 12px); }
+    .is-interactive .category-panels { display: grid; }
+    .is-interactive .category-panel { grid-area: 1 / 1; min-width: 0; }
+    .is-interactive .category-panel[hidden] { display: block; visibility: hidden; pointer-events: none; }
+    .is-pinned .category-panel:not([hidden]) { animation: skill-enter 180ms ease-out; }
+    .is-pinned .explorer-header { position: relative; }
+    .is-pinned .explorer-header::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--accent-sage); transform: scaleX(var(--skills-progress, 0)); transform-origin: left; }
+    .mobile-skills { display: block; border: 1px solid var(--card-border); border-radius: 10px; background: var(--card); overflow: hidden; }
+    .explorer-header { display: flex; justify-content: space-between; gap: 10px; padding: 14px 18px; background: var(--bg); border-bottom: 1px solid var(--card-border); font: 0.72rem var(--font-mono); color: var(--text-soft); }
+    .explorer-header span:first-child { color: var(--primary); }
+    .category-controls { display: none; }
+    .is-interactive .category-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 16px 14px 0; }
+    .category-controls button { min-height: 44px; min-width: 0; padding: 8px 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text-muted); cursor: pointer; touch-action: manipulation; }
+    .category-controls button[aria-pressed="true"] { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+    .category-controls button:hover { border-color: var(--primary); }
+    .category-controls button:focus-visible { outline-offset: 2px; }
+    .category-panel { padding: 24px 20px 20px; }
+    .category-panel[hidden] { display: none; }
+    .category-panel + .category-panel { border-top: 1px solid var(--card-border); }
+    .is-interactive .category-panel { border-top: 0; }
+    .category-index { margin: 0 0 12px; font: 0.72rem var(--font-mono); color: var(--accent-sage); }
+    h3 { margin: 0 0 12px; font-size: 1.2rem; line-height: 1.4; letter-spacing: -0.4px; color: var(--text-main); }
+    .category-description { margin: 0 0 20px; font-size: 0.88rem; line-height: 1.75; color: var(--text-muted); }
+    .technology-list { display: flex; flex-wrap: wrap; gap: 7px; padding: 0; margin: 0; list-style: none; }
+    .technology-list li { padding: 7px 10px; border-radius: 4px; border: 1px solid var(--card-border); background: var(--bg-subtle); color: var(--text-muted); font: 0.72rem/1.45 var(--font-mono); overflow-wrap: anywhere; }
+    .category-context { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--card-border); font-size: 0.8rem; line-height: 1.6; color: var(--primary); }
+    .category-context p { margin: 0; }
+    .category-context a { display: inline-block; padding: 6px 0; }
+    .category-context a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  }
+  @media (max-width: 359px) {
+    .is-interactive .category-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .category-panel { padding: 20px 16px 16px; }
+  }
+  @keyframes skill-enter {
+    from { opacity: 0.5; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .category-panel { animation: none !important; }
+  }
+</style>
