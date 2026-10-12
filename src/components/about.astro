@@ -1,3 +1,7 @@
+---
+const base = `${import.meta.env.BASE_URL}/`;
+---
+
 <section id="about" class="about" data-motion="about">
   <div class="about-shell">
     <header class="about-heading">
@@ -15,7 +19,7 @@
 
     <aside class="profile-card" aria-label="Profil de Kaoutar Bendidi" data-about-reveal data-about-profile>
       <div class="portrait-frame">
-        <img src="/kaoutar-profile.jpg" alt="Portrait de Kaoutar Bendidi" loading="lazy" />
+        <img src={`${base}kaoutar-profile.jpg`} alt="Portrait de Kaoutar Bendidi" loading="lazy" />
         <span class="availability-dot" aria-hidden="true"></span>
       </div>
       <div class="profile-copy">

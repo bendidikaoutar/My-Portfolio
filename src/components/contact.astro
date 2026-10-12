@@ -1,5 +1,6 @@
 ---
 // contact.astro - Section contact élégante et accessible
+const base = `${import.meta.env.BASE_URL}/`;
 ---
 
 <section id="contact" class="contact" data-motion="contact">
@@ -51,7 +52,7 @@
           </a>
 
           <a
-            href="/cv-kaoutar-bendidi.pdf"
+            href={`${base}cv-kaoutar-bendidi.pdf`}
             download
             class="social-btn cv-btn"
           >

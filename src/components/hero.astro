@@ -1,3 +1,7 @@
+---
+const base = `${import.meta.env.BASE_URL}/`;
+---
+
 <section data-motion="hero" id="home" class="hero">
   <div class="hero-container">
     <div class="hero-content">
@@ -8,7 +12,7 @@
       <p class="description">Je développe des applications web et j’explore les systèmes qui les font fonctionner. Du modèle de données à l’interface, j’apprends en construisant.</p>
       <div class="buttons">
         <a href="#projects" class="primary">Explorer mes projets <span aria-hidden="true">↗</span></a>
-        <a href="/cv-kaoutar-bendidi.pdf" class="secondary" download>Télécharger mon CV <span aria-hidden="true">↓</span></a>
+        <a href={`${base}cv-kaoutar-bendidi.pdf`} class="secondary" download>Télécharger mon CV <span aria-hidden="true">↓</span></a>
         <a href="#contact" class="contact-shortcut">Me contacter <span aria-hidden="true">→</span></a>
       </div>
     </div>
