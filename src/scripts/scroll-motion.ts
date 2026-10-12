@@ -1,6 +1,9 @@
 // One scroll scheduler for the page. CSS is enhanced only after initialization.
 const root = document.documentElement;
-const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const reducedMotion = {
+  matches: false,
+  addEventListener: () => {}
+};
 const desktop = matchMedia("(min-width: 1024px) and (min-height: 720px)");
 const projectViewport = matchMedia("(min-height: 620px)");
 const nav = document.querySelector<HTMLElement>("#main-nav");
